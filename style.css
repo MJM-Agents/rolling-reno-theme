@@ -1,0 +1,46 @@
+/*
+Theme Name: Rolling Reno
+Theme URI: https://rollingreno.com
+Author: Rolling Reno Team
+Author URI: https://rollingreno.com
+Description: Custom WordPress theme for Rolling Reno — DIY RV renovation blog.
+Version: 0.1.0
+Requires at least: 6.0
+Tested up to: 6.5
+Requires PHP: 8.0
+License: Private
+Text Domain: rolling-reno
+*/
+
+/* Design Tokens */
+:root {
+  --color-rust: #C0452A;
+  --color-charcoal: #2C2C2C;
+  --color-sand: #F4EFE6;
+  --color-warm-white: #FDFAF5;
+  --color-sage: #7A8C6E;
+  --color-amber: #D4860A;
+  --color-steel: #4A5568;
+  --color-light-border: #E8E0D4;
+
+  --font-heading: 'Oswald', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-accent: 'Lora', serif;
+
+  --max-width: 1200px;
+  --content-width: 740px;
+  --spacing-unit: 8px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-charcoal);
+  background: var(--color-warm-white);
+  line-height: 1.6;
+}
