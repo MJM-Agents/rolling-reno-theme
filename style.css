@@ -1,0 +1,19 @@
+/*
+Theme Name:        Rolling Reno v2
+Theme URI:         https://rollingreno.com
+Author:            Mara Collins / MJM Team
+Author URI:        https://rollingreno.com/about
+Description:       Wild Irish Editorial — magazine-quality van life blog theme for Rolling Reno. Redesigned v2 by Aoife & Lorcan (MJM-101).
+Version:           2.0.0
+Requires at least: 6.0
+Tested up to:      6.5
+Requires PHP:      8.0
+License:           GNU General Public License v2 or later
+License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:       rolling-reno
+Tags:              blog, travel, van-life, editorial, responsive
+*/
+
+/* This file intentionally imports the compiled stylesheet for WordPress compatibility. */
+@import url('assets/css/design-system.css');
+@import url('assets/css/main.css');
