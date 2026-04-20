@@ -28,9 +28,20 @@
 
   function initStickyNav() {
     const nav = document.getElementById('site-nav');
-    if (!nav) return;
+    const root = document.documentElement;
+    if (!nav || !root) return;
 
     const SCROLL_THRESHOLD = 80;
+
+    function adminBarHeight() {
+      const adminBar = document.getElementById('wpadminbar');
+      return adminBar ? adminBar.offsetHeight : 0;
+    }
+
+    function syncNavOffset() {
+      root.style.setProperty('--header-height', nav.offsetHeight + 'px');
+      root.style.setProperty('--admin-bar-height', adminBarHeight() + 'px');
+    }
 
     function updateNav() {
       if (window.scrollY > SCROLL_THRESHOLD) {
@@ -40,8 +51,14 @@
       }
     }
 
-    // Run on load
-    updateNav();
+    function refreshNavLayout() {
+      syncNavOffset();
+      updateNav();
+    }
+
+    refreshNavLayout();
+    window.addEventListener('load', refreshNavLayout);
+    window.addEventListener('resize', debounce(refreshNavLayout, 80));
     window.addEventListener('scroll', throttle(updateNav, 50), { passive: true });
   }
 
@@ -172,7 +189,7 @@
 
       e.preventDefault();
 
-      const navHeight = 72; // sticky nav height
+      const navHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 72;
       const tabsEl = document.querySelector('.gear-tabs');
       const tabsHeight = tabsEl ? tabsEl.offsetHeight : 0;
       const offset = navHeight + tabsHeight + 16;
@@ -279,7 +296,7 @@
     bar.setAttribute('aria-hidden', 'true');
     bar.style.cssText = [
       'position: fixed',
-      'top: 72px',
+      'top: ' + (getComputedStyle(document.documentElement).getPropertyValue('--header-height').trim() || '72px') + '',
       'left: 0',
       'height: 3px',
       'background: var(--color-terracotta)',
