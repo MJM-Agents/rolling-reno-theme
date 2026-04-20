@@ -142,6 +142,7 @@ while ( have_posts() ) :
                 </div>
                 <form class="mid-post-optin__form" action="<?php echo rr_newsletter_action(); ?>" method="POST">
                     <?php wp_nonce_field( 'rr_newsletter', 'rr_nonce' ); ?>
+                    <?php rr_newsletter_hidden_fields(); ?>
                     <input
                         type="email"
                         name="email"
@@ -158,6 +159,11 @@ while ( have_posts() ) :
         </aside>
 
     </div><!-- /.post-body -->
+
+    <!-- Affiliate Products -->
+    <div class="container--narrow">
+        <?php echo rr_render_affiliate_products( $post_id ); ?>
+    </div>
 
     <!-- Author Bio -->
     <div class="container--narrow">
