@@ -1,46 +1,74 @@
 /*
-Theme Name: Rolling Reno
-Theme URI: https://rollingreno.com
-Author: Rolling Reno Team
-Author URI: https://rollingreno.com
-Description: Custom WordPress theme for Rolling Reno — DIY RV renovation blog.
-Version: 0.1.0
+Theme Name:        Rolling Reno v2
+Theme URI:         https://rollingreno.com
+Author:            Mara Collins / MJM Team
+Author URI:        https://rollingreno.com/about
+Description:       Wild Irish Editorial — magazine-quality van life blog theme for Rolling Reno. Redesigned v2 by Aoife & Lorcan (MJM-101).
+Version:           2.0.0
 Requires at least: 6.0
-Tested up to: 6.5
-Requires PHP: 8.0
-License: Private
-Text Domain: rolling-reno
+Tested up to:      6.5
+Requires PHP:      8.0
+License:           GNU General Public License v2 or later
+License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:       rolling-reno
+Tags:              blog, travel, van-life, editorial, responsive
 */
 
-/* Design Tokens */
+/* This file intentionally imports the compiled stylesheet for WordPress compatibility. */
+@import url('assets/css/design-system.css');
+@import url('assets/css/main.css');
+
+/* MJM-176: sticky nav offset sync from MJM-173 */
 :root {
-  --color-rust: #C0452A;
-  --color-charcoal: #2C2C2C;
-  --color-sand: #F4EFE6;
-  --color-warm-white: #FDFAF5;
-  --color-sage: #7A8C6E;
-  --color-amber: #D4860A;
-  --color-steel: #4A5568;
-  --color-light-border: #E8E0D4;
-
-  --font-heading: 'Oswald', sans-serif;
-  --font-body: 'Inter', sans-serif;
-  --font-accent: 'Lora', serif;
-
-  --max-width: 1200px;
-  --content-width: 740px;
-  --spacing-unit: 8px;
+  --header-height: 72px;
+  --admin-bar-height: 32px;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+html {
+  scroll-padding-top: calc(var(--header-height) + 24px);
 }
 
 body {
-  font-family: var(--font-body);
-  color: var(--color-charcoal);
-  background: var(--color-warm-white);
-  line-height: 1.75;
+  padding-top: var(--header-height);
+}
+
+body.admin-bar {
+  padding-top: calc(var(--header-height) + var(--admin-bar-height));
+}
+
+.site-nav {
+  min-height: var(--header-height);
+}
+
+.site-nav__inner {
+  height: var(--header-height);
+}
+
+body.admin-bar .site-nav {
+  top: var(--admin-bar-height);
+}
+
+main [id],
+section[id],
+div[id],
+h1[id],
+h2[id],
+h3[id],
+h4[id] {
+  scroll-margin-top: calc(var(--header-height) + 24px);
+}
+
+.category-hero,
+.about-hero,
+.gear-header,
+.search-page,
+.blog-index {
+  margin-top: 0 !important;
+}
+
+@media (max-width: 782px) {
+  :root {
+    --header-height: 60px;
+    --admin-bar-height: 46px;
+  }
 }
