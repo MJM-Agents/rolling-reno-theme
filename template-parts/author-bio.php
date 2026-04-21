@@ -19,14 +19,13 @@ $avatar_url = get_theme_mod( 'rr_mara_avatar', '' );
             loading="lazy"
         >
     <?php else : ?>
-        <img
+        <div
             class="author-bio__avatar"
-            src="<?php echo get_template_directory_uri(); ?>/assets/images/mara-avatar.jpg"
-            alt="<?php esc_attr_e( 'Mara Collins — van life blogger and DIY converter', 'rolling-reno' ); ?>"
-            width="96"
-            height="96"
-            loading="lazy"
+            aria-label="<?php esc_attr_e( 'Mara Collins — van life blogger and DIY converter', 'rolling-reno' ); ?>"
+            style="width:96px;height:96px;border-radius:50%;display:grid;place-items:center;background:#f4efe6;color:#2c2c2c;font-weight:700;font-size:1.5rem;"
         >
+            MC
+        </div>
     <?php endif; ?>
 
     <div class="author-bio__content">

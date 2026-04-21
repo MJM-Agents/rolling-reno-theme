@@ -115,37 +115,12 @@ function rr_scripts() {
         null
     );
 
-    // Design system CSS
-    wp_enqueue_style(
-        'rr-design-system',
-        RR_THEME_URI . '/assets/css/design-system.css',
-        array( 'rr-google-fonts' ),
-        RR_VERSION
-    );
-
-    // Main CSS
-    wp_enqueue_style(
-        'rr-main',
-        RR_THEME_URI . '/assets/css/main.css',
-        array( 'rr-design-system' ),
-        RR_VERSION
-    );
-
-    // Theme stylesheet (style.css — required by WP, minimal content)
+    // Load the existing theme stylesheet only, this branch doesn't include the v2 asset bundle.
     wp_enqueue_style(
         'rr-theme',
         get_stylesheet_uri(),
-        array( 'rr-main' ),
+        array( 'rr-google-fonts' ),
         RR_VERSION
-    );
-
-    // Main JS — deferred, no render blocking
-    wp_enqueue_script(
-        'rr-main',
-        RR_THEME_URI . '/assets/js/main.js',
-        array(),
-        RR_VERSION,
-        array( 'in_footer' => true, 'strategy' => 'defer' )
     );
 
     // Comments reply script
@@ -169,15 +144,11 @@ function rr_head_resources() {
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
 
-    // Preload hero image on homepage/front page
+    // Preload hero image on homepage/front page when a custom hero image is configured.
     if ( is_front_page() ) {
         $hero_img = get_theme_mod( 'rr_hero_image', '' );
         if ( $hero_img ) {
             echo '<link rel="preload" as="image" href="' . esc_url( $hero_img ) . '">' . "\n";
-        } else {
-            // Preload static fallback hero image
-            $fallback = get_template_directory_uri() . '/assets/images/mara-hero.jpg';
-            echo '<link rel="preload" as="image" href="' . esc_url( $fallback ) . '">' . "\n";
         }
     }
 
