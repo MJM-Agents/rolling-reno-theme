@@ -14,10 +14,6 @@ Text Domain:       rolling-reno
 Tags:              blog, travel, van-life, editorial, responsive
 */
 
-/* This file intentionally imports the compiled stylesheet for WordPress compatibility. */
-@import url('assets/css/design-system.css');
-@import url('assets/css/main.css');
-
 /* MJM-176: sticky nav offset sync from MJM-173 */
 :root {
   --header-height: 72px;
