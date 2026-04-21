@@ -838,16 +838,21 @@ function rr_affiliate_url( $url ) {
         return $url;
     }
     
-    // Only modify Amazon URLs
-    if ( strpos( $url, 'amazon.com' ) === false && strpos( $url, 'amzn.to' ) === false ) {
+    // Only modify full amazon.com URLs — amzn.to short links do not support
+    // query parameters so appending a tag would break the redirect.
+    if ( strpos( $url, 'amazon.com' ) === false ) {
         return $url;
     }
-    
+
     // Check if tag already exists
     if ( strpos( $url, 'tag=' ) !== false ) {
-        return $url;
+        // Ensure it's our tag; replace a foreign tag with ours.
+        if ( strpos( $url, 'tag=' . RR_AMAZON_ASSOCIATE_ID ) !== false ) {
+            return $url;
+        }
+        return preg_replace( '/([?&]tag=)[^&]+/', '$1' . RR_AMAZON_ASSOCIATE_ID, $url );
     }
-    
+
     // Add tag parameter
     $separator = ( strpos( $url, '?' ) !== false ) ? '&' : '?';
     return $url . $separator . 'tag=' . RR_AMAZON_ASSOCIATE_ID;
@@ -886,6 +891,21 @@ function rr_render_affiliate_products( $post_id = null ) {
     ?>
     <section class="affiliate-products-section" aria-label="<?php esc_attr_e( 'Recommended products', 'rolling-reno' ); ?>">
         <h2 class="affiliate-products-section__title"><?php esc_html_e( 'Gear Mentioned in This Post', 'rolling-reno' ); ?></h2>
+        <p class="affiliate-products-section__disclosure">
+            <?php
+            printf(
+                /* translators: %s: link to affiliate disclosure page */
+                wp_kses(
+                    __( '<strong>Heads up:</strong> Some links below are affiliate links. If you buy through them, Rolling Reno earns a small commission at no extra cost to you. See our <a href="%s">affiliate disclosure</a> for details.', 'rolling-reno' ),
+                    array(
+                        'strong' => array(),
+                        'a'      => array( 'href' => array() ),
+                    )
+                ),
+                esc_url( home_url( '/affiliate-disclosure/' ) )
+            );
+            ?>
+        </p>
         <div class="affiliate-products-section__grid">
             <?php
             foreach ( $products as $product ) :

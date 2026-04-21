@@ -44,3 +44,19 @@ body {
   background: var(--color-warm-white);
   line-height: 1.75;
 }
+
+/* ── Affiliate Products Section ─────────────────────────────────────────── */
+.affiliate-products-section__disclosure {
+  font-size: 0.8125rem;
+  color: var(--color-muted, #6b7280);
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--color-sand, #f9f6f0);
+  border-left: 3px solid var(--color-terracotta, #c9624f);
+  border-radius: 0 4px 4px 0;
+}
+
+.affiliate-products-section__disclosure a {
+  color: inherit;
+  text-decoration: underline;
+}
