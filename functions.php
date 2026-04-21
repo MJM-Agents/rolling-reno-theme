@@ -28,6 +28,15 @@ function rolling_reno_enqueue_scripts() {
         array(),
         null
     );
+
     wp_enqueue_style( 'rolling-reno-style', get_stylesheet_uri(), array(), ROLLING_RENO_VERSION );
+
+    wp_enqueue_script(
+        'rolling-reno-main',
+        get_template_directory_uri() . '/assets/js/main.js',
+        array(),
+        ROLLING_RENO_VERSION,
+        true
+    );
 }
 add_action( 'wp_enqueue_scripts', 'rolling_reno_enqueue_scripts' );
