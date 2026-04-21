@@ -1,0 +1,53 @@
+name: Deploy to Flywheel Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: SSH Deploy → Flywheel
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.FLYWHEEL_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${{ secrets.FLYWHEEL_SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Deploy theme files via rsync
+        run: |
+          rsync -avz --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='*.md' \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+            ./ \
+            "${{ secrets.FLYWHEEL_SSH_USER }}@${{ secrets.FLYWHEEL_SSH_HOST }}:/www/wp-content/themes/rolling-reno-v2/"
+
+      - name: Set file permissions
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+            -o StrictHostKeyChecking=no \
+            "${{ secrets.FLYWHEEL_SSH_USER }}@${{ secrets.FLYWHEEL_SSH_HOST }}" \
+            "find /www/wp-content/themes/rolling-reno-v2 -type d -exec chmod 755 {} \; && find /www/wp-content/themes/rolling-reno-v2 -type f -exec chmod 644 {} \;"
+
+      - name: Flush Flywheel cache
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+            -o StrictHostKeyChecking=no \
+            "${{ secrets.FLYWHEEL_SSH_USER }}@${{ secrets.FLYWHEEL_SSH_HOST }}" \
+            "php /www/fw-flush-cache.php"
+
+      - name: Deployment complete
+        run: |
+          echo "✅ Rolling Reno theme deployed to Flywheel production."
+          echo "   Host: ${{ secrets.FLYWHEEL_SSH_HOST }}"
+          echo "   Path: /www/wp-content/themes/rolling-reno-v2/"
