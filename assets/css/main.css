@@ -794,7 +794,7 @@
   overflow: hidden;
   display: flex;
   align-items: flex-end;
-  margin-top: 72px;
+  margin-top: var(--header-height);
 }
 .category-hero__image {
   position: absolute; inset: 0;
@@ -985,7 +985,7 @@
   min-height: 500px;
   max-height: 800px;
   overflow: hidden;
-  margin-top: 72px;
+  margin-top: var(--header-height);
 }
 .about-hero__image {
   width: 100%; height: 100%;
@@ -1224,7 +1224,7 @@
    13. GEAR PAGE
    ═══════════════════════════════════════════════════════════ */
 
-.gear-header { padding: var(--space-16) 0 var(--space-12); margin-top: 72px; }
+.gear-header { padding: var(--space-16) 0 var(--space-12); margin-top: var(--header-height); }
 .gear-header__inner { max-width: 760px; }
 .gear-header__breadcrumb { font-size: 13px; color: var(--color-text-muted); margin-bottom: var(--space-4); }
 .gear-header__breadcrumb a { color: var(--color-text-muted); text-decoration: none; }
@@ -1258,7 +1258,7 @@
   background: var(--color-bg-page);
   border-bottom: 1px solid var(--color-border);
   position: sticky;
-  top: 72px;
+  top: var(--header-height);
   z-index: 50;
 }
 .gear-tabs__list {
@@ -1474,7 +1474,7 @@
 .comment-form input[type="submit"]:hover { background: var(--color-terracotta-dark); }
 
 /* WP search page */
-.search-page { padding: var(--space-20) 0; margin-top: 72px; }
+.search-page { padding: var(--space-20) 0; margin-top: var(--header-height); }
 .search-page__title { font-family: var(--font-display); font-size: clamp(28px, 4vw, 44px); font-weight: 300; margin: 0 0 var(--space-10); }
 
 /* Screen reader only */

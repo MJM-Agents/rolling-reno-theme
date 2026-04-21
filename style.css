@@ -28,14 +28,6 @@ html {
   scroll-padding-top: calc(var(--header-height) + 24px);
 }
 
-body {
-  padding-top: var(--header-height);
-}
-
-body.admin-bar {
-  padding-top: calc(var(--header-height) + var(--admin-bar-height));
-}
-
 .site-nav {
   min-height: var(--header-height);
 }
@@ -52,10 +44,6 @@ h2[id],
 h3[id],
 h4[id] {
   scroll-margin-top: calc(var(--header-height) + 24px);
-}
-
-#main[style*="margin-top: 72px"] {
-  margin-top: 0 !important;
 }
 
 @media (max-width: 782px) {
