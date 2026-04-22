@@ -1,0 +1,92 @@
+name: Deploy to Flywheel Staging
+
+on:
+  push:
+    branches:
+      - develop
+      - 'feature/**'
+  workflow_dispatch:
+
+jobs:
+  deploy-staging:
+    name: SSH Deploy → Flywheel Staging
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.STAGING_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${{ secrets.STAGING_SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Pre-deploy asset check
+        run: |
+          missing=()
+          [ ! -d "assets/css" ] || [ -z "$(ls -A assets/css)" ] && missing+=("assets/css/")
+          [ ! -f "style.css" ] && missing+=("style.css")
+          [ ! -f "functions.php" ] && missing+=("functions.php")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "❌ Deploy blocked: missing ${missing[*]}"
+            exit 1
+          fi
+          echo "✅ Asset check passed."
+
+      - name: Deploy theme files to staging via rsync
+        timeout-minutes: 5
+        run: |
+          rsync -avz --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='*.md' \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+            ./ \
+            "${{ secrets.STAGING_SSH_USER }}@${{ secrets.STAGING_SSH_HOST }}:/www/wp-content/themes/rolling-reno-v2/"
+
+      - name: Set file permissions
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+            -o StrictHostKeyChecking=no \
+            "${{ secrets.STAGING_SSH_USER }}@${{ secrets.STAGING_SSH_HOST }}" \
+            "find /www/wp-content/themes/rolling-reno-v2 -type d -exec chmod 755 {} \; && find /www/wp-content/themes/rolling-reno-v2 -type f -exec chmod 644 {} \;"
+
+      - name: Flush Flywheel staging cache
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+            -o StrictHostKeyChecking=no \
+            "${{ secrets.STAGING_SSH_USER }}@${{ secrets.STAGING_SSH_HOST }}" \
+            "php /www/fw-flush-cache.php" || echo "⚠️ Cache flush returned non-zero (may be OK on staging)"
+
+      - name: Smoke test — verify CSS is served
+        run: |
+          sleep 5
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -u "${{ secrets.STAGING_PRIVACY_USER }}:${{ secrets.STAGING_PRIVACY_PASS }}" \
+            "https://rollingreno.flywheelstaging.com/wp-content/themes/rolling-reno-v2/assets/css/" \
+            --max-time 15)
+          echo "CSS endpoint status: $STATUS"
+          if [[ "$STATUS" != "200" && "$STATUS" != "403" ]]; then
+            echo "❌ Staging smoke test failed (HTTP $STATUS)"
+            exit 1
+          fi
+          echo "✅ Staging smoke test passed."
+
+      - name: Notify Slack — staging deploy complete
+        if: always()
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          COMMIT="${{ github.sha }}"
+          SHORT_SHA="${COMMIT:0:7}"
+          ACTOR="${{ github.actor }}"
+          STATUS="${{ job.status }}"
+          EMOJI=$([ "$STATUS" = "success" ] && echo "✅" || echo "❌")
+          MESSAGE="$EMOJI *Rolling Reno Staging Deploy* — \`$BRANCH\` (\`$SHORT_SHA\`) by $ACTOR\nStatus: $STATUS\nStaging URL: <https://rollingreno.flywheelstaging.com|rollingreno.flywheelstaging.com>\n_Aoife + Sienna: please review and comment on the PR before merge to main._"
+          curl -s -X POST \
+            -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data "{\"channel\":\"C0AQLB1JXBL\",\"text\":\"$MESSAGE\"}" \
+            https://slack.com/api/chat.postMessage | jq -r '.ok'
