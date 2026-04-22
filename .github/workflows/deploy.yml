@@ -21,6 +21,14 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H "${{ secrets.FLYWHEEL_SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
 
+      - name: Pre-deploy asset check
+        run: |
+          if [ ! -d "assets/css" ] || [ -z "$(ls -A assets/css)" ]; then
+            echo "❌ Deploy blocked: assets/css/ missing or empty."
+            exit 1
+          fi
+          echo "✅ Asset check passed."
+
       - name: Deploy theme files via rsync
         run: |
           rsync -avz --delete \
