@@ -115,11 +115,27 @@ function rr_scripts() {
         null
     );
 
-    // Load the existing theme stylesheet only, this branch doesn't include the v2 asset bundle.
+    // Design system (typography, colors, spacing)
+    wp_enqueue_style(
+        'rr-design-system',
+        RR_THEME_URI . '/assets/css/design-system.css',
+        array( 'rr-google-fonts' ),
+        RR_VERSION
+    );
+
+    // Main stylesheet (layout, components, responsive)
+    wp_enqueue_style(
+        'rr-main',
+        RR_THEME_URI . '/assets/css/main.css',
+        array( 'rr-design-system' ),
+        RR_VERSION
+    );
+
+    // Theme stylesheet (WordPress requirement + overrides)
     wp_enqueue_style(
         'rr-theme',
         get_stylesheet_uri(),
-        array( 'rr-google-fonts' ),
+        array( 'rr-main' ),
         RR_VERSION
     );
 
