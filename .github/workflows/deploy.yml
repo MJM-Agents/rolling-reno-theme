@@ -5,15 +5,40 @@ on:
     branches:
       - main
 
+# Only one deploy at a time — queue newer pushes
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 jobs:
   deploy:
-    name: SSH Deploy → Flywheel
+    name: SSH Deploy → Flywheel Production
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      THEME_PATH: /www/wp-content/themes/rolling-reno-v2
+      BACKUP_PATH: /www/_deploy-backups
+      SITE_URL: https://rollingreno.com
 
     steps:
+      # ─── Notify: Deploy Starting ───
+      - name: Notify Slack — deploy starting
+        if: always()
+        run: |
+          curl -sf -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"channel\": \"C0AQLB1JXBL\",
+              \"text\": \"🚀 *Deploy starting* — \`rolling-reno-v2\` → production\nCommit: \`${GITHUB_SHA::7}\` by ${GITHUB_ACTOR}\nRun: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View>\"
+            }" || true
+
+      # ─── Checkout ───
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # ─── SSH Setup ───
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
@@ -21,6 +46,59 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H "${{ secrets.FLYWHEEL_SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
 
+      # ─── Pre-Deploy Validation ───
+      - name: Pre-deploy asset & file check
+        run: |
+          ERRORS=0
+
+          # Critical WordPress theme files
+          for file in style.css functions.php index.php; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Missing critical file: $file"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+
+          # Critical asset directories
+          for dir in assets/css assets/js; do
+            if [ ! -d "$dir" ] || [ -z "$(ls -A "$dir")" ]; then
+              echo "❌ Missing or empty directory: $dir/"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+
+          # Verify style.css has theme header (WordPress requirement)
+          if [ -f "style.css" ]; then
+            if ! grep -q "Theme Name:" style.css; then
+              echo "❌ style.css missing 'Theme Name:' header"
+              ERRORS=$((ERRORS + 1))
+            fi
+          fi
+
+          if [ $ERRORS -gt 0 ]; then
+            echo "❌ Pre-deploy check failed with $ERRORS error(s). Deploy blocked."
+            exit 1
+          fi
+
+          echo "✅ Pre-deploy validation passed."
+          echo "   Files: $(find . -type f -not -path './.git/*' -not -path './.github/*' -not -path './node_modules/*' | wc -l | tr -d ' ')"
+          echo "   CSS:   $(du -sh assets/css/ | cut -f1)"
+          echo "   JS:    $(du -sh assets/js/ | cut -f1)"
+
+      # ─── Backup Current Theme ───
+      - name: Backup current theme on server
+        run: |
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+            "${{ secrets.FLYWHEEL_SSH_USER }}@${{ secrets.FLYWHEEL_SSH_HOST }}" \
+            "mkdir -p ${{ env.BACKUP_PATH }} && \
+             cp -a ${{ env.THEME_PATH }} ${{ env.BACKUP_PATH }}/rolling-reno-v2_${TIMESTAMP} && \
+             cd ${{ env.BACKUP_PATH }} && \
+             ls -1dt rolling-reno-v2_* | tail -n +4 | xargs rm -rf 2>/dev/null; \
+             echo '✅ Backup created: rolling-reno-v2_${TIMESTAMP}'; \
+             echo 'Backups on disk:'; ls -1dt rolling-reno-v2_* 2>/dev/null"
+
+      # ─── Deploy via rsync ───
       - name: Deploy theme files via rsync
         run: |
           rsync -avz --delete \
@@ -28,26 +106,105 @@ jobs:
             --exclude='.github' \
             --exclude='node_modules' \
             --exclude='*.md' \
+            --exclude='.gitignore' \
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
             ./ \
-            "${{ secrets.FLYWHEEL_SSH_USER }}@${{ secrets.FLYWHEEL_SSH_HOST }}:/www/wp-content/themes/rolling-reno-v2/"
+            "${{ secrets.FLYWHEEL_SSH_USER }}@${{ secrets.FLYWHEEL_SSH_HOST }}:${{ env.THEME_PATH }}/" \
+            | tee /tmp/rsync-output.txt
 
+          # Deployment summary
+          echo ""
+          echo "─── Deploy Summary ───"
+          SENT=$(grep -c '^' /tmp/rsync-output.txt 2>/dev/null || echo "0")
+          echo "Lines of rsync output: $SENT"
+          echo "Files transferred: $(grep -c '^[^.]' /tmp/rsync-output.txt 2>/dev/null || echo 'unknown')"
+          DELETED=$(grep -c 'deleting' /tmp/rsync-output.txt 2>/dev/null || echo "0")
+          echo "Files deleted: $DELETED"
+
+      # ─── Set File Permissions ───
       - name: Set file permissions
         run: |
-          ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
             "${{ secrets.FLYWHEEL_SSH_USER }}@${{ secrets.FLYWHEEL_SSH_HOST }}" \
-            "find /www/wp-content/themes/rolling-reno-v2 -type d -exec chmod 755 {} \; && find /www/wp-content/themes/rolling-reno-v2 -type f -exec chmod 644 {} \;"
+            "find ${{ env.THEME_PATH }} -type d -exec chmod 755 {} \; && \
+             find ${{ env.THEME_PATH }} -type f -exec chmod 644 {} \;"
 
+      # ─── Flush Cache ───
       - name: Flush Flywheel cache
         run: |
-          ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
             "${{ secrets.FLYWHEEL_SSH_USER }}@${{ secrets.FLYWHEEL_SSH_HOST }}" \
             "php /www/fw-flush-cache.php"
+          echo "⏳ Waiting 5s for cache purge to propagate..."
+          sleep 5
 
-      - name: Deployment complete
+      # ─── Post-Deploy Smoke Test ───
+      - name: Post-deploy smoke test
         run: |
-          echo "✅ Rolling Reno theme deployed to Flywheel production."
-          echo "   Host: ${{ secrets.FLYWHEEL_SSH_HOST }}"
-          echo "   Path: /www/wp-content/themes/rolling-reno-v2/"
+          ERRORS=0
+
+          # Check homepage returns 200
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.SITE_URL }}/")
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "❌ Homepage returned HTTP $HTTP_CODE (expected 200)"
+            ERRORS=$((ERRORS + 1))
+          else
+            echo "✅ Homepage: HTTP 200"
+          fi
+
+          # Check critical CSS files are accessible and have content
+          for css_file in design-system.css main.css; do
+            CSS_URL="${{ env.SITE_URL }}/wp-content/themes/rolling-reno-v2/assets/css/${css_file}"
+            HTTP_CODE=$(curl -s -o /tmp/css-check -w "%{http_code}" "$CSS_URL")
+            CSS_SIZE=$(wc -c < /tmp/css-check 2>/dev/null || echo "0")
+
+            if [ "$HTTP_CODE" != "200" ]; then
+              echo "❌ $css_file: HTTP $HTTP_CODE"
+              ERRORS=$((ERRORS + 1))
+            elif [ "$CSS_SIZE" -lt 1000 ]; then
+              echo "⚠️ $css_file: suspiciously small (${CSS_SIZE} bytes)"
+              ERRORS=$((ERRORS + 1))
+            else
+              echo "✅ $css_file: HTTP 200, ${CSS_SIZE} bytes"
+            fi
+          done
+
+          if [ $ERRORS -gt 0 ]; then
+            echo ""
+            echo "⚠️ Smoke test found $ERRORS issue(s). Site may need manual verification."
+            echo "SMOKE_TEST_ISSUES=$ERRORS" >> $GITHUB_ENV
+          else
+            echo ""
+            echo "✅ All smoke tests passed."
+            echo "SMOKE_TEST_ISSUES=0" >> $GITHUB_ENV
+          fi
+
+      # ─── Notify: Deploy Complete ───
+      - name: Notify Slack — deploy complete
+        if: success()
+        run: |
+          SMOKE_STATUS=""
+          if [ "${SMOKE_TEST_ISSUES:-0}" -gt 0 ]; then
+            SMOKE_STATUS=" ⚠️ Smoke test: ${SMOKE_TEST_ISSUES} issue(s) — check run logs"
+          else
+            SMOKE_STATUS=" ✅ Smoke test passed"
+          fi
+
+          curl -sf -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"channel\": \"C0AQLB1JXBL\",
+              \"text\": \"✅ *Deploy complete* — \`rolling-reno-v2\` → production\nCommit: \`${GITHUB_SHA::7}\` by ${GITHUB_ACTOR}${SMOKE_STATUS}\nRun: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View>\"
+            }" || true
+
+      - name: Notify Slack — deploy failed
+        if: failure()
+        run: |
+          curl -sf -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"channel\": \"C0AQLB1JXBL\",
+              \"text\": \"❌ *Deploy FAILED* — \`rolling-reno-v2\` → production\nCommit: \`${GITHUB_SHA::7}\` by ${GITHUB_ACTOR}\nRun: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View>\"
+            }" || true
