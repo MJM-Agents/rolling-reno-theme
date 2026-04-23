@@ -23,7 +23,7 @@
                     <?php echo rr_social_links(); ?>
                     <?php // Fallback if no social links set in customizer ?>
                     <?php if ( ! get_theme_mod( 'rr_social_instagram' ) ) : ?>
-                        <a href="https://www.instagram.com/rolling_reno/" class="site-footer__social-icon" rel="noopener noreferrer" target="_blank" aria-label="<?php esc_attr_e( 'Follow Rolling Reno on Instagram', 'rolling-reno' ); ?>">📷</a>
+                        <a href="https://www.instagram.com/rollingreno/" class="site-footer__social-icon" rel="noopener noreferrer" target="_blank" aria-label="<?php esc_attr_e( 'Follow Rolling Reno on Instagram', 'rolling-reno' ); ?>"><?php echo rr_social_instagram_svg(); ?></a>
                         <a href="https://www.pinterest.com/rolling_reno/" class="site-footer__social-icon" rel="noopener noreferrer" target="_blank" aria-label="<?php esc_attr_e( 'Follow Rolling Reno on Pinterest', 'rolling-reno' ); ?>">📌</a>
                     <?php endif; ?>
                 </div>

@@ -1150,6 +1150,11 @@ figcaption {
   align-items: center;
   justify-content: center;
 }
+.site-footer__social-icon-svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
 .site-footer__social-icon:hover { color: var(--color-text-inverse); }
 .site-footer__col-title {
   font-family: var(--font-body);

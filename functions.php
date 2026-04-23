@@ -425,9 +425,13 @@ function rr_breadcrumb() {
 
 // ─── Social links helper ─────────────────────────────────────────────────────
 
+function rr_social_instagram_svg() {
+    return '<svg class="site-footer__social-icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>';
+}
+
 function rr_social_links() {
     $platforms = array(
-        'instagram' => array( 'label' => 'Instagram', 'icon' => '📷' ),
+        'instagram' => array( 'label' => 'Instagram', 'icon' => rr_social_instagram_svg() ),
         'pinterest' => array( 'label' => 'Pinterest',  'icon' => '📌' ),
         'youtube'   => array( 'label' => 'YouTube',    'icon' => '▶️' ),
         'tiktok'    => array( 'label' => 'TikTok',     'icon' => '🎵' ),
