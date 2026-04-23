@@ -236,7 +236,9 @@ get_header();
             <p class="gear-section__intro"><?php echo esc_html( $section['intro'] ); ?></p>
 
             <div class="gear-grid">
-                <?php foreach ( $section['products'] as $product ) : ?>
+                <?php foreach ( $section['products'] as $product ) :
+                    $product['shop_url'] = function_exists( 'rr_affiliate_url' ) ? rr_affiliate_url( $product['shop_url'] ) : $product['shop_url'];
+                ?>
                 <div class="gear-product-card">
                     <a
                         href="<?php echo esc_url( $product['shop_url'] ); ?>"

@@ -266,6 +266,32 @@ function rr_customize_register( $wp_customize ) {
         ) );
     }
 
+    // Instagram Feed
+    $wp_customize->add_section( 'rr_instagram', array(
+        'title'    => __( 'Instagram Feed', 'rolling-reno' ),
+        'priority' => 42,
+    ) );
+    $wp_customize->add_setting( 'rr_instagram_handle', array(
+        'default'           => 'maracollins',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'rr_instagram_handle', array(
+        'label'       => __( 'Instagram Handle', 'rolling-reno' ),
+        'description' => __( 'Your Instagram username (without @).', 'rolling-reno' ),
+        'section'     => 'rr_instagram',
+        'type'        => 'text',
+    ) );
+    $wp_customize->add_setting( 'rr_lightwidget_id', array(
+        'default'           => '',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'rr_lightwidget_id', array(
+        'label'       => __( 'LightWidget Widget ID', 'rolling-reno' ),
+        'description' => __( 'Paste the widget ID from lightwidget.com (used if Smash Balloon is not active).', 'rolling-reno' ),
+        'section'     => 'rr_instagram',
+        'type'        => 'text',
+    ) );
+
     // Newsletter / ConvertKit
     $wp_customize->add_section( 'rr_newsletter', array(
         'title'    => __( 'Newsletter / ConvertKit', 'rolling-reno' ),
