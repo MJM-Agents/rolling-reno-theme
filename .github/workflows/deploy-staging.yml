@@ -75,14 +75,14 @@ jobs:
           sleep 5
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
             -u "${{ secrets.STAGING_PRIVACY_USER }}:${{ secrets.STAGING_PRIVACY_PASS }}" \
-            "${{ env.STAGING_URL }}/wp-content/themes/rolling-reno-v2/assets/css/" \
+            "${{ env.STAGING_URL }}/wp-content/themes/rolling-reno-v2/assets/css/main.css" \
             --max-time 15)
           echo "CSS endpoint status: $STATUS"
-          if [[ "$STATUS" != "200" && "$STATUS" != "403" ]]; then
-            echo "❌ Staging smoke test failed (HTTP $STATUS)"
+          if [[ "$STATUS" != "200" ]]; then
+            echo "❌ Staging smoke test failed (HTTP $STATUS) — expected 200 for main.css"
             exit 1
           fi
-          echo "✅ Staging smoke test passed."
+          echo "✅ Staging smoke test passed — main.css served OK."
 
       - name: Notify Slack - staging deploy complete
         if: always()
