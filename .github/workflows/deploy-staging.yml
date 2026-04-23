@@ -5,6 +5,7 @@ on:
     branches:
       - develop
       - 'feature/**'
+      - staging
   workflow_dispatch:
 
 jobs:
