@@ -3,14 +3,22 @@ name: Deploy to Flywheel Staging
 on:
   push:
     branches:
-      - develop
-      - 'feature/**'
+      - staging
   workflow_dispatch:
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
 
 jobs:
   deploy-staging:
     name: SSH Deploy → Flywheel Staging
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      THEME_PATH: /www/wp-content/themes/rolling-reno-v2
+      STAGING_URL: https://rollingreno.flywheelstaging.com
 
     steps:
       - name: Checkout repository
@@ -43,16 +51,17 @@ jobs:
             --exclude='.github' \
             --exclude='node_modules' \
             --exclude='*.md' \
+            --exclude='.gitignore' \
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
             ./ \
-            "${{ secrets.STAGING_SSH_USER }}@${{ secrets.STAGING_SSH_HOST }}:/www/wp-content/themes/rolling-reno-v2/"
+            "${{ secrets.STAGING_SSH_USER }}@${{ secrets.STAGING_SSH_HOST }}:${{ env.THEME_PATH }}/"
 
       - name: Set file permissions
         run: |
           ssh -i ~/.ssh/deploy_key \
             -o StrictHostKeyChecking=no \
             "${{ secrets.STAGING_SSH_USER }}@${{ secrets.STAGING_SSH_HOST }}" \
-            "find /www/wp-content/themes/rolling-reno-v2 -type d -exec chmod 755 {} \; && find /www/wp-content/themes/rolling-reno-v2 -type f -exec chmod 644 {} \;"
+            "find ${{ env.THEME_PATH }} -type d -exec chmod 755 {} \; && find ${{ env.THEME_PATH }} -type f -exec chmod 644 {} \;"
 
       - name: Flush Flywheel staging cache
         run: |
@@ -61,21 +70,21 @@ jobs:
             "${{ secrets.STAGING_SSH_USER }}@${{ secrets.STAGING_SSH_HOST }}" \
             "php /www/fw-flush-cache.php" || echo "⚠️ Cache flush returned non-zero (may be OK on staging)"
 
-      - name: Smoke test — verify CSS is served
+      - name: Smoke test - verify CSS is served
         run: |
           sleep 5
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
             -u "${{ secrets.STAGING_PRIVACY_USER }}:${{ secrets.STAGING_PRIVACY_PASS }}" \
-            "https://rollingreno.flywheelstaging.com/wp-content/themes/rolling-reno-v2/assets/css/" \
+            "${{ env.STAGING_URL }}/wp-content/themes/rolling-reno-v2/assets/css/main.css" \
             --max-time 15)
           echo "CSS endpoint status: $STATUS"
-          if [[ "$STATUS" != "200" && "$STATUS" != "403" ]]; then
-            echo "❌ Staging smoke test failed (HTTP $STATUS)"
+          if [[ "$STATUS" != "200" ]]; then
+            echo "❌ Staging smoke test failed (HTTP $STATUS) — expected 200 for main.css"
             exit 1
           fi
-          echo "✅ Staging smoke test passed."
+          echo "✅ Staging smoke test passed — main.css served OK."
 
-      - name: Notify Slack — staging deploy complete
+      - name: Notify Slack - staging deploy complete
         if: always()
         run: |
           BRANCH="${{ github.ref_name }}"
@@ -84,7 +93,7 @@ jobs:
           ACTOR="${{ github.actor }}"
           STATUS="${{ job.status }}"
           EMOJI=$([ "$STATUS" = "success" ] && echo "✅" || echo "❌")
-          MESSAGE="$EMOJI *Rolling Reno Staging Deploy* — \`$BRANCH\` (\`$SHORT_SHA\`) by $ACTOR\nStatus: $STATUS\nStaging URL: <https://rollingreno.flywheelstaging.com|rollingreno.flywheelstaging.com>\n_Aoife + Sienna: please review and comment on the PR before merge to main._"
+          MESSAGE="$EMOJI *Rolling Reno Staging Deploy* - \`$BRANCH\` (\`$SHORT_SHA\`) by $ACTOR\nStatus: $STATUS\nStaging URL: <${{ env.STAGING_URL }}|rollingreno.flywheelstaging.com>\n_Aoife + Sienna: please review and comment on the PR before merge to main._"
           curl -s -X POST \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
             -H "Content-Type: application/json" \
