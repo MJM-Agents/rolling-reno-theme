@@ -450,27 +450,45 @@ $mara_about_img = get_theme_mod( 'rr_mara_about_image', '' );
 </section>
 
 <!-- ── Section 10: Instagram Strip ─────────────────────────────────────── -->
+<?php
+$rr_ig_handle      = get_theme_mod( 'rr_instagram_handle', 'maracollins' );
+$rr_ig_url         = 'https://instagram.com/' . sanitize_text_field( $rr_ig_handle );
+$rr_lightwidget_id = get_theme_mod( 'rr_lightwidget_id', '' );
+?>
 <section class="instagram-strip" aria-label="<?php esc_attr_e( 'Instagram feed', 'rolling-reno' ); ?>">
     <div class="container">
         <div class="instagram-strip__header">
             <p class="instagram-strip__label"><?php esc_html_e( 'Follow along', 'rolling-reno' ); ?></p>
-            <h2 class="instagram-strip__handle">@maracollins</h2>
+            <h2 class="instagram-strip__handle">@<?php echo esc_html( $rr_ig_handle ); ?></h2>
         </div>
-        <div class="instagram-grid" aria-label="<?php esc_attr_e( 'Instagram photos', 'rolling-reno' ); ?>">
-            <?php
-            // 8 placeholder cells (replace with Smash Balloon or LightWidget embed)
-            for ( $i = 1; $i <= 8; $i++ ) :
+        <?php if ( shortcode_exists( 'instagram-feed' ) ) : ?>
+            <?php echo do_shortcode( '[instagram-feed]' ); ?>
+        <?php elseif ( ! empty( $rr_lightwidget_id ) ) : ?>
+            <div class="instagram-grid instagram-grid--lightwidget" aria-label="<?php esc_attr_e( 'Instagram photos', 'rolling-reno' ); ?>">
+                <script src="https://cdn.lightwidget.com/widgets/lightwidget.plugin.js"></script>
+                <iframe src="//lightwidget.com/widgets/<?php echo esc_attr( $rr_lightwidget_id ); ?>.html"
+                    scrolling="no"
+                    allowtransparency="true"
+                    class="lightwidget-plugin"
+                    style="width:100%;border:0;overflow:hidden;"
+                    title="<?php esc_attr_e( 'Instagram feed', 'rolling-reno' ); ?>"
+                ></iframe>
+            </div>
+        <?php else : ?>
+            <div class="instagram-grid" aria-label="<?php esc_attr_e( 'Instagram photos', 'rolling-reno' ); ?>">
+                <?php
                 $emojis = array( '🌿', '🚐', '🏔️', '🌅', '☀️', '🌊', '🔧', '🌙' );
-            ?>
-            <a href="https://instagram.com/maracollins" class="instagram-cell" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr( sprintf( __( 'View photo %d on Instagram', 'rolling-reno' ), $i ) ); ?>">
-                <div class="instagram-cell__placeholder"><?php echo $emojis[ $i - 1 ]; ?></div>
-                <div class="instagram-cell__overlay" aria-hidden="true">
-                    <span class="instagram-cell__icon">📷</span>
-                </div>
-            </a>
-            <?php endfor; ?>
-        </div>
-        <a href="https://instagram.com/maracollins" class="btn btn--ghost" target="_blank" rel="noopener noreferrer">
+                for ( $i = 1; $i <= 8; $i++ ) : ?>
+                <a href="<?php echo esc_url( $rr_ig_url ); ?>" class="instagram-cell" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr( sprintf( __( 'View photo %d on Instagram', 'rolling-reno' ), $i ) ); ?>">
+                    <div class="instagram-cell__placeholder"><?php echo $emojis[ $i - 1 ]; ?></div>
+                    <div class="instagram-cell__overlay" aria-hidden="true">
+                        <span class="instagram-cell__icon">📷</span>
+                    </div>
+                </a>
+                <?php endfor; ?>
+            </div>
+        <?php endif; ?>
+        <a href="<?php echo esc_url( $rr_ig_url ); ?>" class="btn btn--ghost" target="_blank" rel="noopener noreferrer">
             <?php esc_html_e( 'Follow on Instagram →', 'rolling-reno' ); ?>
         </a>
     </div>
