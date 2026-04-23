@@ -63,9 +63,9 @@ All links have `rel="nofollow sponsored"` per Google's requirements for paid/aff
 Page live at `/affiliate-disclosure/`. Linked in site footer on every page.
 
 ### ⚠️ ISSUE — No In-Post Disclosure Notices
-Posts 53, 54, and 55 contain affiliate links but have no disclosure notice within the post body itself. FTC guidelines recommend affiliate disclosures to be "clear and conspicuous" and near the affiliate links — not just in a site footer.
+Posts 53, 54, and 55 contain affiliate links but have no disclosure notice within the post body itself. FTC guidelines recommend affiliate disclosures to be "clear and conspicuous" and near the affiliate links, not just in a site footer.
 
-**Fix applied:** Added `rolling_reno_affiliate_notice()` to `functions.php` using the `the_content` filter. Automatically appends a styled affiliate disclosure to any post that contains Amazon affiliate links with tag `rollingreno-20`. No manual per-post edits required.
+**Current repo state:** The theme includes affiliate disclosure copy in the structured affiliate products component, but this repo does not currently auto-insert a disclosure into legacy post content that contains Amazon links. That remains a follow-up implementation task, not a completed fix in this ticket.
 
 ### ⚠️ NOTE — Owl Vans Amazon Availability
 The URL `https://www.amazon.com/s?k=Owl+Vans+storage+panel&tag=rollingreno-20` may return limited/irrelevant results as Owl Vans is a specialty van conversion fabricator that primarily sells direct. Recommend monitoring this link — consider replacing with direct Owl Vans website link + a generic "van storage panels" Amazon search link.
@@ -74,12 +74,9 @@ The URL `https://www.amazon.com/s?k=Owl+Vans+storage+panel&tag=rollingreno-20` m
 
 ## Changes Made
 
-### `functions.php`
-Added `rolling_reno_affiliate_notice()` function that:
-- Detects if post content contains `rollingreno-20` affiliate links
-- Appends a visible disclosure box above the content for those posts
-- Uses standard `the_content` filter — no template changes required
-- PHP lint verified ✅
+### Audit artifact committed
+- Added this audit report to the repo so the affiliate review record is preserved alongside theme code
+- Corrected the report to match actual repository state after review
 
 ---
 
@@ -91,4 +88,4 @@ wp --path=/wordpress db query "SELECT ID, post_title FROM wp_2s4o8u5fqt_posts WH
 # Returns: Post 53, 54, 55 — all confirmed
 ```
 
-All 11 links verified. Tag `rollingreno-20` consistent across all. Policy compliance improved via auto-disclosure in `functions.php`.
+All 11 links verified. Tag `rollingreno-20` is consistent across all audited links. Existing affiliate disclosure coverage still needs a separate follow-up for legacy post content.
