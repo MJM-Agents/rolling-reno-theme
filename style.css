@@ -14,18 +14,23 @@ Text Domain:       rolling-reno
 Tags:              blog, travel, van-life, editorial, responsive
 */
 
-/* MJM-176: sticky nav offset sync from MJM-173 */
+/* MJM-176 + MJM-186: sticky nav offset sync and persistent header spacing */
 :root {
   --header-height: 72px;
   --admin-bar-height: 32px;
+  --site-header-offset: calc(var(--header-height) + var(--admin-bar-height));
 }
 
 html {
-  scroll-padding-top: calc(var(--header-height) + 24px);
+  scroll-padding-top: calc(var(--site-header-offset) + 24px);
 }
 
 body {
-  padding-top: var(--header-height);
+  padding-top: var(--site-header-offset);
+}
+
+body.home {
+  padding-top: 0;
 }
 
 /* ── Affiliate Products Section ─────────────────────────────────────────── */
@@ -49,10 +54,18 @@ body:not(.home) {
 }
 
 body.admin-bar {
-  padding-top: calc(var(--header-height) + var(--admin-bar-height));
+  padding-top: var(--site-header-offset);
+}
+
+body.home.admin-bar {
+  padding-top: 0;
 }
 
 .site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   min-height: var(--header-height);
 }
 
