@@ -110,7 +110,7 @@ $mara_about_img = get_theme_mod( 'rr_mara_about_image', '' );
 
         if ( $featured_query->have_posts() ) :
             $featured_query->the_post();
-            $thumb = get_the_post_thumbnail_url( get_the_ID(), 'rr-card' );
+            $thumb = rr_get_post_image_url( get_the_ID(), 'rr-card' );
         ?>
         <article class="featured-card" aria-labelledby="featured-title-home">
             <div class="featured-card__image-wrap">
@@ -241,7 +241,7 @@ $mara_about_img = get_theme_mod( 'rr_mara_about_image', '' );
             if ( $latest_query->have_posts() ) :
                 while ( $latest_query->have_posts() ) :
                     $latest_query->the_post();
-                    $thumb = get_the_post_thumbnail_url( get_the_ID(), 'rr-card-sm' );
+                    $thumb = rr_get_post_image_url( get_the_ID(), 'rr-card-sm' );
                 ?>
                 <article class="post-card" aria-labelledby="post-<?php the_ID(); ?>-title">
                     <a href="<?php the_permalink(); ?>" class="post-card__image-link" tabindex="-1" aria-hidden="true">
@@ -383,7 +383,7 @@ $mara_about_img = get_theme_mod( 'rr_mara_about_image', '' );
             if ( $gear_query->have_posts() ) :
                 while ( $gear_query->have_posts() ) :
                     $gear_query->the_post();
-                    $thumb = get_the_post_thumbnail_url( get_the_ID(), 'rr-card-sm' );
+                    $thumb = rr_get_post_image_url( get_the_ID(), 'rr-card-sm' );
             ?>
             <div class="gear-card">
                 <div class="gear-card__image-wrap">

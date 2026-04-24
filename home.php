@@ -22,7 +22,7 @@ get_header();
             if ( have_posts() ) :
                 while ( have_posts() ) :
                     the_post();
-                    $thumb = get_the_post_thumbnail_url( get_the_ID(), 'rr-card-sm' );
+                    $thumb = rr_get_post_image_url( get_the_ID(), 'rr-card-sm' );
             ?>
             <article class="post-card" aria-labelledby="post-<?php the_ID(); ?>-title" <?php post_class(); ?>>
                 <a href="<?php the_permalink(); ?>" class="post-card__image-link" tabindex="-1" aria-hidden="true">

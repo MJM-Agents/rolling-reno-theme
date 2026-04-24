@@ -108,7 +108,7 @@ $cat_sub     = $cat_info['sub'];
     }
     if ( $pinned_query->have_posts() ) :
         $pinned_query->the_post();
-        $p_thumb = get_the_post_thumbnail_url( get_the_ID(), 'rr-card' );
+        $p_thumb = rr_get_post_image_url( get_the_ID(), 'rr-card' );
     ?>
     <div class="container">
         <div class="pinned-post">
@@ -171,7 +171,7 @@ $cat_sub     = $cat_info['sub'];
                 if ( have_posts() ) :
                     while ( have_posts() ) :
                         the_post();
-                        $a_thumb = get_the_post_thumbnail_url( get_the_ID(), 'rr-card-sm' );
+                        $a_thumb = rr_get_post_image_url( get_the_ID(), 'rr-card-sm' );
                 ?>
                 <article class="post-card" aria-labelledby="archive-post-<?php the_ID(); ?>">
                     <a href="<?php the_permalink(); ?>" class="post-card__image-link" tabindex="-1" aria-hidden="true">

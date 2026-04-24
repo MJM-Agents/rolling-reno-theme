@@ -154,6 +154,43 @@ function rr_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'rr_scripts' );
 
+
+
+/** Redirect the legacy About duplicate to the canonical Mara About page. */
+function rr_redirect_legacy_about_page() {
+    if ( is_page( 'about-2' ) ) {
+        wp_safe_redirect( home_url( '/about/' ), 301 );
+        exit;
+    }
+}
+add_action( 'template_redirect', 'rr_redirect_legacy_about_page' );
+
+// ─── Image fallbacks ─────────────────────────────────────────────────────────
+
+/**
+ * Return a post image URL, falling back to a curated local asset by slug.
+ * This prevents blank/emoji placeholders when WordPress featured media is
+ * missing while still preferring real assigned featured images.
+ */
+function rr_get_post_image_url( $post_id = null, $size = 'full' ) {
+    $post_id = $post_id ? $post_id : get_the_ID();
+    $thumb   = get_the_post_thumbnail_url( $post_id, $size );
+    if ( $thumb ) {
+        return $thumb;
+    }
+
+    $slug = get_post_field( 'post_name', $post_id );
+    $fallbacks = array(
+        'full-time-rv-insurance' => 'assets/images/featured/full-time-rv-insurance.jpg',
+    );
+
+    if ( isset( $fallbacks[ $slug ] ) ) {
+        return get_template_directory_uri() . '/' . $fallbacks[ $slug ];
+    }
+
+    return '';
+}
+
 // ─── Preconnect & Preload (Google Fonts, hero image) ────────────────────────
 
 function rr_preconnect_fonts( $output, $rel, $url ) {
@@ -177,8 +214,8 @@ function rr_head_resources() {
     }
 
     // Preload hero image on single posts (featured image)
-    if ( is_single() && has_post_thumbnail() ) {
-        $img_src = get_the_post_thumbnail_url( get_the_ID(), 'full' );
+    if ( is_single() ) {
+        $img_src = rr_get_post_image_url( get_the_ID(), 'full' );
         if ( $img_src ) {
             echo '<link rel="preload" as="image" href="' . esc_url( $img_src ) . '">' . "\n";
         }

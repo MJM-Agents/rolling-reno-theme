@@ -11,10 +11,10 @@ $hero_img    = get_theme_mod( 'rr_mara_about_image', '' );
 $avatar_url  = get_theme_mod( 'rr_mara_avatar', '' );
 
 $gallery_imgs = array(
-    get_theme_mod( 'rr_gallery_1', '' ),
-    get_theme_mod( 'rr_gallery_2', '' ),
-    get_theme_mod( 'rr_gallery_3', '' ),
-    get_theme_mod( 'rr_gallery_4', '' ),
+    get_theme_mod( 'rr_gallery_1', get_template_directory_uri() . '/assets/images/mara-card.jpg' ),
+    get_theme_mod( 'rr_gallery_2', get_template_directory_uri() . '/assets/images/mara-landscape.jpg' ),
+    get_theme_mod( 'rr_gallery_3', get_template_directory_uri() . '/assets/images/mara-portrait.jpg' ),
+    get_theme_mod( 'rr_gallery_4', get_template_directory_uri() . '/assets/images/mara-about.jpg' ),
 );
 $gallery_labels = array(
     __( 'Mara cooking inside her converted van', 'rolling-reno' ),
