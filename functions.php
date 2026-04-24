@@ -165,6 +165,74 @@ function rr_redirect_legacy_about_page() {
 }
 add_action( 'template_redirect', 'rr_redirect_legacy_about_page' );
 
+/**
+ * Return the site-specific duplicate About page ID if it still exists.
+ */
+function rr_get_legacy_about_page_id() {
+    $page = get_page_by_path( 'about-2', OBJECT, 'page' );
+
+    return $page instanceof WP_Post ? (int) $page->ID : 0;
+}
+
+/**
+ * Normalize legacy About menu items to the canonical /about/ URL.
+ */
+function rr_normalize_legacy_about_menu_items( $items ) {
+    $legacy_urls = array(
+        untrailingslashit( home_url( '/about-2' ) ),
+        untrailingslashit( home_url( '/about-2/' ) ),
+    );
+    $canonical_url = trailingslashit( home_url( '/about' ) );
+    $legacy_id     = rr_get_legacy_about_page_id();
+    $about_page    = get_page_by_path( 'about', OBJECT, 'page' );
+    $about_page_id = $about_page instanceof WP_Post ? (int) $about_page->ID : 0;
+
+    foreach ( $items as $item ) {
+        if ( ! isset( $item->url ) ) {
+            continue;
+        }
+
+        $item_url = untrailingslashit( $item->url );
+        $matches_legacy_url = in_array( $item_url, $legacy_urls, true );
+        $matches_legacy_id  = $legacy_id && isset( $item->object_id ) && (int) $item->object_id === $legacy_id;
+
+        if ( ! $matches_legacy_url && ! $matches_legacy_id ) {
+            continue;
+        }
+
+        $item->url = $canonical_url;
+
+        if ( $about_page_id ) {
+            $item->object_id = $about_page_id;
+        }
+
+        if ( is_page( 'about' ) ) {
+            $item->current      = true;
+            $item->current_item_ancestor = false;
+            $item->classes[]    = 'current-menu-item';
+            $item->classes[]    = 'current_page_item';
+            $item->classes      = array_values( array_unique( array_filter( $item->classes ) ) );
+        }
+    }
+
+    return $items;
+}
+add_filter( 'wp_nav_menu_objects', 'rr_normalize_legacy_about_menu_items' );
+
+/**
+ * Keep the legacy duplicate out of the Yoast XML sitemap.
+ */
+function rr_exclude_legacy_about_from_sitemap( $excluded_post_ids ) {
+    $legacy_id = rr_get_legacy_about_page_id();
+
+    if ( $legacy_id ) {
+        $excluded_post_ids[] = $legacy_id;
+    }
+
+    return array_values( array_unique( array_map( 'intval', $excluded_post_ids ) ) );
+}
+add_filter( 'wpseo_exclude_from_sitemap_by_post_ids', 'rr_exclude_legacy_about_from_sitemap' );
+
 // ─── Image fallbacks ─────────────────────────────────────────────────────────
 
 /**
