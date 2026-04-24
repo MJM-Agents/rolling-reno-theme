@@ -127,7 +127,7 @@ function rr_footer_connect_fallback() {
 function rr_footer_resources_fallback() {
     $links = array(
         array( home_url( '/free-guide' ),            __( 'Free Build Starter Kit', 'rolling-reno' ) ),
-        array( home_url( '/affiliate-disclosure' ),  __( 'Affiliate Disclosure',  'rolling-reno' ) ),
+        array( home_url( '/affiliate-disclosure/' ), __( 'Affiliate Disclosure', 'rolling-reno' ) ),
         array( home_url( '/privacy-policy' ),        __( 'Privacy Policy',        'rolling-reno' ) ),
         array( home_url( '/sitemap.xml' ),           __( 'Sitemap',               'rolling-reno' ) ),
     );
