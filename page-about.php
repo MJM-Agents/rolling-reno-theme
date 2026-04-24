@@ -238,7 +238,7 @@ $gallery_bg = array( '#3D5A47', '#4A6741', '#2C4234', '#C4714A' );
                 <a href="<?php echo esc_url( home_url( '/start-here' ) ); ?>" class="btn btn--primary btn--lg">
                     <?php esc_html_e( 'Start Here →', 'rolling-reno' ); ?>
                 </a>
-                <a href="<?php echo esc_url( home_url( '/newsletter' ) ); ?>" class="btn btn--ghost btn--lg">
+                <a href="<?php echo esc_url( home_url( '/#newsletter' ) ); ?>" class="btn btn--ghost btn--lg">
                     <?php esc_html_e( 'Get the free guide →', 'rolling-reno' ); ?>
                 </a>
             </div>

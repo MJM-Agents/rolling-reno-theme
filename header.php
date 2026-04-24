@@ -59,7 +59,7 @@
             </button>
 
             <!-- CTA pill — hide on mobile (shown in mobile menu) -->
-            <a href="/newsletter" class="btn btn--nav-cta hide-mobile">
+            <a href="<?php echo esc_url( home_url( '/#newsletter' ) ); ?>" class="btn btn--nav-cta hide-mobile">
                 <?php esc_html_e( 'Free Guide →', 'rolling-reno' ); ?>
             </a>
 
@@ -92,7 +92,7 @@
             ) );
             ?>
         </nav>
-        <a href="/newsletter" class="btn btn--primary" style="margin-top: 24px; display:block; text-align:center;">
+        <a href="<?php echo esc_url( home_url( '/#newsletter' ) ); ?>" class="btn btn--primary" style="margin-top: 24px; display:block; text-align:center;">
             <?php esc_html_e( 'Get the Free Guide →', 'rolling-reno' ); ?>
         </a>
     </div>

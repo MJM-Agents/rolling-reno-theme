@@ -335,7 +335,7 @@ $mara_about_img = get_theme_mod( 'rr_mara_about_image', '' );
 </section>
 
 <!-- ── Section 8: Lead Magnet / Email Opt-in ───────────────────────────── -->
-<section class="cta-banner cta-banner--leadmagnet" aria-labelledby="leadmagnet-heading">
+<section class="cta-banner cta-banner--leadmagnet" id="newsletter" aria-labelledby="leadmagnet-heading">
     <div class="cta-banner__inner container">
         <div class="cta-banner__text">
             <h2 class="cta-banner__heading" id="leadmagnet-heading">
