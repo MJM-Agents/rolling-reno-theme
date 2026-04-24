@@ -60,6 +60,36 @@ get_header();
             <?php endif; ?>
         </div>
 
+        <section class="cta-banner cta-banner--leadmagnet" id="newsletter" aria-labelledby="blog-newsletter-heading">
+            <div class="cta-banner__inner">
+                <div class="cta-banner__text">
+                    <h2 class="cta-banner__heading" id="blog-newsletter-heading">
+                        <?php esc_html_e( "Get Mara's Free Van Build Starter Kit", 'rolling-reno' ); ?>
+                    </h2>
+                    <p class="cta-banner__sub">
+                        <?php esc_html_e( 'The exact checklist from Build #1 — tools, materials, costs, mistakes to avoid. Start your own conversion with fewer surprises.', 'rolling-reno' ); ?>
+                    </p>
+                </div>
+                <form class="cta-banner__form" action="<?php echo rr_newsletter_action(); ?>" method="POST">
+                    <?php wp_nonce_field( 'rr_newsletter', 'rr_nonce' ); ?>
+                    <?php rr_newsletter_hidden_fields(); ?>
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="<?php esc_attr_e( 'Your email address', 'rolling-reno' ); ?>"
+                        required
+                        autocomplete="email"
+                        class="cta-banner__input"
+                        aria-label="<?php esc_attr_e( 'Email address', 'rolling-reno' ); ?>"
+                    >
+                    <button type="submit" class="btn--cta-banner">
+                        <?php esc_html_e( 'Send me the kit →', 'rolling-reno' ); ?>
+                    </button>
+                    <p class="cta-banner__fine"><?php esc_html_e( 'No spam. Unsubscribe any time.', 'rolling-reno' ); ?></p>
+                </form>
+            </div>
+        </section>
+
         <?php the_posts_pagination( array(
             'mid_size'  => 2,
             'prev_text' => '← ' . __( 'Newer posts', 'rolling-reno' ),

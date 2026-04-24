@@ -113,7 +113,7 @@ function rr_footer_explore_fallback() {
 function rr_footer_connect_fallback() {
     $links = array(
         array( home_url( '/about' ),       __( 'About Mara',     'rolling-reno' ) ),
-        array( home_url( '/newsletter' ),  __( 'Newsletter',      'rolling-reno' ) ),
+        array( home_url( '/#newsletter' ),  __( 'Newsletter',      'rolling-reno' ) ),
         array( home_url( '/work-with-me' ),__( 'Work With Me',   'rolling-reno' ) ),
         array( home_url( '/contact' ),     __( 'Contact',        'rolling-reno' ) ),
     );
