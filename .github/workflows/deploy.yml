@@ -118,13 +118,27 @@ jobs:
             "find ${{ env.THEME_PATH }} -type d -exec chmod 755 {} \; && \
              find ${{ env.THEME_PATH }} -type f -exec chmod 644 {} \;"
 
-      - name: Flush Flywheel cache
+      - name: Flush Flywheel platform cache
         run: |
+          echo "Flushing Flywheel platform cache after production file deploy..."
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
             "${{ secrets.FLYWHEEL_SSH_USER }}@${{ secrets.FLYWHEEL_SSH_HOST }}" \
             "php /www/fw-flush-cache.php"
-          echo "⏳ Waiting 5s for cache purge to propagate..."
-          sleep 5
+          echo "⏳ Waiting 10s for cache purge to propagate..."
+          sleep 10
+
+      - name: Verify cache was purged
+        run: |
+          HEADERS=$(mktemp)
+          curl -sSI "${{ env.SITE_URL }}/?deploy_cache_bust=${GITHUB_SHA::12}" | tee "$HEADERS"
+          if ! grep -qi '^x-cache:.*MISS' "$HEADERS"; then
+            echo "⚠️ Cache verification did not observe Fastly MISS. Running one extra Flywheel cache flush."
+            ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+              "${{ secrets.FLYWHEEL_SSH_USER }}@${{ secrets.FLYWHEEL_SSH_HOST }}" \
+              "php /www/fw-flush-cache.php"
+            sleep 5
+            curl -sSI "${{ env.SITE_URL }}/?deploy_cache_bust=${GITHUB_SHA::12}-retry"
+          fi
 
       - name: Post-deploy smoke test
         run: |
