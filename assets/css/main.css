@@ -432,6 +432,7 @@
 .gear-strip__scroll {
   display: flex;
   gap: var(--space-5);
+  max-width: 100%;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
@@ -440,8 +441,21 @@
   margin-top: var(--space-10);
 }
 .gear-strip__scroll::-webkit-scrollbar { display: none; }
+
+@media (max-width: 1100px) {
+  .gear-strip__scroll {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    scroll-snap-type: none;
+  }
+}
+
 .gear-card {
   flex: 0 0 220px;
+  min-width: 0;
   scroll-snap-align: start;
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
@@ -1386,9 +1400,20 @@
 }
 .gear-tabs__list {
   display: flex; gap: var(--space-3);
+  max-width: 100%;
+  min-width: 0;
   overflow-x: auto; scrollbar-width: none; padding-bottom: 2px;
 }
 .gear-tabs__list::-webkit-scrollbar { display: none; }
+
+@media (max-width: 1100px) {
+  .gear-tabs__list {
+    flex-wrap: wrap;
+    row-gap: var(--space-3);
+    overflow-x: hidden;
+  }
+}
+
 .gear-tab {
   font-family: var(--font-body); font-size: 13px; font-weight: 700;
   letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none;
@@ -1396,9 +1421,17 @@
   border-radius: var(--radius-full);
   border: 2px solid var(--color-border-strong);
   color: var(--color-text-muted); background: transparent;
+  max-width: 100%;
   white-space: nowrap; cursor: pointer;
   transition: all 150ms ease;
   min-height: 36px; display: inline-flex; align-items: center;
+}
+@media (max-width: 480px) {
+  .gear-tab {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
+  }
 }
 .gear-tab:hover { border-color: var(--color-forest); color: var(--color-forest); }
 .gear-tab.is-active {
