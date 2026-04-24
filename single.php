@@ -13,7 +13,7 @@ get_header();
 while ( have_posts() ) :
     the_post();
     $post_id   = get_the_ID();
-    $hero_img  = get_the_post_thumbnail_url( $post_id, 'rr-hero' );
+    $hero_img  = rr_get_post_image_url( $post_id, 'rr-hero' );
     $hero_img_caption = get_post_meta( $post_id, '_rr_hero_caption', true );
 ?>
 
@@ -191,7 +191,7 @@ while ( have_posts() ) :
             <?php
             while ( $related_query->have_posts() ) :
                 $related_query->the_post();
-                $r_thumb = get_the_post_thumbnail_url( get_the_ID(), 'rr-card-sm' );
+                $r_thumb = rr_get_post_image_url( get_the_ID(), 'rr-card-sm' );
             ?>
             <article class="post-card" aria-labelledby="related-<?php the_ID(); ?>">
                 <a href="<?php the_permalink(); ?>" class="post-card__image-link" tabindex="-1" aria-hidden="true">
