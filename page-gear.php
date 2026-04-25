@@ -311,21 +311,21 @@ get_header();
                         'label' => __( 'Build 1', 'rolling-reno' ),
                         'name'  => __( 'Renault Trafic', 'rolling-reno' ),
                         'year'  => '2019',
-                        'url'   => home_url( '/van-life/renault-trafic-build' ),
+                        'url'   => home_url( '/about/#build-renault-trafic' ),
                         'emoji' => '🚐',
                     ),
                     array(
                         'label' => __( 'Build 2', 'rolling-reno' ),
                         'name'  => __( 'Mercedes Sprinter 313', 'rolling-reno' ),
                         'year'  => '2022',
-                        'url'   => home_url( '/van-life/sprinter-313-build' ),
+                        'url'   => home_url( '/about/#build-mercedes-sprinter' ),
                         'emoji' => '🚌',
                     ),
                     array(
                         'label' => __( 'Build 3', 'rolling-reno' ),
                         'name'  => __( 'Autotrail Tribute', 'rolling-reno' ),
                         'year'  => '2024',
-                        'url'   => home_url( '/rv-life/autotrail-tribute-build' ),
+                        'url'   => home_url( '/about/#build-autotrail-tribute' ),
                         'emoji' => '🏕️',
                     ),
                 );
@@ -356,12 +356,12 @@ get_header();
             <ul class="gear-guides__list">
                 <?php
                 $guides = array(
-                    array( home_url( '/gear/solar-panels-van-life' ),        __( 'Best Solar Panels for Van Life (UK/Ireland)', 'rolling-reno' ) ),
-                    array( home_url( '/van-life/12v-electrical-guide' ),      __( '12V Electrical System: Beginner\'s Guide', 'rolling-reno' ) ),
-                    array( home_url( '/van-life/insulation-guide' ),          __( 'Insulation Guide: What Actually Works in Irish Weather', 'rolling-reno' ) ),
-                    array( home_url( '/van-life/van-kitchen-build-guide' ),   __( 'The Van Kitchen Build Guide', 'rolling-reno' ) ),
-                    array( home_url( '/van-life/co-safety-van' ),             __( 'Carbon Monoxide Safety in a Van', 'rolling-reno' ) ),
-                    array( home_url( '/van-life/working-remotely-from-van' ), __( 'Working Remotely from a Van: What You Actually Need', 'rolling-reno' ) ),
+                    array( home_url( '/rv-solar-system-diy-guide/' ),             __( 'RV Solar System DIY: Panels, Sizing, and Off-Grid Power', 'rolling-reno' ) ),
+                    array( home_url( '/van-electrical-system-diy-guide/' ),       __( 'Van Electrical System DIY: The Complete 12V Wiring Guide', 'rolling-reno' ) ),
+                    array( home_url( '/van-insulation-guide/' ),                  __( 'Van Insulation: The Complete DIY Guide', 'rolling-reno' ) ),
+                    array( home_url( '/rv-van-kitchen-build-diy-guide/' ),        __( 'RV & Van Kitchen Build: Cooktops, Fridges, and Layout', 'rolling-reno' ) ),
+                    array( home_url( '/rv-van-ventilation-condensation-guide/' ), __( 'RV & Van Ventilation: Roof Fans, Condensation, and Air Flow', 'rolling-reno' ) ),
+                    array( home_url( '/rv-van-heating-options/' ),                __( 'RV & Van Heating: Diesel vs Propane vs Wood Stove', 'rolling-reno' ) ),
                 );
                 foreach ( $guides as $guide ) : ?>
                 <li class="gear-guides__item">
