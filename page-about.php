@@ -119,7 +119,7 @@ $gallery_bg = array( '#3D5A47', '#4A6741', '#2C4234', '#C4714A' );
         <div class="container--narrow">
             <h2><?php esc_html_e( 'How I ended up here', 'rolling-reno' ); ?></h2>
             <div class="post-body" style="max-width: 100%; padding: 0;">
-                <h3><?php esc_html_e( 'The first van', 'rolling-reno' ); ?></h3>
+                <h3 id="build-renault-trafic"><?php esc_html_e( 'The first van', 'rolling-reno' ); ?></h3>
                 <p><?php esc_html_e( "It was a 2004 Renault Trafic with 210,000km on it and a suspicious smell I'd rather not describe. I paid €3,500 and immediately regretted it. Then I insulated it, which took three weekends and four trips to a German engineering forum, and immediately stopped regretting it.", 'rolling-reno' ); ?></p>
                 <p><?php esc_html_e( "I drove it to the Dingle Peninsula in September and parked up with a view I still haven't beaten. That was the moment I understood what this was about — not minimalism, not Instagram aesthetics, not sticking it to the system. Just the simplest possible version of being exactly where you want to be.", 'rolling-reno' ); ?></p>
 
@@ -130,8 +130,9 @@ $gallery_bg = array( '#3D5A47', '#4A6741', '#2C4234', '#C4714A' );
                     <p>"<?php esc_html_e( "I've slept in 12 countries and 200+ locations. The one thing I'm always asked is — how do I start? That's why this site exists.", 'rolling-reno' ); ?>"</p>
                 </blockquote>
 
-                <h3><?php esc_html_e( 'The first proper build', 'rolling-reno' ); ?></h3>
+                <h3 id="build-mercedes-sprinter"><?php esc_html_e( 'The first proper build', 'rolling-reno' ); ?></h3>
                 <p><?php esc_html_e( "Build #2 was a 2019 Mercedes Sprinter 313 LWB. I did it properly: Thinsulate insulation, 200W Renogy solar, 100Ah lithium, a Webasto diesel heater, and a kitchen I'm genuinely proud of. Total cost: €9,200. I documented every step because I couldn't find documentation I trusted online — and that documentation became this blog.", 'rolling-reno' ); ?></p>
+                <h3 id="build-autotrail-tribute"><?php esc_html_e( 'The current motorhome', 'rolling-reno' ); ?></h3>
                 <p><?php esc_html_e( "Build #3 is an Autotrail Tribute motorhome I picked up in 2024, which took everything I'd learned and applied it to a different format entirely. That's still ongoing.", 'rolling-reno' ); ?></p>
             </div>
 
