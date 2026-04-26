@@ -259,6 +259,131 @@ function rr_get_post_image_url( $post_id = null, $size = 'full' ) {
     return '';
 }
 
+
+// ─── Category Hub Content & SEO ─────────────────────────────────────────────
+
+function rr_category_hub_config() {
+    return array(
+        'start-here-planning' => array(
+            'sub'            => 'Start with the order of operations: inspect the rig, plan the budget, then build without expensive re-dos.',
+            'intro'          => 'New to RV renovation? Start here. These guides cover inspection, budgeting, renovation order, common mistakes, and the decisions that save money before you buy materials.',
+            'seo_title'      => 'Start Here & Planning RV Renovation Guides',
+            'seo_desc'       => 'Plan a practical RV renovation with guides to inspection, budgeting, renovation order, common mistakes, and beginner-friendly build decisions.',
+            'featured_slugs' => array( 'diy-rv-renovation-guide-start-here', 'how-renovate-rv-right-order', 'rv-renovation-cost-breakdown' ),
+            'next_steps'     => array(
+                array( 'label' => 'Inspection checklist', 'url' => '/used-rv-inspection-checklist/' ),
+                array( 'label' => 'Renovation order', 'url' => '/how-renovate-rv-right-order/' ),
+                array( 'label' => 'Cost breakdown', 'url' => '/rv-renovation-cost-breakdown/' ),
+            ),
+            'cta'            => array( 'heading' => 'Not sure where to start?', 'text' => 'Use the beginner guides first, then move into systems, interiors, and vehicle choices once the plan is solid.', 'label' => 'Read the start-here guide →', 'url' => '/diy-rv-renovation-guide-start-here/' ),
+        ),
+        'vehicle-guides' => array(
+            'sub'            => 'Compare vans, older RVs, minivans, electric vans, and buyer trade-offs before committing to a rig.',
+            'intro'          => 'Choosing the wrong base vehicle can make every later renovation harder. This hub helps you compare models, spot practical trade-offs, and match the rig to your budget, travel style, and build plan.',
+            'seo_title'      => 'Vehicle Guides for RV and Van Renovation',
+            'seo_desc'       => 'Compare vans, older RVs, minivans, electric vans, and buyer considerations before choosing a renovation project.',
+            'featured_slugs' => array( 'best-vans-rvs-to-renovate-buyers-guide', 'best-older-rvs-to-renovate', 'used-rv-inspection-checklist' ),
+            'next_steps'     => array(
+                array( 'label' => 'Buyer guide', 'url' => '/best-vans-rvs-to-renovate-buyers-guide/' ),
+                array( 'label' => 'Older RV picks', 'url' => '/best-older-rvs-to-renovate/' ),
+                array( 'label' => 'Used RV inspection', 'url' => '/used-rv-inspection-checklist/' ),
+            ),
+            'cta'            => array( 'heading' => 'Buying before building?', 'text' => 'Check for water damage and layout constraints before you price paint, flooring, or solar.', 'label' => 'Use the inspection checklist →', 'url' => '/used-rv-inspection-checklist/' ),
+        ),
+        'systems-off-grid' => array(
+            'sub'            => 'Electrical, solar, plumbing, heating, ventilation, and off-grid systems explained in plain language.',
+            'intro'          => 'Systems are where RV renovations get expensive fast. Use these guides to plan power, water, heat, ventilation, and off-grid upgrades before the walls and cabinets close everything in.',
+            'seo_title'      => 'RV Systems & Off-Grid Guides',
+            'seo_desc'       => 'Practical RV and van guides for solar, electrical, plumbing, heating, ventilation, water systems, and off-grid planning.',
+            'featured_slugs' => array( 'van-electrical-system-diy-guide', 'rv-solar-system-diy-guide', 'rv-water-system-diy-guide' ),
+            'next_steps'     => array(
+                array( 'label' => 'Electrical guide', 'url' => '/van-electrical-system-diy-guide/' ),
+                array( 'label' => 'Solar sizing', 'url' => '/rv-solar-system-diy-guide/' ),
+                array( 'label' => 'Water systems', 'url' => '/rv-water-system-diy-guide/' ),
+            ),
+            'cta'            => array( 'heading' => 'Plan systems before cabinets.', 'text' => 'Map wires, water lines, vents, and access panels early so finished work does not have to be cut open later.', 'label' => 'Start with electrical →', 'url' => '/van-electrical-system-diy-guide/' ),
+        ),
+        'interior-build-layouts' => array(
+            'sub'            => 'Kitchens, bathrooms, beds, storage, flooring, paint, insulation, and layout choices for real road use.',
+            'intro'          => 'Interior choices decide how the rig feels every day. This hub covers the practical parts: layout trade-offs, flooring, paint, kitchens, bathrooms, storage, beds, insulation, and materials that hold up on the road.',
+            'seo_title'      => 'RV Interior Build & Layout Guides',
+            'seo_desc'       => 'RV and van interior renovation guides for layouts, kitchens, bathrooms, beds, storage, flooring, paint, insulation, and lightweight materials.',
+            'featured_slugs' => array( 'rv-van-kitchen-build-diy-guide', 'rv-van-bed-build-diy', 'best-lightweight-materials-rv-remodel' ),
+            'next_steps'     => array(
+                array( 'label' => 'Kitchen build', 'url' => '/rv-van-kitchen-build-diy-guide/' ),
+                array( 'label' => 'Bed layouts', 'url' => '/rv-van-bed-build-diy/' ),
+                array( 'label' => 'Lightweight materials', 'url' => '/best-lightweight-materials-rv-remodel/' ),
+            ),
+            'cta'            => array( 'heading' => 'Make the layout earn its space.', 'text' => 'Start with the daily-use zones — bed, kitchen, bathroom, storage — before choosing finishes.', 'label' => 'Compare bed layouts →', 'url' => '/rv-van-bed-build-diy/' ),
+        ),
+        'van-life' => array(
+            'sub'            => 'Road-life logistics, domicile, mental health, routines, and practical full-time van living decisions.',
+            'intro'          => 'Van life is not just scenic pull-offs. This hub covers the admin, routines, mental load, and full-time logistics that make life on the road work after the build is finished.',
+            'seo_title'      => 'Practical Van Life Guides',
+            'seo_desc'       => 'Practical van life guides for domicile, full-time logistics, mental health, routines, and living on the road after the build.',
+            'featured_slugs' => array( 'van-life-domicile-which-state-should-you-call-home', 'van-life-mental-health-what-nobody-talks-about', 'the-3000-van-conversion-everything-you-need-nothing-you-dont' ),
+            'next_steps'     => array(
+                array( 'label' => 'Domicile guide', 'url' => '/van-life-domicile-which-state-should-you-call-home/' ),
+                array( 'label' => 'Mental health', 'url' => '/van-life-mental-health-what-nobody-talks-about/' ),
+                array( 'label' => '$3,000 build', 'url' => '/the-3000-van-conversion-everything-you-need-nothing-you-dont/' ),
+            ),
+            'cta'            => array( 'heading' => 'Living on the road needs a plan too.', 'text' => 'Sort domicile, insurance, routine, and mental load before the first long trip.', 'label' => 'Read the domicile guide →', 'url' => '/van-life-domicile-which-state-should-you-call-home/' ),
+        ),
+        'rv-life' => array(
+            'sub'            => 'Full-time RV logistics, insurance, healthcare, retirement-on-wheels, and practical ownership realities.',
+            'intro'          => 'RV life has its own paperwork, costs, coverage questions, and comfort trade-offs. This hub keeps the lifestyle advice grounded in real decisions, not brochure fantasy.',
+            'seo_title'      => 'RV Life Guides for Full-Time and Practical Travel',
+            'seo_desc'       => 'RV life guides covering full-time insurance, healthcare on the road, retirement-on-wheels, ownership logistics, and practical travel decisions.',
+            'featured_slugs' => array( 'full-time-rv-insurance', 'medicare-on-the-road-a-full-timers-healthcare-survival-guide', 'retirement-on-wheels-the-rv-conversion-guide-nobody-made-for-boomers' ),
+            'next_steps'     => array(
+                array( 'label' => 'RV insurance', 'url' => '/full-time-rv-insurance/' ),
+                array( 'label' => 'Healthcare', 'url' => '/medicare-on-the-road-a-full-timers-healthcare-survival-guide/' ),
+                array( 'label' => 'Retirement builds', 'url' => '/retirement-on-wheels-the-rv-conversion-guide-nobody-made-for-boomers/' ),
+            ),
+            'cta'            => array( 'heading' => 'Full-time RV life changes the paperwork.', 'text' => 'Insurance, healthcare, domicile, and emergency planning matter as much as the build itself.', 'label' => 'Start with insurance →', 'url' => '/full-time-rv-insurance/' ),
+        ),
+    );
+}
+
+function rr_category_hub_config_for_slug( $slug ) {
+    $config = rr_category_hub_config();
+    return $config[ $slug ] ?? array();
+}
+
+function rr_category_hub_document_title( $title ) {
+    if ( ! is_category() ) {
+        return $title;
+    }
+    $term = get_queried_object();
+    if ( ! $term || empty( $term->slug ) ) {
+        return $title;
+    }
+    $config = rr_category_hub_config_for_slug( $term->slug );
+    if ( empty( $config['seo_title'] ) ) {
+        return $title;
+    }
+    $title['title'] = $config['seo_title'];
+    $title['site']  = get_bloginfo( 'name' );
+    return $title;
+}
+add_filter( 'document_title_parts', 'rr_category_hub_document_title' );
+
+function rr_category_hub_meta_description() {
+    if ( ! is_category() ) {
+        return;
+    }
+    $term = get_queried_object();
+    if ( ! $term || empty( $term->slug ) ) {
+        return;
+    }
+    $config = rr_category_hub_config_for_slug( $term->slug );
+    if ( empty( $config['seo_desc'] ) ) {
+        return;
+    }
+    echo '<meta name="description" content="' . esc_attr( $config['seo_desc'] ) . '">' . "\n";
+}
+add_action( 'wp_head', 'rr_category_hub_meta_description', 2 );
+
 // ─── Preconnect & Preload (Google Fonts, hero image) ────────────────────────
 
 function rr_preconnect_fonts( $output, $rel, $url ) {

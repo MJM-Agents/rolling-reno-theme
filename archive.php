@@ -1,33 +1,25 @@
 <?php
 /**
  * Rolling Reno v2 — archive.php
- * Category / archive hub page — spec: category-page-v2.md
+ * Crawlable category hub page — spec: category-page-v2.md
  */
 
 get_header();
 
-$queried_obj  = get_queried_object();
-$is_category  = is_category();
-$term_name    = $is_category ? single_cat_title( '', false ) : get_the_archive_title();
-$term_desc    = $is_category ? category_description() : get_the_archive_description();
-$post_count   = $is_category ? $queried_obj->count : false;
-
-// Category-specific config
-$cat_config = array(
-    'van-life'    => array( 'sub' => 'Guides, conversion diaries, and life on the road — from Ireland and beyond.', 'img_key' => 'rr_cat_img_van_life' ),
-    'rv-life'     => array( 'sub' => 'RV adventures, trip guides, and everything Mara has learned on the road.', 'img_key' => 'rr_cat_img_rv_life' ),
-    'gear'        => array( 'sub' => 'Tested, trusted gear — every recommendation backed by real-world use.', 'img_key' => 'rr_cat_img_gear' ),
-);
-
-$slug        = $is_category ? $queried_obj->slug : '';
-$cat_info    = isset( $cat_config[ $slug ] ) ? $cat_config[ $slug ] : array( 'sub' => $term_desc, 'img_key' => '' );
-$hero_img    = $cat_info['img_key'] ? get_theme_mod( $cat_info['img_key'], '' ) : '';
-$cat_sub     = $cat_info['sub'];
+$queried_obj = get_queried_object();
+$is_category = is_category();
+$slug        = ( $is_category && isset( $queried_obj->slug ) ) ? $queried_obj->slug : '';
+$hub_config  = function_exists( 'rr_category_hub_config_for_slug' ) ? rr_category_hub_config_for_slug( $slug ) : array();
+$term_name   = $is_category ? single_cat_title( '', false ) : get_the_archive_title();
+$term_desc   = $hub_config['intro'] ?? ( $is_category ? wp_strip_all_tags( category_description() ) : wp_strip_all_tags( get_the_archive_description() ) );
+$post_count  = ( $is_category && isset( $queried_obj->count ) ) ? (int) $queried_obj->count : false;
+$hero_img    = ! empty( $hub_config['img_key'] ) ? get_theme_mod( $hub_config['img_key'], '' ) : '';
+$cat_sub     = $hub_config['sub'] ?? $term_desc;
+$featured_slugs = $hub_config['featured_slugs'] ?? array();
 ?>
 
 <main id="main" role="main">
 
-    <!-- Category Hero -->
     <section class="category-hero" aria-label="<?php echo esc_attr( $term_name ); ?>">
         <?php if ( $hero_img ) : ?>
             <img
@@ -48,6 +40,8 @@ $cat_sub     = $cat_info['sub'];
             <nav class="category-hero__breadcrumb" aria-label="<?php esc_attr_e( 'Breadcrumb', 'rolling-reno' ); ?>">
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'rolling-reno' ); ?></a>
                 <span aria-hidden="true"> › </span>
+                <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>"><?php esc_html_e( 'Blog', 'rolling-reno' ); ?></a>
+                <span aria-hidden="true"> › </span>
                 <span><?php echo esc_html( $term_name ); ?></span>
             </nav>
             <h1 class="category-hero__title"><?php echo esc_html( $term_name ); ?></h1>
@@ -56,63 +50,55 @@ $cat_sub     = $cat_info['sub'];
             <?php endif; ?>
             <?php if ( $post_count ) : ?>
                 <p class="category-hero__count">
-                    <?php echo esc_html( sprintf( _n( '%d post in this category', '%d posts in this category', $post_count, 'rolling-reno' ), $post_count ) ); ?>
+                    <?php echo esc_html( sprintf( _n( '%d guide in this hub', '%d guides in this hub', $post_count, 'rolling-reno' ), $post_count ) ); ?>
                 </p>
             <?php endif; ?>
         </div>
     </section>
 
-    <!-- Category Intro Block -->
     <div class="container">
         <div class="category-intro">
             <?php if ( $term_desc ) : ?>
-                <p class="category-intro__text"><?php echo wp_kses_post( $term_desc ); ?></p>
+                <p class="category-intro__text"><?php echo esc_html( $term_desc ); ?></p>
             <?php endif; ?>
-            <?php
-            // Sub-category filter links (child categories)
-            if ( $is_category ) :
-                $child_cats = get_categories( array(
-                    'parent'  => $queried_obj->term_id,
-                    'hide_empty' => true,
-                ) );
-                if ( $child_cats ) : ?>
-            <div class="category-filters" role="list">
-                <a href="<?php echo esc_url( get_category_link( $queried_obj->term_id ) ); ?>" class="category-filter is-active" aria-current="page" role="listitem">
-                    <?php esc_html_e( 'All', 'rolling-reno' ); ?>
-                </a>
-                <?php foreach ( $child_cats as $child ) : ?>
-                <a href="<?php echo esc_url( get_category_link( $child->term_id ) ); ?>" class="category-filter" role="listitem">
-                    <?php echo esc_html( $child->name ); ?>
-                </a>
-                <?php endforeach; ?>
-            </div>
-                <?php endif;
-            endif; ?>
+
+            <?php if ( ! empty( $hub_config['next_steps'] ) ) : ?>
+                <div class="category-filters" role="list" aria-label="<?php esc_attr_e( 'Recommended next steps', 'rolling-reno' ); ?>">
+                    <?php foreach ( $hub_config['next_steps'] as $next_step ) : ?>
+                        <a href="<?php echo esc_url( home_url( $next_step['url'] ) ); ?>" class="category-filter" role="listitem">
+                            <?php echo esc_html( $next_step['label'] ); ?>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 
-    <!-- Pinned / Featured Post -->
     <?php
-    $pinned_query = new WP_Query( array(
-        'posts_per_page' => 1,
-        'cat'            => $is_category ? $queried_obj->term_id : 0,
-        'meta_key'       => '_rr_pinned',
-        'meta_value'     => '1',
-    ) );
-    if ( ! $pinned_query->have_posts() ) {
-        $pinned_query = new WP_Query( array(
-            'posts_per_page' => 1,
-            'cat'            => $is_category ? $queried_obj->term_id : 0,
-            'orderby'        => 'comment_count',
-        ) );
+    $featured_query_args = array(
+        'posts_per_page'      => $featured_slugs ? min( 3, count( $featured_slugs ) ) : 1,
+        'ignore_sticky_posts' => true,
+    );
+
+    if ( $featured_slugs ) {
+        $featured_query_args['post_name__in'] = $featured_slugs;
+        $featured_query_args['orderby']       = 'post_name__in';
+    } elseif ( $is_category ) {
+        $featured_query_args['cat']     = $queried_obj->term_id;
+        $featured_query_args['orderby'] = 'comment_count';
     }
-    if ( $pinned_query->have_posts() ) :
-        $pinned_query->the_post();
-        $p_thumb = rr_get_post_image_url( get_the_ID(), 'rr-card' );
+
+    $featured_query = new WP_Query( $featured_query_args );
+    if ( $featured_query->have_posts() ) :
     ?>
     <div class="container">
         <div class="pinned-post">
-            <span class="pinned-post__label"><?php esc_html_e( 'START HERE', 'rolling-reno' ); ?></span>
+            <span class="pinned-post__label"><?php esc_html_e( 'BEST PLACE TO START', 'rolling-reno' ); ?></span>
+            <?php
+            while ( $featured_query->have_posts() ) :
+                $featured_query->the_post();
+                $p_thumb = rr_get_post_image_url( get_the_ID(), 'rr-card' );
+            ?>
             <article class="featured-card" aria-labelledby="pinned-title-<?php the_ID(); ?>">
                 <div class="featured-card__image-wrap">
                     <?php if ( $p_thumb ) : ?>
@@ -131,7 +117,7 @@ $cat_sub     = $cat_info['sub'];
                 <div class="featured-card__body">
                     <div class="featured-card__meta">
                         <?php echo rr_category_badge(); ?>
-                        <span class="badge badge--pinned">📌 <?php esc_html_e( 'Pinned', 'rolling-reno' ); ?></span>
+                        <span class="badge badge--pinned">📌 <?php esc_html_e( 'Hub pick', 'rolling-reno' ); ?></span>
                         <span class="label-text"><?php echo esc_html( rr_read_time() ); ?></span>
                     </div>
                     <h2 class="featured-card__title" id="pinned-title-<?php the_ID(); ?>">
@@ -143,6 +129,7 @@ $cat_sub     = $cat_info['sub'];
                     </a>
                 </div>
             </article>
+            <?php endwhile; ?>
         </div>
     </div>
     <?php
@@ -150,11 +137,10 @@ $cat_sub     = $cat_info['sub'];
     wp_reset_postdata();
     ?>
 
-    <!-- Posts Grid -->
     <div class="container">
         <div class="category-posts">
             <div class="category-posts__header">
-                <h2 class="category-posts__heading"><?php esc_html_e( 'All Posts', 'rolling-reno' ); ?></h2>
+                <h2 class="category-posts__heading"><?php esc_html_e( 'All Guides', 'rolling-reno' ); ?></h2>
                 <div class="category-posts__sort">
                     <span><?php esc_html_e( 'Sort by:', 'rolling-reno' ); ?></span>
                     <a href="<?php echo esc_url( add_query_arg( 'orderby', 'date', get_pagenum_link() ) ); ?>" class="is-active">
@@ -166,7 +152,7 @@ $cat_sub     = $cat_info['sub'];
                 </div>
             </div>
 
-            <section class="category-posts__grid" aria-label="<?php echo esc_attr( sprintf( __( 'Posts in %s', 'rolling-reno' ), $term_name ) ); ?>">
+            <section class="category-posts__grid" aria-label="<?php echo esc_attr( sprintf( __( 'Guides in %s', 'rolling-reno' ), $term_name ) ); ?>">
                 <?php
                 if ( have_posts() ) :
                     while ( have_posts() ) :
@@ -197,13 +183,12 @@ $cat_sub     = $cat_info['sub'];
                 <?php
                     endwhile;
                 else : ?>
-                    <p><?php esc_html_e( 'No posts found.', 'rolling-reno' ); ?></p>
+                    <p><?php esc_html_e( 'No guides found.', 'rolling-reno' ); ?></p>
                 <?php endif; ?>
             </section>
 
-            <!-- Pagination -->
             <?php if ( $GLOBALS['wp_query']->max_num_pages > 1 ) : ?>
-            <nav class="category-posts__pagination" aria-label="<?php esc_attr_e( 'Post navigation', 'rolling-reno' ); ?>">
+            <nav class="category-posts__pagination" aria-label="<?php esc_attr_e( 'Guide navigation', 'rolling-reno' ); ?>">
                 <?php
                 $pages = paginate_links( array(
                     'type'      => 'array',
@@ -212,8 +197,6 @@ $cat_sub     = $cat_info['sub'];
                 ) );
                 if ( $pages ) :
                     foreach ( $pages as $page ) :
-                        $is_current = str_contains( $page, 'current' );
-                        // Wrap in nav link
                         echo str_replace(
                             array( 'page-numbers', 'prev page-numbers', 'next page-numbers', 'current' ),
                             array( 'pagination__item', 'pagination__item pagination__item--prev', 'pagination__item pagination__item--next', 'pagination__item is-current' ),
@@ -225,32 +208,21 @@ $cat_sub     = $cat_info['sub'];
             </nav>
             <?php endif; ?>
 
-        </div><!-- /.category-posts -->
-    </div><!-- /.container -->
+        </div>
+    </div>
 
-    <!-- Category Lead Magnet (van-life + gear only) -->
-    <?php if ( in_array( $slug, array( 'van-life', 'gear' ) ) ) : ?>
+    <?php if ( ! empty( $hub_config['cta'] ) ) : ?>
     <section class="cta-banner cta-banner--leadmagnet" aria-labelledby="cat-leadmagnet-heading">
         <div class="cta-banner__inner container">
             <div class="cta-banner__text">
-                <h2 class="cta-banner__heading" id="cat-leadmagnet-heading">
-                    <?php
-                    if ( $slug === 'van-life' ) {
-                        esc_html_e( "Van lifer? Get Mara's free Conversion Checklist.", 'rolling-reno' );
-                    } else {
-                        esc_html_e( "Want Mara's gear buying checklist?", 'rolling-reno' );
-                    }
-                    ?>
-                </h2>
-                <p class="cta-banner__sub">
-                    <?php esc_html_e( "Before your first build, read this. It's free, and it'll save you hundreds.", 'rolling-reno' ); ?>
-                </p>
+                <h2 class="cta-banner__heading" id="cat-leadmagnet-heading"><?php echo esc_html( $hub_config['cta']['heading'] ); ?></h2>
+                <p class="cta-banner__sub"><?php echo esc_html( $hub_config['cta']['text'] ); ?></p>
             </div>
             <form class="cta-banner__form" action="<?php echo rr_newsletter_action(); ?>" method="POST">
                 <?php wp_nonce_field( 'rr_newsletter', 'rr_nonce' ); ?>
                 <?php rr_newsletter_hidden_fields( 'category_archive_cta' ); ?>
                 <input type="email" name="email" placeholder="<?php esc_attr_e( 'Your email address', 'rolling-reno' ); ?>" required autocomplete="email" class="cta-banner__input" aria-label="<?php esc_attr_e( 'Email address', 'rolling-reno' ); ?>">
-                <button type="submit" class="btn--cta-banner"><?php esc_html_e( 'Send me the kit →', 'rolling-reno' ); ?></button>
+                <button type="submit" class="btn--cta-banner"><?php echo esc_html( $hub_config['cta']['label'] ); ?></button>
                 <p class="cta-banner__fine"><?php esc_html_e( 'No spam. Unsubscribe any time.', 'rolling-reno' ); ?></p>
             </form>
         </div>
