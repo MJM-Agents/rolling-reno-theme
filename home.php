@@ -72,6 +72,31 @@ get_header();
             </p>
         </section>
 
+        <section class="blog-pathways" aria-labelledby="blog-pathways-heading">
+            <div class="blog-pathways__header">
+                <p class="eyebrow"><?php esc_html_e( 'Browse by path', 'rolling-reno' ); ?></p>
+                <h2 id="blog-pathways-heading"><?php esc_html_e( 'Start with the part of the build you are actually facing', 'rolling-reno' ); ?></h2>
+                <p><?php esc_html_e( 'Rolling Reno is organized around the practical decisions readers make: planning, choosing a rig, systems, interiors, and life on the road.', 'rolling-reno' ); ?></p>
+            </div>
+            <div class="blog-pathways__grid">
+                <?php
+                $hub_cards = rr_blog_hub_cards();
+                foreach ( rr_blog_nav_topics() as $topic ) :
+                    $url = rr_blog_topic_url( $topic['slug'] );
+                    if ( ! $url ) {
+                        continue;
+                    }
+                    $card = $hub_cards[ $topic['slug'] ] ?? array( 'eyebrow' => __( 'Read next', 'rolling-reno' ), 'text' => __( 'Browse guides in this topic.', 'rolling-reno' ) );
+                ?>
+                <a class="blog-pathway-card" href="<?php echo esc_url( $url ); ?>">
+                    <span class="blog-pathway-card__eyebrow"><?php echo esc_html( $card['eyebrow'] ); ?></span>
+                    <span class="blog-pathway-card__title"><?php echo esc_html( $topic['label'] ); ?></span>
+                    <span class="blog-pathway-card__text"><?php echo esc_html( $card['text'] ); ?></span>
+                </a>
+                <?php endforeach; ?>
+            </div>
+        </section>
+
         <div class="posts-grid">
             <?php
             if ( have_posts() ) :

@@ -740,6 +740,55 @@ function rr_is_blog_index_request() {
     return untrailingslashit( $request_path ) === untrailingslashit( $blog_path );
 }
 
+
+function rr_blog_hub_cards() {
+    return array(
+        'start-here-planning' => array(
+            'eyebrow' => __( 'Start here', 'rolling-reno' ),
+            'text'    => __( 'Inspection, budgeting, renovation order, and first decisions before you buy materials.', 'rolling-reno' ),
+        ),
+        'vehicle-guides' => array(
+            'eyebrow' => __( 'Choose the rig', 'rolling-reno' ),
+            'text'    => __( 'Compare vans, RVs, older rigs, and buyer trade-offs before committing.', 'rolling-reno' ),
+        ),
+        'systems-off-grid' => array(
+            'eyebrow' => __( 'Plan the systems', 'rolling-reno' ),
+            'text'    => __( 'Solar, electrical, plumbing, water, heat, and ventilation explained clearly.', 'rolling-reno' ),
+        ),
+        'interior-build-layouts' => array(
+            'eyebrow' => __( 'Build the interior', 'rolling-reno' ),
+            'text'    => __( 'Layouts, storage, kitchens, beds, flooring, paint, and materials for real road use.', 'rolling-reno' ),
+        ),
+        'van-life' => array(
+            'eyebrow' => __( 'Live in the van', 'rolling-reno' ),
+            'text'    => __( 'Domicile, routines, mental load, work, and practical full-time van decisions.', 'rolling-reno' ),
+        ),
+        'rv-life' => array(
+            'eyebrow' => __( 'Live in the RV', 'rolling-reno' ),
+            'text'    => __( 'Insurance, healthcare, ownership costs, and full-time RV logistics.', 'rolling-reno' ),
+        ),
+    );
+}
+
+function rr_blog_archive_document_title( $title ) {
+    if ( is_home() || rr_is_blog_index_request() ) {
+        $title['title'] = __( 'Rolling Reno Blog: RV Renovation, Van Life & Off-Grid Guides', 'rolling-reno' );
+        $title['site']  = get_bloginfo( 'name' );
+    }
+
+    return $title;
+}
+add_filter( 'document_title_parts', 'rr_blog_archive_document_title' );
+
+function rr_blog_archive_meta_description() {
+    if ( ! ( is_home() || rr_is_blog_index_request() ) ) {
+        return;
+    }
+
+    echo '<meta name="description" content="' . esc_attr__( 'Browse Rolling Reno guides by starting point: RV renovation planning, vehicle choices, off-grid systems, interior layouts, van life, and full-time RV life.', 'rolling-reno' ) . '">' . "\n";
+}
+add_action( 'wp_head', 'rr_blog_archive_meta_description', 2 );
+
 /**
  * Keep /blog/?category=<slug>&s=<term> crawlable and non-JS friendly.
  */
