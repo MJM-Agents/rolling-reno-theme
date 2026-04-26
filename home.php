@@ -14,8 +14,63 @@ get_header();
 
         <header class="section-header" style="margin-bottom: var(--space-12);">
             <h1 class="section-header__title"><?php esc_html_e( 'From the Road', 'rolling-reno' ); ?></h1>
-            <p class="section-header__sub"><?php esc_html_e( 'Stories, guides, and gear from Mara Collins.', 'rolling-reno' ); ?></p>
+            <p class="section-header__sub"><?php esc_html_e( 'Search practical RV renovation guides, van-life planning notes, and off-grid systems advice by topic.', 'rolling-reno' ); ?></p>
         </header>
+
+        <?php
+        $rr_blog_search = get_search_query();
+        $rr_active_category = rr_blog_active_category_slug();
+        ?>
+        <section class="blog-discovery" aria-labelledby="blog-discovery-heading">
+            <div class="blog-discovery__header">
+                <h2 id="blog-discovery-heading"><?php esc_html_e( 'Find the right guide', 'rolling-reno' ); ?></h2>
+                <p><?php esc_html_e( 'Use search plus one focused category. Filters stay in the URL so results are shareable and work without JavaScript.', 'rolling-reno' ); ?></p>
+            </div>
+
+            <form class="blog-search" role="search" method="get" action="<?php echo esc_url( rr_blog_index_url() ); ?>">
+                <label class="blog-search__label" for="blog-search-input"><?php esc_html_e( 'Search Rolling Reno articles', 'rolling-reno' ); ?></label>
+                <div class="blog-search__row">
+                    <input
+                        id="blog-search-input"
+                        class="blog-search__input"
+                        type="search"
+                        name="s"
+                        value="<?php echo esc_attr( $rr_blog_search ); ?>"
+                        placeholder="<?php esc_attr_e( 'Try solar, inspection, insurance…', 'rolling-reno' ); ?>"
+                    >
+                    <?php if ( $rr_active_category ) : ?>
+                        <input type="hidden" name="category" value="<?php echo esc_attr( $rr_active_category ); ?>">
+                    <?php endif; ?>
+                    <button type="submit" class="btn btn--primary"><?php esc_html_e( 'Search', 'rolling-reno' ); ?></button>
+                </div>
+            </form>
+
+            <nav class="category-filters blog-category-nav" aria-label="<?php esc_attr_e( 'Filter blog posts by category', 'rolling-reno' ); ?>">
+                <a class="category-filter<?php echo $rr_active_category ? '' : ' is-active'; ?>" href="<?php echo esc_url( $rr_blog_search ? add_query_arg( 's', $rr_blog_search, rr_blog_index_url() ) : rr_blog_index_url() ); ?>"<?php echo $rr_active_category ? '' : ' aria-current="page"'; ?>><?php esc_html_e( 'All Posts', 'rolling-reno' ); ?></a>
+                <?php foreach ( rr_blog_nav_topics() as $topic ) :
+                    $url = rr_blog_topic_url( $topic['slug'] );
+                    if ( ! $url ) {
+                        continue;
+                    }
+                    if ( $rr_blog_search ) {
+                        $url = add_query_arg( 's', $rr_blog_search, $url );
+                    }
+                    $is_active = $rr_active_category === $topic['slug'];
+                ?>
+                    <a class="category-filter<?php echo $is_active ? ' is-active' : ''; ?>" href="<?php echo esc_url( $url ); ?>"<?php echo $is_active ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $topic['label'] ); ?></a>
+                <?php endforeach; ?>
+            </nav>
+
+            <p class="blog-results-count" role="status" aria-live="polite">
+                <?php
+                global $wp_query;
+                printf(
+                    esc_html( _n( '%s article found', '%s articles found', (int) $wp_query->found_posts, 'rolling-reno' ) ),
+                    esc_html( number_format_i18n( (int) $wp_query->found_posts ) )
+                );
+                ?>
+            </p>
+        </section>
 
         <div class="posts-grid">
             <?php

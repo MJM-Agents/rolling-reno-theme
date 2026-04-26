@@ -693,22 +693,187 @@ add_action( 'wp_footer', 'rr_newsletter_js' );
 
 
 
+
+/**
+ * Blog IA helpers for the lightweight hub/filter model from MJM-235/MJM-237.
+ */
+function rr_blog_nav_topics() {
+    return array(
+        array( 'label' => __( 'Start Here & Planning', 'rolling-reno' ), 'slug' => 'start-here-planning' ),
+        array( 'label' => __( 'Vehicle Guides', 'rolling-reno' ), 'slug' => 'vehicle-guides' ),
+        array( 'label' => __( 'Systems & Off-Grid', 'rolling-reno' ), 'slug' => 'systems-off-grid' ),
+        array( 'label' => __( 'Interior Build & Layouts', 'rolling-reno' ), 'slug' => 'interior-build-layouts' ),
+        array( 'label' => __( 'Van Life', 'rolling-reno' ), 'slug' => 'van-life' ),
+        array( 'label' => __( 'RV Life', 'rolling-reno' ), 'slug' => 'rv-life' ),
+    );
+}
+
+function rr_blog_index_url() {
+    $posts_page = (int) get_option( 'page_for_posts' );
+    return $posts_page ? get_permalink( $posts_page ) : home_url( '/blog/' );
+}
+
+function rr_blog_topic_term( $slug ) {
+    $slug = sanitize_title( $slug );
+    return $slug ? get_category_by_slug( $slug ) : false;
+}
+
+function rr_blog_topic_url( $slug ) {
+    $term = rr_blog_topic_term( $slug );
+    return $term ? add_query_arg( 'category', $term->slug, rr_blog_index_url() ) : '';
+}
+
+function rr_blog_active_category_slug() {
+    $queried = get_queried_object();
+    if ( $queried instanceof WP_Term && 'category' === $queried->taxonomy ) {
+        return $queried->slug;
+    }
+
+    $category = isset( $_GET['category'] ) ? sanitize_title( wp_unslash( $_GET['category'] ) ) : '';
+    return rr_blog_topic_term( $category ) ? $category : '';
+}
+
+function rr_is_blog_index_request() {
+    $request_path = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH ) : '';
+    $blog_path    = (string) wp_parse_url( rr_blog_index_url(), PHP_URL_PATH );
+
+    return untrailingslashit( $request_path ) === untrailingslashit( $blog_path );
+}
+
+/**
+ * Keep /blog/?category=<slug>&s=<term> crawlable and non-JS friendly.
+ */
+function rr_filter_blog_index_query( $query ) {
+    if ( is_admin() || ! $query->is_main_query() || ( ! $query->is_home() && ! rr_is_blog_index_request() ) ) {
+        return;
+    }
+
+    if ( rr_is_blog_index_request() ) {
+        $query->set( 'post_type', 'post' );
+    }
+
+    $category = isset( $_GET['category'] ) ? sanitize_title( wp_unslash( $_GET['category'] ) ) : '';
+    if ( $category && rr_blog_topic_term( $category ) ) {
+        $query->set( 'category_name', $category );
+    }
+}
+add_action( 'pre_get_posts', 'rr_filter_blog_index_query' );
+
+function rr_use_blog_template_for_blog_search( $template ) {
+    if ( is_search() && rr_is_blog_index_request() ) {
+        $blog_template = locate_template( 'home.php' );
+        if ( $blog_template ) {
+            return $blog_template;
+        }
+    }
+
+    return $template;
+}
+add_filter( 'template_include', 'rr_use_blog_template_for_blog_search' );
+
+/** Add a compact Blog submenu to the primary menu when editors have not added one. */
+function rr_add_blog_submenu_items( $items, $args ) {
+    if ( empty( $args->theme_location ) || 'primary' !== $args->theme_location ) {
+        return $items;
+    }
+
+    $blog_item = null;
+    foreach ( $items as $item ) {
+        $url = isset( $item->url ) ? untrailingslashit( $item->url ) : '';
+        if ( 0 === strcasecmp( $item->title, 'Blog' ) || $url === untrailingslashit( rr_blog_index_url() ) ) {
+            $blog_item = $item;
+            break;
+        }
+    }
+
+    if ( ! $blog_item ) {
+        return $items;
+    }
+
+    foreach ( $items as $item ) {
+        if ( (int) $item->menu_item_parent === (int) $blog_item->ID ) {
+            return $items;
+        }
+    }
+
+    $next_id = -23700;
+    foreach ( rr_blog_nav_topics() as $topic ) {
+        $topic_url = rr_blog_topic_url( $topic['slug'] );
+        if ( ! $topic_url ) {
+            continue;
+        }
+
+        $child = clone $blog_item;
+        $child->ID               = $next_id--;
+        $child->db_id            = $child->ID;
+        $child->object_id        = 0;
+        $child->menu_item_parent = (string) $blog_item->ID;
+        $child->title            = $topic['label'];
+        $child->url              = $topic_url;
+        $child->classes          = array( 'menu-item', 'menu-item-type-custom', 'rr-blog-submenu-item' );
+        $items[] = $child;
+    }
+
+    $search = clone $blog_item;
+    $search->ID               = $next_id--;
+    $search->db_id            = $search->ID;
+    $search->object_id        = 0;
+    $search->menu_item_parent = (string) $blog_item->ID;
+    $search->title            = __( 'Search / All Posts', 'rolling-reno' );
+    $search->url              = rr_blog_index_url();
+    $search->classes          = array( 'menu-item', 'menu-item-type-custom', 'rr-blog-submenu-item' );
+    $items[] = $search;
+
+    return $items;
+}
+add_filter( 'wp_nav_menu_objects', 'rr_add_blog_submenu_items', 20, 2 );
+
 // ─── Nav Walkers (must be defined before header.php uses them) ───────────────
 
 if ( ! class_exists( 'RR_Nav_Walker' ) ) :
 class RR_Nav_Walker extends Walker_Nav_Menu {
+    public function display_element( $element, &$children_elements, $max_depth, $depth, $args, &$output ) {
+        if ( $element && ! empty( $children_elements[ $element->ID ] ) ) {
+            $element->classes[] = 'menu-item-has-children';
+        }
+        parent::display_element( $element, $children_elements, $max_depth, $depth, $args, $output );
+    }
+
     public function start_el( &$output, $data_object, $depth = 0, $args = null, $current_object_id = 0 ) {
         $item    = $data_object;
         $classes = empty( $item->classes ) ? array() : (array) $item->classes;
-        $is_active = in_array( 'current-menu-item', $classes ) || in_array( 'current-page-ancestor', $classes );
+        $is_active = in_array( 'current-menu-item', $classes, true ) || in_array( 'current-page-ancestor', $classes, true );
+        $has_children = 0 === $depth && in_array( 'menu-item-has-children', $classes, true );
         $aria_current = $is_active ? ' aria-current="page"' : '';
         $url   = ! empty( $item->url ) ? $item->url : '#';
         $title = apply_filters( 'the_title', $item->title, $item->ID );
-        $output .= '<a href="' . esc_url( $url ) . '" class="site-nav__link"' . $aria_current . '>' . esc_html( $title ) . '</a>';
+
+        if ( 0 === $depth && $has_children ) {
+            $output .= '<div class="site-nav__item site-nav__item--has-menu">';
+        }
+
+        $class = 0 === $depth ? 'site-nav__link' : 'site-nav__submenu-link';
+        $output .= '<a href="' . esc_url( $url ) . '" class="' . esc_attr( $class ) . '"' . $aria_current . '>' . esc_html( $title ) . '</a>';
     }
-    public function end_el( &$output, $data_object, $depth = 0, $args = null ) {}
-    public function start_lvl( &$output, $depth = 0, $args = null ) {}
-    public function end_lvl( &$output, $depth = 0, $args = null ) {}
+
+    public function end_el( &$output, $data_object, $depth = 0, $args = null ) {
+        $classes = empty( $data_object->classes ) ? array() : (array) $data_object->classes;
+        if ( 0 === $depth && in_array( 'menu-item-has-children', $classes, true ) ) {
+            $output .= '</div>';
+        }
+    }
+
+    public function start_lvl( &$output, $depth = 0, $args = null ) {
+        if ( 0 === $depth ) {
+            $output .= '<div class="site-nav__submenu" aria-label="' . esc_attr__( 'Blog sections', 'rolling-reno' ) . '">';
+        }
+    }
+
+    public function end_lvl( &$output, $depth = 0, $args = null ) {
+        if ( 0 === $depth ) {
+            $output .= '</div>';
+        }
+    }
 }
 endif;
 
@@ -718,7 +883,8 @@ class RR_Mobile_Nav_Walker extends Walker_Nav_Menu {
         $item  = $data_object;
         $url   = ! empty( $item->url ) ? $item->url : '#';
         $title = apply_filters( 'the_title', $item->title, $item->ID );
-        $output .= '<a href="' . esc_url( $url ) . '" class="mobile-menu__link">' . esc_html( $title ) . '</a>';
+        $class = 0 === $depth ? 'mobile-menu__link' : 'mobile-menu__link mobile-menu__link--child';
+        $output .= '<a href="' . esc_url( $url ) . '" class="' . esc_attr( $class ) . '">' . esc_html( $title ) . '</a>';
     }
     public function end_el( &$output, $data_object, $depth = 0, $args = null ) {}
     public function start_lvl( &$output, $depth = 0, $args = null ) {}
@@ -726,17 +892,38 @@ class RR_Mobile_Nav_Walker extends Walker_Nav_Menu {
 }
 endif;
 
+
+function rr_primary_nav_fallback_blog_submenu() {
+    echo '<div class="site-nav__item site-nav__item--has-menu">';
+    echo '<a href="' . esc_url( rr_blog_index_url() ) . '" class="site-nav__link">' . esc_html__( 'Blog', 'rolling-reno' ) . '</a>';
+    echo '<div class="site-nav__submenu" aria-label="' . esc_attr__( 'Blog sections', 'rolling-reno' ) . '">';
+    foreach ( rr_blog_nav_topics() as $topic ) {
+        $topic_url = rr_blog_topic_url( $topic['slug'] );
+        if ( ! $topic_url ) {
+            continue;
+        }
+        echo '<a href="' . esc_url( $topic_url ) . '" class="site-nav__submenu-link">' . esc_html( $topic['label'] ) . '</a>';
+    }
+    echo '<a href="' . esc_url( rr_blog_index_url() ) . '" class="site-nav__submenu-link">' . esc_html__( 'Search / All Posts', 'rolling-reno' ) . '</a>';
+    echo '</div></div>';
+}
+
 if ( ! function_exists( 'rr_primary_nav_fallback' ) ) :
 function rr_primary_nav_fallback() {
     $pages = array(
         array( 'url' => home_url('/'),           'label' => 'Home' ),
         array( 'url' => home_url('/start-here'), 'label' => 'Start Here' ),
+        array( 'url' => rr_blog_index_url(),     'label' => 'Blog', 'submenu' => true ),
         array( 'url' => home_url('/van-life'),   'label' => 'Van Life' ),
         array( 'url' => home_url('/rv-life'),    'label' => 'RV Life' ),
         array( 'url' => home_url('/gear'),       'label' => 'Gear' ),
         array( 'url' => home_url('/about'),      'label' => 'About Mara' ),
     );
     foreach ( $pages as $page ) {
+        if ( ! empty( $page['submenu'] ) ) {
+            rr_primary_nav_fallback_blog_submenu();
+            continue;
+        }
         $active = ( untrailingslashit( home_url( add_query_arg( null, null ) ) ) === untrailingslashit( $page['url'] ) )
             ? ' aria-current="page"' : '';
         echo '<a href="' . esc_url( $page['url'] ) . '" class="site-nav__link"' . $active . '>' . esc_html( $page['label'] ) . '</a>';
@@ -749,6 +936,7 @@ function rr_mobile_nav_fallback() {
     $pages = array(
         array( 'url' => home_url('/'),           'label' => 'Home' ),
         array( 'url' => home_url('/start-here'), 'label' => 'Start Here' ),
+        array( 'url' => rr_blog_index_url(),     'label' => 'Blog', 'submenu' => true ),
         array( 'url' => home_url('/van-life'),   'label' => 'Van Life' ),
         array( 'url' => home_url('/rv-life'),    'label' => 'RV Life' ),
         array( 'url' => home_url('/gear'),       'label' => 'Gear' ),
@@ -756,6 +944,15 @@ function rr_mobile_nav_fallback() {
     );
     foreach ( $pages as $page ) {
         echo '<a href="' . esc_url( $page['url'] ) . '" class="mobile-menu__link">' . esc_html( $page['label'] ) . '</a>';
+        if ( ! empty( $page['submenu'] ) ) {
+            foreach ( rr_blog_nav_topics() as $topic ) {
+                $topic_url = rr_blog_topic_url( $topic['slug'] );
+                if ( ! $topic_url ) {
+                    continue;
+                }
+                echo '<a href="' . esc_url( $topic_url ) . '" class="mobile-menu__link mobile-menu__link--child">' . esc_html( $topic['label'] ) . '</a>';
+            }
+        }
     }
 }
 endif;
