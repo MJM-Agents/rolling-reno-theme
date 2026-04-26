@@ -21,7 +21,7 @@ $mara_about_img = get_theme_mod( 'rr_mara_about_image', '' );
         <img
             class="hero__image"
             src="<?php echo esc_url( $hero_img ); ?>"
-            alt="<?php esc_attr_e( 'Mara Collins with her converted van in the Irish countryside', 'rolling-reno' ); ?>"
+            alt="<?php esc_attr_e( 'Mara Collins standing beside her converted van in the countryside', 'rolling-reno' ); ?>"
             width="1920"
             height="1080"
             loading="eager"
@@ -30,8 +30,8 @@ $mara_about_img = get_theme_mod( 'rr_mara_about_image', '' );
     <?php else : ?>
         <img
             class="hero__image"
-            src="<?php echo get_template_directory_uri(); ?>/assets/images/mara-hero.jpg"
-            alt="<?php esc_attr_e( 'Mara Collins with her converted van in the Irish countryside', 'rolling-reno' ); ?>"
+            src="<?php echo get_template_directory_uri(); ?>/assets/images/hero-unsplash.jpg"
+            alt="<?php esc_attr_e( 'Mara Collins standing beside her converted van in the countryside', 'rolling-reno' ); ?>"
             width="1920"
             height="1080"
             loading="eager"
