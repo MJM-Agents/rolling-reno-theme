@@ -4,7 +4,7 @@ Theme URI:         https://rollingreno.com
 Author:            Mara Collins / MJM Team
 Author URI:        https://rollingreno.com/about
 Description:       Wild Irish Editorial — magazine-quality van life blog theme for Rolling Reno. Redesigned v2 by Aoife & Lorcan (MJM-101).
-Version:           2.0.1
+Version:           2.0.2
 Requires at least: 6.0
 Tested up to:      6.5
 Requires PHP:      8.0
@@ -113,4 +113,28 @@ h4[id] {
 .site-nav .site-nav__link[aria-current="page"] {
   color: var(--color-sand);
   border-bottom-color: var(--color-sand);
+}
+
+/* MJM-249: harden desktop Blog submenu hiding after category hub QA regression.
+   style.css loads after component CSS, so this guards against stale/overridden submenu rules. */
+@media (min-width: 1024px) {
+  .site-nav__item--has-menu > .site-nav__submenu {
+    position: absolute;
+    top: calc(100% + var(--space-3));
+    left: 50%;
+    z-index: 1001;
+    display: grid;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(-6px);
+  }
+
+  .site-nav__item--has-menu:hover > .site-nav__submenu,
+  .site-nav__item--has-menu:focus-within > .site-nav__submenu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
 }
