@@ -6,7 +6,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'RR_VERSION', '2.0.4' );
+define( 'RR_VERSION', '2.0.5' );
 define( 'RR_THEME_DIR', get_template_directory() );
 define( 'RR_THEME_URI', get_template_directory_uri() );
 
@@ -1218,7 +1218,7 @@ function rr_primary_nav_fallback() {
     $pages = array(
         array( 'url' => home_url('/'),           'label' => 'Home' ),
         array( 'url' => home_url('/start-here'), 'label' => 'Start Here' ),
-        array( 'url' => rr_blog_index_url(),     'label' => 'Blog', 'submenu' => true ),
+        array( 'url' => rr_blog_index_url(),     'label' => 'Blog' ),
         array( 'url' => home_url('/van-life'),   'label' => 'Van Life' ),
         array( 'url' => home_url('/rv-life'),    'label' => 'RV Life' ),
         array( 'url' => home_url('/gear'),       'label' => 'Gear' ),
