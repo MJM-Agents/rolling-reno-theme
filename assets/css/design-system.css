@@ -1241,3 +1241,15 @@ figcaption {
   font-weight: 600;
   color: var(--color-text-secondary);
 }
+
+
+/* MJM-278 emergency nav containment: use curated nav without header overflow. */
+.site-nav__inner { gap: var(--space-5); }
+.site-nav__links { gap: var(--space-5); flex: 1 1 auto; min-width: 0; justify-content: center; }
+.site-nav__link { font-size: 12px; white-space: nowrap; }
+.site-nav__utility { flex-shrink: 0; gap: var(--space-3); }
+@media (max-width: 1180px) {
+  .site-nav__links { gap: var(--space-3); }
+  .site-nav__link { font-size: 11px; letter-spacing: 0.08em; }
+  .btn--nav-cta { padding-inline: var(--space-4); }
+}
