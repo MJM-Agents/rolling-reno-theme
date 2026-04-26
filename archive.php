@@ -248,7 +248,7 @@ $cat_sub     = $cat_info['sub'];
             </div>
             <form class="cta-banner__form" action="<?php echo rr_newsletter_action(); ?>" method="POST">
                 <?php wp_nonce_field( 'rr_newsletter', 'rr_nonce' ); ?>
-                <?php rr_newsletter_hidden_fields(); ?>
+                <?php rr_newsletter_hidden_fields( 'category_archive_cta' ); ?>
                 <input type="email" name="email" placeholder="<?php esc_attr_e( 'Your email address', 'rolling-reno' ); ?>" required autocomplete="email" class="cta-banner__input" aria-label="<?php esc_attr_e( 'Email address', 'rolling-reno' ); ?>">
                 <button type="submit" class="btn--cta-banner"><?php esc_html_e( 'Send me the kit →', 'rolling-reno' ); ?></button>
                 <p class="cta-banner__fine"><?php esc_html_e( 'No spam. Unsubscribe any time.', 'rolling-reno' ); ?></p>

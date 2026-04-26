@@ -1896,3 +1896,28 @@
   .blog-pathways__grid { grid-template-columns: 1fr; }
   .blog-pathway-card { min-height: 0; }
 }
+
+/* Newsletter conversion states (MJM-250) */
+.subscribe-success,
+.subscribe-error {
+  margin: var(--space-2) 0 0;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.subscribe-success {
+  color: var(--color-forest);
+}
+.subscribe-error {
+  color: var(--color-terracotta);
+}
+.cta-banner .subscribe-success,
+.cta-banner .subscribe-error,
+.mid-post-optin .subscribe-success,
+.mid-post-optin .subscribe-error {
+  color: var(--color-text-inverse);
+}
+.cta-banner .subscribe-error,
+.mid-post-optin .subscribe-error {
+  color: #ffd6c6;
+}
