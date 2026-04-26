@@ -558,30 +558,33 @@ function rr_social_links() {
  * Uses WP AJAX endpoint when ConvertKit API key is configured;
  * falls back to the legacy direct-post URL (customizer setting) otherwise.
  */
-function rr_newsletter_action() {
+function rr_newsletter_uses_ajax() {
     $ck_api_key = get_theme_mod( 'rr_ck_api_key', '' );
     $ck_form_id = get_theme_mod( 'rr_ck_form_id', '' );
+    $legacy     = get_theme_mod( 'rr_newsletter_action', '' );
 
-    // If CK is configured, use the WP AJAX handler
-    if ( $ck_api_key && $ck_form_id ) {
+    return ( $ck_api_key && $ck_form_id ) || ! $legacy;
+}
+
+function rr_newsletter_action() {
+    if ( rr_newsletter_uses_ajax() ) {
         return esc_url( admin_url( 'admin-ajax.php' ) );
     }
 
-    // Fallback to legacy direct URL
-    $legacy = get_theme_mod( 'rr_newsletter_action', '' );
-    return $legacy ? esc_url( $legacy ) : '#newsletter-not-configured';
+    return esc_url( get_theme_mod( 'rr_newsletter_action', '' ) );
 }
 
 /**
  * Output hidden inputs needed by the AJAX newsletter handler.
  * Include this inside any newsletter <form> element.
  */
-function rr_newsletter_hidden_fields() {
-    $ck_api_key = get_theme_mod( 'rr_ck_api_key', '' );
-    $ck_form_id = get_theme_mod( 'rr_ck_form_id', '' );
-    if ( $ck_api_key && $ck_form_id ) {
+function rr_newsletter_hidden_fields( $source = 'site_optin' ) {
+    if ( rr_newsletter_uses_ajax() ) {
         echo '<input type="hidden" name="action" value="rr_newsletter_subscribe">';
     }
+
+    echo '<input type="hidden" name="rr_source" value="' . esc_attr( $source ) . '">';
+    echo '<input type="hidden" name="rr_lead_magnet" value="van_build_starter_kit">';
 }
 
 /**
@@ -643,9 +646,9 @@ add_action( 'wp_ajax_nopriv_rr_newsletter_subscribe', 'rr_newsletter_subscribe_h
  * Appended to footer when CK is configured.
  */
 function rr_newsletter_js() {
-    $ck_api_key = get_theme_mod( 'rr_ck_api_key', '' );
-    $ck_form_id = get_theme_mod( 'rr_ck_form_id', '' );
-    if ( ! $ck_api_key || ! $ck_form_id ) return;
+    if ( ! rr_newsletter_uses_ajax() ) {
+        return;
+    }
     ?>
     <script>
     (function() {
@@ -658,6 +661,18 @@ function rr_newsletter_js() {
                 var orig = btn ? btn.textContent : null;
                 if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
 
+                function showError(message) {
+                    var err = form.querySelector('.subscribe-error');
+                    if (!err) {
+                        err = document.createElement('p');
+                        err.className = 'subscribe-error';
+                        err.setAttribute('role', 'alert');
+                        form.appendChild(err);
+                    }
+                    err.textContent = message || 'Something went wrong. Please try again.';
+                    if (btn) { btn.disabled = false; btn.textContent = orig; }
+                }
+
                 fetch(form.action, {
                     method: 'POST',
                     credentials: 'same-origin',
@@ -666,22 +681,17 @@ function rr_newsletter_js() {
                 .then(function(r) { return r.json(); })
                 .then(function(json) {
                     if (json.success) {
-                        form.innerHTML = '<p class="subscribe-success" style="color:#3D5A47;font-weight:600;">' + json.data.message + '</p>';
+                        var success = document.createElement('p');
+                        success.className = 'subscribe-success';
+                        success.setAttribute('role', 'status');
+                        success.textContent = (json.data && json.data.message) ? json.data.message : "You're in! Check your inbox for the starter kit.";
+                        form.replaceChildren(success);
                     } else {
-                        var msg = (json.data && json.data.message) ? json.data.message : 'Something went wrong. Please try again.';
-                        var err = form.querySelector('.subscribe-error');
-                        if (!err) {
-                            err = document.createElement('p');
-                            err.className = 'subscribe-error';
-                            err.style.cssText = 'color:#C4714A;margin-top:0.5rem;font-size:0.875rem;';
-                            form.appendChild(err);
-                        }
-                        err.textContent = msg;
-                        if (btn) { btn.disabled = false; btn.textContent = orig; }
+                        showError((json.data && json.data.message) ? json.data.message : 'Something went wrong. Please try again.');
                     }
                 })
                 .catch(function() {
-                    if (btn) { btn.disabled = false; btn.textContent = orig; }
+                    showError('Could not reach the newsletter service. Please try again.');
                 });
             });
         });

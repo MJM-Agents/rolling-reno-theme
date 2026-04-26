@@ -152,7 +152,7 @@ get_header();
                 </div>
                 <form class="cta-banner__form" action="<?php echo rr_newsletter_action(); ?>" method="POST">
                     <?php wp_nonce_field( 'rr_newsletter', 'rr_nonce' ); ?>
-                    <?php rr_newsletter_hidden_fields(); ?>
+                    <?php rr_newsletter_hidden_fields( 'blog_lead_magnet' ); ?>
                     <input
                         type="email"
                         name="email"

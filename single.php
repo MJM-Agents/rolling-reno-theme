@@ -142,7 +142,7 @@ while ( have_posts() ) :
                 </div>
                 <form class="mid-post-optin__form" action="<?php echo rr_newsletter_action(); ?>" method="POST">
                     <?php wp_nonce_field( 'rr_newsletter', 'rr_nonce' ); ?>
-                    <?php rr_newsletter_hidden_fields(); ?>
+                    <?php rr_newsletter_hidden_fields( 'mid_post_optin' ); ?>
                     <input
                         type="email"
                         name="email"
