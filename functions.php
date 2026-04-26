@@ -929,7 +929,7 @@ function rr_render_post_sources_panel( $post_id = null ) {
     <aside class="post-sources-panel" aria-label="<?php esc_attr_e( 'Sources and review notes', 'rolling-reno' ); ?>">
         <h2 class="post-sources-panel__title"><?php esc_html_e( 'How this guide was put together', 'rolling-reno' ); ?></h2>
         <p class="post-sources-panel__text">
-            <?php esc_html_e( 'Rolling Reno guides combine firsthand build experience, product documentation, owner reports, and current safety guidance where relevant. Copy/content changes should be reviewed by Sarah before shipping.', 'rolling-reno' ); ?>
+            <?php esc_html_e( 'Rolling Reno guides combine firsthand build experience, product documentation, owner reports, and current safety guidance where relevant. We note affiliate relationships, update articles as details change, and prioritize practical evidence readers can verify.', 'rolling-reno' ); ?>
         </p>
         <?php if ( $sources ) : ?>
             <ul class="post-sources-panel__list">
