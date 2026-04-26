@@ -4,6 +4,11 @@
  * Crawlable category hub page — spec: category-page-v2.md
  */
 
+if ( is_category( 'uncategorized' ) ) {
+    wp_safe_redirect( home_url( '/blog/' ), 301 );
+    exit;
+}
+
 get_header();
 
 $queried_obj = get_queried_object();
@@ -11,7 +16,7 @@ $is_category = is_category();
 $slug        = ( $is_category && isset( $queried_obj->slug ) ) ? $queried_obj->slug : '';
 $hub_config  = function_exists( 'rr_category_hub_config_for_slug' ) ? rr_category_hub_config_for_slug( $slug ) : array();
 $term_name   = $is_category ? single_cat_title( '', false ) : get_the_archive_title();
-$term_desc   = $hub_config['intro'] ?? ( $is_category ? wp_strip_all_tags( category_description() ) : wp_strip_all_tags( get_the_archive_description() ) );
+$term_desc   = $hub_config['intro'] ?? ( $is_category ? wp_strip_all_tags( html_entity_decode( category_description(), ENT_QUOTES, get_bloginfo( 'charset' ) ) ) : wp_strip_all_tags( html_entity_decode( get_the_archive_description(), ENT_QUOTES, get_bloginfo( 'charset' ) ) ) );
 $post_count  = ( $is_category && isset( $queried_obj->count ) ) ? (int) $queried_obj->count : false;
 $hero_img    = ! empty( $hub_config['img_key'] ) ? get_theme_mod( $hub_config['img_key'], '' ) : '';
 $cat_sub     = $hub_config['sub'] ?? $term_desc;
