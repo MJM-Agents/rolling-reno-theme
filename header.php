@@ -78,6 +78,17 @@
         </a>
     </div>
 </header>
+
+<!-- Search drawer -->
+<div class="site-search" id="site-search" aria-hidden="true">
+    <form class="site-search__form" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+        <label class="sr-only" for="site-search-input"><?php esc_html_e( 'Search Rolling Reno', 'rolling-reno' ); ?></label>
+        <input id="site-search-input" class="site-search__input" type="search" name="s" placeholder="<?php esc_attr_e( 'Search guides, gear, insurance…', 'rolling-reno' ); ?>" autocomplete="off">
+        <button class="site-search__submit" type="submit"><?php esc_html_e( 'Search', 'rolling-reno' ); ?></button>
+        <button class="site-search__close" type="button" aria-label="<?php esc_attr_e( 'Close search', 'rolling-reno' ); ?>">×</button>
+    </form>
+</div>
+
 <!-- ── /Site Navigation ─────────────────────────────────────────────────── -->
 
 <?php // Nav walkers defined in functions.php — loaded before header.php ?>
