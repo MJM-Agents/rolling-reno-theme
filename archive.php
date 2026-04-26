@@ -14,7 +14,7 @@ get_header();
 $queried_obj  = get_queried_object();
 $is_category  = is_category();
 $term_name    = $is_category ? single_cat_title( '', false ) : get_the_archive_title();
-$term_desc    = $is_category ? category_description() : get_the_archive_description();
+$term_desc    = $is_category ? wp_strip_all_tags( category_description() ) : wp_strip_all_tags( get_the_archive_description() );
 $post_count   = $is_category ? $queried_obj->count : false;
 
 // Category-specific config
