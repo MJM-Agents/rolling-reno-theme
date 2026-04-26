@@ -318,21 +318,44 @@
     window.addEventListener('scroll', throttle(updateProgress, 60), { passive: true });
   }
 
-  // ─── Search Button Placeholder ───────────────────────────────────────────────
+  // ─── Search Drawer ─────────────────────────────────────────────────
 
   function initSearchBtn() {
     const searchBtns = document.querySelectorAll('.site-nav__search-btn');
+    const drawer = document.getElementById('site-search');
+    if (!drawer) return;
+
+    const input = drawer.querySelector('.site-search__input');
+    const close = drawer.querySelector('.site-search__close');
+
+    function openSearch() {
+      drawer.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('search-open');
+      searchBtns.forEach(btn => btn.setAttribute('aria-expanded', 'true'));
+      setTimeout(() => { if (input) input.focus(); }, 50);
+    }
+
+    function closeSearch() {
+      drawer.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('search-open');
+      searchBtns.forEach(btn => btn.setAttribute('aria-expanded', 'false'));
+    }
+
     searchBtns.forEach(function (btn) {
+      btn.setAttribute('aria-controls', 'site-search');
+      btn.setAttribute('aria-expanded', 'false');
       btn.addEventListener('click', function () {
-        // Trigger WordPress native search if available, else simple focus
-        const searchInput = document.querySelector('input[type="search"]');
-        if (searchInput) {
-          searchInput.focus();
+        if (drawer.getAttribute('aria-hidden') === 'false') {
+          closeSearch();
         } else {
-          // Attempt to navigate to search
-          window.location.href = '/?s=';
+          openSearch();
         }
       });
+    });
+
+    if (close) close.addEventListener('click', closeSearch);
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') closeSearch();
     });
   }
 
