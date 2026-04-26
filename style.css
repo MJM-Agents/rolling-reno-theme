@@ -404,3 +404,68 @@ h4[id] {
   }
   .cta-banner__heading { max-width: 100%; }
 }
+
+
+/* MJM-283: overnight visual rhythm cleanup from Aoife QA pass 1. */
+/* Start Here: tighten hero/CTA rhythm and keep sections from feeling floaty. */
+.start-here-hero {
+  padding-top: clamp(3.5rem, 6vw, 5.5rem) !important;
+  padding-bottom: clamp(2.75rem, 5vw, 4rem) !important;
+}
+.start-here-hero h1 {
+  font-size: clamp(2.75rem, 6.8vw, 5.75rem) !important;
+  line-height: 0.98 !important;
+}
+.start-here-hero__dek { max-width: 44rem; }
+.start-here-trust { transform: none !important; margin: 0 !important; padding: 28px 0 0; background: var(--color-cream, #f9f6f0); }
+.start-here-roadmap,
+.start-here-pathways,
+.start-here-featured { padding: clamp(2.5rem, 5vw, 4.5rem) 0 !important; }
+.start-here-page .cta-banner--leadmagnet { margin-top: clamp(2rem, 4vw, 3.5rem); margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+
+/* Blog: reduce empty above-fold space and make mobile filters less chunky. */
+.blog-index { padding-top: clamp(2.5rem, 5vw, 4rem) !important; }
+.blog-index .section-header { margin-bottom: var(--space-8) !important; }
+.blog-discovery { margin-bottom: var(--space-8) !important; }
+@media (max-width: 760px) {
+  .blog-index { padding-top: var(--space-8) !important; }
+  .blog-discovery { padding: var(--space-4) !important; }
+  .category-filter {
+    width: auto !important;
+    min-height: 36px !important;
+    padding: 6px 12px !important;
+    font-size: 11px !important;
+    border-radius: 999px !important;
+  }
+  .blog-category-nav { gap: 8px !important; }
+}
+
+/* Post mobile: prevent title/content from kissing viewport and de-crowd meta/share/trust. */
+@media (max-width: 760px) {
+  .post-header,
+  .post-body,
+  .container--narrow { padding-left: 20px !important; padding-right: 20px !important; }
+  .post-title,
+  .post-header__title,
+  .single-post h1 {
+    font-size: clamp(34px, 10vw, 46px) !important;
+    line-height: 1.06 !important;
+    overflow-wrap: anywhere;
+  }
+  .post-meta,
+  .post-header__meta,
+  .share-row,
+  .post-share { gap: 10px !important; flex-wrap: wrap !important; }
+  .post-trust-panel,
+  .post-sources-panel { padding: var(--space-4) !important; margin-bottom: var(--space-6) !important; }
+}
+
+/* Gear/newsletter/footer rhythm and mobile card breathing room. */
+.gear-page .cta-banner--leadmagnet,
+.page-template-page-gear .cta-banner--leadmagnet { margin-bottom: clamp(2.5rem, 5vw, 4rem) !important; }
+@media (max-width: 640px) {
+  .gear-grid,
+  .posts-grid { padding-left: 4px; padding-right: 4px; }
+  .gear-product-card,
+  .post-card { border-radius: var(--radius-xl); }
+}
