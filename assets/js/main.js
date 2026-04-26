@@ -273,7 +273,7 @@
     forms.forEach(function (form) {
       form.addEventListener('submit', function (e) {
         // Only show success UI if it's a demo (no real action set)
-        const action = this.getAttribute('action');
+        const action = form.getAttribute('action');
         if (!action || action === '/subscribe') {
           e.preventDefault();
           const successMsg = document.createElement('p');
