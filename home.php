@@ -49,6 +49,9 @@ get_header();
                 <a class="category-filter<?php echo $rr_active_category ? '' : ' is-active'; ?>" href="<?php echo esc_url( $rr_blog_search ? add_query_arg( 's', $rr_blog_search, rr_blog_index_url() ) : rr_blog_index_url() ); ?>"<?php echo $rr_active_category ? '' : ' aria-current="page"'; ?>><?php esc_html_e( 'All Posts', 'rolling-reno' ); ?></a>
                 <?php foreach ( rr_blog_nav_topics() as $topic ) :
                     $url = rr_blog_topic_url( $topic['slug'] );
+                    if ( ! $url ) {
+                        continue;
+                    }
                     if ( $rr_blog_search ) {
                         $url = add_query_arg( 's', $rr_blog_search, $url );
                     }
