@@ -491,6 +491,11 @@ h4, .h4 {
 }
 .mobile-menu[aria-hidden="false"] { display: flex; }
 body.mobile-menu-open { overflow: hidden; }
+.mobile-menu nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
 .mobile-menu__link {
   font-family: var(--font-body);
   font-size: 18px;

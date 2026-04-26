@@ -720,7 +720,7 @@ function rr_blog_topic_term( $slug ) {
 
 function rr_blog_topic_url( $slug ) {
     $term = rr_blog_topic_term( $slug );
-    return $term ? get_category_link( $term ) : '';
+    return $term ? add_query_arg( 'category', $term->slug, rr_blog_index_url() ) : '';
 }
 
 function rr_blog_active_category_slug() {
