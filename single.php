@@ -84,6 +84,11 @@ while ( have_posts() ) :
         </div>
     </header>
 
+    <!-- Trust / disclosure panel -->
+    <div class="container--narrow">
+        <?php echo rr_render_post_trust_panel( $post_id ); ?>
+    </div>
+
     <!-- Hero Image (full-bleed) -->
     <div class="post-hero container">
         <?php if ( $hero_img ) : ?>
@@ -128,6 +133,9 @@ while ( have_posts() ) :
 
         <!-- Post Content -->
         <?php the_content(); ?>
+
+        <!-- Sources / proof note -->
+        <?php echo rr_render_post_sources_panel( $post_id ); ?>
 
         <!-- Mid-post email opt-in (WP filter inserts after content midpoint) -->
         <aside class="mid-post-optin" aria-label="<?php esc_attr_e( 'Newsletter signup', 'rolling-reno' ); ?>">

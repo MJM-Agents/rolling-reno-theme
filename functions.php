@@ -1012,6 +1012,127 @@ function rr_add_blog_submenu_items( $items, $args ) {
 }
 add_filter( 'wp_nav_menu_objects', 'rr_add_blog_submenu_items', 20, 2 );
 
+
+
+/**
+ * Post trust/disclosure modules (MJM-251).
+ *
+ * Optional custom fields for editors:
+ * - _rr_field_tested_note: short firsthand/field-tested note.
+ * - _rr_sources: one source per line; use "Label | URL" or plain text.
+ */
+function rr_get_post_updated_iso( $post_id ) {
+    $modified = get_post_modified_time( 'U', false, $post_id );
+    $created  = get_post_time( 'U', false, $post_id );
+
+    return ( $modified && $modified > $created ) ? get_post_modified_time( 'Y-m-d', false, $post_id ) : '';
+}
+
+function rr_parse_post_sources( $post_id ) {
+    $raw = trim( (string) get_post_meta( $post_id, '_rr_sources', true ) );
+    if ( '' === $raw ) {
+        return array();
+    }
+
+    $sources = array();
+    foreach ( preg_split( '/\r\n|\r|\n/', $raw ) as $line ) {
+        $line = trim( $line );
+        if ( '' === $line ) {
+            continue;
+        }
+
+        $parts = array_map( 'trim', explode( '|', $line, 2 ) );
+        $sources[] = array(
+            'label' => $parts[0],
+            'url'   => isset( $parts[1] ) ? esc_url_raw( $parts[1] ) : '',
+        );
+    }
+
+    return $sources;
+}
+
+function rr_render_post_trust_panel( $post_id = null ) {
+    $post_id = $post_id ?: get_the_ID();
+    if ( ! $post_id ) {
+        return '';
+    }
+
+    $updated_iso = rr_get_post_updated_iso( $post_id );
+    $field_note  = trim( (string) get_post_meta( $post_id, '_rr_field_tested_note', true ) );
+    if ( '' === $field_note ) {
+        $field_note = __( 'Built from Mara Collins\' hands-on van and RV renovation experience, with recommendations kept practical for real road use.', 'rolling-reno' );
+    }
+
+    ob_start();
+    ?>
+    <aside class="post-trust-panel" aria-label="<?php esc_attr_e( 'Post trust and disclosure notes', 'rolling-reno' ); ?>">
+        <div class="post-trust-panel__item">
+            <span class="post-trust-panel__label"><?php esc_html_e( 'Written by', 'rolling-reno' ); ?></span>
+            <a class="post-trust-panel__value" href="<?php echo esc_url( home_url( '/about/' ) ); ?>"><?php esc_html_e( 'Mara Collins', 'rolling-reno' ); ?></a>
+        </div>
+        <?php if ( $updated_iso ) : ?>
+        <div class="post-trust-panel__item">
+            <span class="post-trust-panel__label"><?php esc_html_e( 'Updated', 'rolling-reno' ); ?></span>
+            <time class="post-trust-panel__value" datetime="<?php echo esc_attr( $updated_iso ); ?>"><?php echo esc_html( get_post_modified_time( get_option( 'date_format' ), false, $post_id ) ); ?></time>
+        </div>
+        <?php endif; ?>
+        <div class="post-trust-panel__item post-trust-panel__item--wide">
+            <span class="post-trust-panel__label"><?php esc_html_e( 'Field-tested note', 'rolling-reno' ); ?></span>
+            <span class="post-trust-panel__value"><?php echo esc_html( $field_note ); ?></span>
+        </div>
+        <div class="post-trust-panel__item post-trust-panel__item--wide">
+            <span class="post-trust-panel__label"><?php esc_html_e( 'Disclosure', 'rolling-reno' ); ?></span>
+            <span class="post-trust-panel__value">
+                <?php
+                printf(
+                    wp_kses(
+                        /* translators: %s: affiliate disclosure URL */
+                        __( 'Some guides include affiliate links. If you buy through them, Rolling Reno may earn a small commission at no extra cost to you. Read the <a href="%s">affiliate disclosure</a>.', 'rolling-reno' ),
+                        array( 'a' => array( 'href' => array() ) )
+                    ),
+                    esc_url( home_url( '/affiliate-disclosure/' ) )
+                );
+                ?>
+            </span>
+        </div>
+    </aside>
+    <?php
+    return ob_get_clean();
+}
+
+function rr_render_post_sources_panel( $post_id = null ) {
+    $post_id = $post_id ?: get_the_ID();
+    if ( ! $post_id ) {
+        return '';
+    }
+
+    $sources = rr_parse_post_sources( $post_id );
+
+    ob_start();
+    ?>
+    <aside class="post-sources-panel" aria-label="<?php esc_attr_e( 'Sources and review notes', 'rolling-reno' ); ?>">
+        <h2 class="post-sources-panel__title"><?php esc_html_e( 'How this guide was put together', 'rolling-reno' ); ?></h2>
+        <p class="post-sources-panel__text">
+            <?php esc_html_e( 'Rolling Reno guides combine firsthand build experience, product documentation, owner reports, and current safety guidance where relevant. We note affiliate relationships, update articles as details change, and prioritize practical evidence readers can verify.', 'rolling-reno' ); ?>
+        </p>
+        <?php if ( $sources ) : ?>
+            <ul class="post-sources-panel__list">
+                <?php foreach ( $sources as $source ) : ?>
+                    <li>
+                        <?php if ( ! empty( $source['url'] ) ) : ?>
+                            <a href="<?php echo esc_url( $source['url'] ); ?>" rel="noopener noreferrer" target="_blank"><?php echo esc_html( $source['label'] ); ?></a>
+                        <?php else : ?>
+                            <?php echo esc_html( $source['label'] ); ?>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </aside>
+    <?php
+    return ob_get_clean();
+}
+
 // ─── Nav Walkers (must be defined before header.php uses them) ───────────────
 
 if ( ! class_exists( 'RR_Nav_Walker' ) ) :
