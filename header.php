@@ -32,19 +32,7 @@
         <!-- Desktop navigation -->
         <nav class="site-nav__links" aria-label="<?php esc_attr_e( 'Main navigation', 'rolling-reno' ); ?>">
             <?php
-            wp_nav_menu( array(
-                'theme_location' => 'primary',
-                'container'      => false,
-                'menu_class'     => '',
-                'items_wrap'     => '%3$s',
-                'item_spacing'   => 'discard',
-                'link_before'    => '',
-                'link_after'     => '',
-                'before'         => '',
-                'after'          => '',
-                'walker'         => new RR_Nav_Walker(),
-                'fallback_cb'    => 'rr_primary_nav_fallback',
-            ) );
+            rr_primary_nav_fallback();
             ?>
         </nav>
 
@@ -82,14 +70,7 @@
     <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
         <nav aria-label="<?php esc_attr_e( 'Mobile navigation', 'rolling-reno' ); ?>">
             <?php
-            wp_nav_menu( array(
-                'theme_location' => 'primary',
-                'container'      => false,
-                'items_wrap'     => '%3$s',
-                'item_spacing'   => 'discard',
-                'walker'         => new RR_Mobile_Nav_Walker(),
-                'fallback_cb'    => 'rr_mobile_nav_fallback',
-            ) );
+            rr_mobile_nav_fallback();
             ?>
         </nav>
         <a href="<?php echo esc_url( home_url( '/#newsletter' ) ); ?>" class="btn btn--primary" style="margin-top: 24px; display:block; text-align:center;">

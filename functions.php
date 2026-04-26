@@ -6,7 +6,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'RR_VERSION', '2.0.3' );
+define( 'RR_VERSION', '2.0.4' );
 define( 'RR_THEME_DIR', get_template_directory() );
 define( 'RR_THEME_URI', get_template_directory_uri() );
 
