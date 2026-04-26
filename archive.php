@@ -4,6 +4,11 @@
  * Category / archive hub page — spec: category-page-v2.md
  */
 
+if ( is_category( 'uncategorized' ) ) {
+    wp_safe_redirect( home_url( '/blog/' ), 301 );
+    exit;
+}
+
 get_header();
 
 $queried_obj  = get_queried_object();
