@@ -9,12 +9,12 @@ get_header();
 ?>
 
 <!-- ── Blog Index ────────────────────────────────────────────────────────── -->
-<main id="main" role="main" class="blog-index" style="margin-top: 72px; padding: var(--space-20) 0;">
+<main id="main" role="main" class="blog-index blog-index--professional">
     <div class="container">
 
-        <header class="section-header" style="margin-bottom: var(--space-12);">
+        <header class="section-header blog-hero">
             <h1 class="section-header__title"><?php esc_html_e( 'From the Road', 'rolling-reno' ); ?></h1>
-            <p class="section-header__sub"><?php esc_html_e( 'Search practical RV renovation guides, van-life planning notes, and off-grid systems advice by topic.', 'rolling-reno' ); ?></p>
+            <p class="section-header__sub"><?php esc_html_e( 'Practical renovation guides, real gear calls, and off-grid systems advice — organized so you can find the next decision fast.', 'rolling-reno' ); ?></p>
         </header>
 
         <?php
@@ -24,7 +24,7 @@ get_header();
         <section class="blog-discovery" aria-labelledby="blog-discovery-heading">
             <div class="blog-discovery__header">
                 <h2 id="blog-discovery-heading"><?php esc_html_e( 'Find the right guide', 'rolling-reno' ); ?></h2>
-                <p><?php esc_html_e( 'Use search plus one focused category. Filters stay in the URL so results are shareable and work without JavaScript.', 'rolling-reno' ); ?></p>
+                <p><?php esc_html_e( 'Search by topic or choose a path. Your filters are shareable, so you can save or send the exact guide list.', 'rolling-reno' ); ?></p>
             </div>
 
             <form class="blog-search" role="search" method="get" action="<?php echo esc_url( rr_blog_index_url() ); ?>">
@@ -97,7 +97,12 @@ get_header();
             </div>
         </section>
 
-        <div class="posts-grid">
+        <section class="blog-latest" aria-labelledby="blog-latest-heading">
+            <div class="blog-latest__header">
+                <p class="eyebrow"><?php esc_html_e( 'Latest field notes', 'rolling-reno' ); ?></p>
+                <h2 id="blog-latest-heading"><?php esc_html_e( 'Fresh guides from the road', 'rolling-reno' ); ?></h2>
+            </div>
+            <div class="posts-grid blog-posts-grid">
             <?php
             if ( have_posts() ) :
                 while ( have_posts() ) :
@@ -138,7 +143,8 @@ get_header();
             else : ?>
                 <p><?php esc_html_e( 'No posts yet — check back soon.', 'rolling-reno' ); ?></p>
             <?php endif; ?>
-        </div>
+            </div>
+        </section>
 
         <section class="cta-banner cta-banner--leadmagnet" id="newsletter" aria-labelledby="blog-newsletter-heading">
             <div class="cta-banner__inner">
