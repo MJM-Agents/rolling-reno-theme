@@ -1476,11 +1476,15 @@ function rr_affiliate_products_callback( $post ) {
  * Output a single product row in the metabox.
  */
 function rr_affiliate_product_row( $index, $product ) {
-    $name      = isset( $product['name'] )      ? $product['name']      : '';
+    $name      = isset( $product['name'] ) ? $product['name'] : '';
     $image_url = isset( $product['image_url'] ) ? $product['image_url'] : '';
-    $shop_url  = isset( $product['shop_url'] )  ? $product['shop_url']  : '';
-    $verdict   = isset( $product['verdict'] )   ? $product['verdict']   : '';
-    $stars     = isset( $product['stars'] )     ? $product['stars']     : '5';
+    $image_alt = isset( $product['image_alt'] ) ? $product['image_alt'] : '';
+    $shop_url  = isset( $product['shop_url'] ) ? $product['shop_url'] : '';
+    $verdict   = isset( $product['verdict'] ) ? $product['verdict'] : '';
+    $best_for  = isset( $product['best_for'] ) ? $product['best_for'] : '';
+    $pros      = isset( $product['pros'] ) ? $product['pros'] : '';
+    $cons      = isset( $product['cons'] ) ? $product['cons'] : '';
+    $stars     = isset( $product['stars'] ) ? $product['stars'] : '5';
     ?>
     <div class="rr-affiliate-product-row">
         <div class="field-row">
@@ -1500,14 +1504,32 @@ function rr_affiliate_product_row( $index, $product ) {
                 <input type="url" name="rr_products[<?php echo esc_attr( $index ); ?>][image_url]" value="<?php echo esc_url( $image_url ); ?>" placeholder="https://...">
             </div>
             <div class="field">
-                <label><?php esc_html_e( 'Amazon URL', 'rolling-reno' ); ?></label>
-                <input type="url" name="rr_products[<?php echo esc_attr( $index ); ?>][shop_url]" value="<?php echo esc_url( $shop_url ); ?>" placeholder="https://amazon.com/dp/...">
+                <label><?php esc_html_e( 'Image Alt Text', 'rolling-reno' ); ?></label>
+                <input type="text" name="rr_products[<?php echo esc_attr( $index ); ?>][image_alt]" value="<?php echo esc_attr( $image_alt ); ?>" placeholder="Product photo description">
+            </div>
+            <div class="field">
+                <label><?php esc_html_e( 'Product URL (Amazon or direct)', 'rolling-reno' ); ?></label>
+                <input type="url" name="rr_products[<?php echo esc_attr( $index ); ?>][shop_url]" value="<?php echo esc_url( $shop_url ); ?>" placeholder="https://www.amazon.com/dp/... or https://brand.com/product">
             </div>
         </div>
         <div class="field-row">
             <div class="field">
                 <label><?php esc_html_e( 'Verdict / Quote', 'rolling-reno' ); ?></label>
                 <textarea name="rr_products[<?php echo esc_attr( $index ); ?>][verdict]" placeholder="&quot;Used on Build #2 — it's held up for 3 years on the road.&quot;"><?php echo esc_textarea( $verdict ); ?></textarea>
+            </div>
+        </div>
+        <div class="field-row">
+            <div class="field">
+                <label><?php esc_html_e( 'Best For', 'rolling-reno' ); ?></label>
+                <input type="text" name="rr_products[<?php echo esc_attr( $index ); ?>][best_for]" value="<?php echo esc_attr( $best_for ); ?>" placeholder="Weekend builds, full-time vans, small kitchens...">
+            </div>
+            <div class="field">
+                <label><?php esc_html_e( 'Pros (one per line)', 'rolling-reno' ); ?></label>
+                <textarea name="rr_products[<?php echo esc_attr( $index ); ?>][pros]" placeholder="Easy install&#10;Good warranty"><?php echo esc_textarea( $pros ); ?></textarea>
+            </div>
+            <div class="field">
+                <label><?php esc_html_e( 'Watch-outs (one per line)', 'rolling-reno' ); ?></label>
+                <textarea name="rr_products[<?php echo esc_attr( $index ); ?>][cons]" placeholder="Costs more upfront"><?php echo esc_textarea( $cons ); ?></textarea>
             </div>
         </div>
     </div>
@@ -1542,11 +1564,15 @@ function rr_save_affiliate_products( $post_id ) {
                 continue; // Skip empty rows
             }
             $products[] = array(
-                'name'      => sanitize_text_field( $product['name'] ),
-                'image_url' => esc_url_raw( $product['image_url'] ),
-                'shop_url'  => esc_url_raw( $product['shop_url'] ),
-                'verdict'   => sanitize_textarea_field( $product['verdict'] ),
-                'stars'     => absint( $product['stars'] ),
+                'name'      => sanitize_text_field( $product['name'] ?? '' ),
+                'image_url' => esc_url_raw( $product['image_url'] ?? '' ),
+                'image_alt' => sanitize_text_field( $product['image_alt'] ?? '' ),
+                'shop_url'  => esc_url_raw( $product['shop_url'] ?? '' ),
+                'verdict'   => sanitize_textarea_field( $product['verdict'] ?? '' ),
+                'best_for'  => sanitize_text_field( $product['best_for'] ?? '' ),
+                'pros'      => sanitize_textarea_field( $product['pros'] ?? '' ),
+                'cons'      => sanitize_textarea_field( $product['cons'] ?? '' ),
+                'stars'     => absint( $product['stars'] ?? 5 ),
             );
         }
     }
@@ -1554,6 +1580,21 @@ function rr_save_affiliate_products( $post_id ) {
     update_post_meta( $post_id, '_rr_affiliate_products', $products );
 }
 add_action( 'save_post', 'rr_save_affiliate_products' );
+
+/**
+ * Determine whether a URL points to Amazon.
+ *
+ * @param string $url Product URL.
+ * @return bool True for Amazon URLs.
+ */
+function rr_is_amazon_url( $url ) {
+    $host = wp_parse_url( $url, PHP_URL_HOST );
+    if ( empty( $host ) ) {
+        return false;
+    }
+
+    return (bool) preg_match( '/(^|\.)amazon\.[a-z.]+$/i', $host );
+}
 
 /**
  * Add Amazon Associate tag to affiliate URLs.
@@ -1566,9 +1607,8 @@ function rr_affiliate_url( $url ) {
         return $url;
     }
     
-    // Only modify full amazon.com URLs — amzn.to short links do not support
-    // query parameters so appending a tag would break the redirect.
-    if ( strpos( $url, 'amazon.com' ) === false ) {
+    // Only modify Amazon URLs. Direct product URLs are preserved as-is.
+    if ( ! rr_is_amazon_url( $url ) ) {
         return $url;
     }
 
@@ -1644,13 +1684,16 @@ function rr_render_affiliate_products( $post_id = null ) {
                 
                 get_template_part( 'template-parts/affiliate-card', null, array(
                     'image_url'   => $product['image_url'],
-                    'image_alt'   => $product['name'],
+                    'image_alt'   => ! empty( $product['image_alt'] ) ? $product['image_alt'] : $product['name'],
                     'name'        => $product['name'],
                     'verdict'     => $product['verdict'],
                     'stars'       => $stars_emoji,
                     'stars_label' => $stars_label,
                     'shop_url'    => $shop_url,
-                    'shop_label'  => __( 'Shop on Amazon →', 'rolling-reno' ),
+                    'shop_label'  => rr_is_amazon_url( $shop_url ) ? __( 'Shop on Amazon →', 'rolling-reno' ) : __( 'View product →', 'rolling-reno' ),
+                    'best_for'    => isset( $product['best_for'] ) ? $product['best_for'] : '',
+                    'pros'        => ! empty( $product['pros'] ) ? preg_split( '/\r\n|\r|\n/', $product['pros'] ) : array(),
+                    'cons'        => ! empty( $product['cons'] ) ? preg_split( '/\r\n|\r|\n/', $product['cons'] ) : array(),
                 ) );
             endforeach;
             ?>
@@ -1663,7 +1706,7 @@ function rr_render_affiliate_products( $post_id = null ) {
 /**
  * Shortcode to embed a single affiliate product card inline.
  *
- * Usage: [rr_product name="Product Name" url="https://amazon.com/..." image="https://..." verdict="Quote" stars="5"]
+ * Usage: [rr_product name="Product Name" url="https://amazon.com/..." image="https://..." alt="Product photo" verdict="Quote" stars="5" best_for="Weekend builds" pros="Compact|Reliable" cons="Costs more upfront"]
  *
  * @param array $atts Shortcode attributes.
  * @return string HTML output.
@@ -1671,10 +1714,14 @@ function rr_render_affiliate_products( $post_id = null ) {
 function rr_product_shortcode( $atts ) {
     $atts = shortcode_atts( array(
         'name'    => '',
-        'url'     => '',
-        'image'   => '',
-        'verdict' => '',
-        'stars'   => '5',
+        'url'      => '',
+        'image'    => '',
+        'alt'      => '',
+        'verdict'  => '',
+        'stars'    => '5',
+        'best_for' => '',
+        'pros'     => '',
+        'cons'     => '',
     ), $atts, 'rr_product' );
     
     if ( empty( $atts['name'] ) ) {
@@ -1689,13 +1736,16 @@ function rr_product_shortcode( $atts ) {
     ob_start();
     get_template_part( 'template-parts/affiliate-card', null, array(
         'image_url'   => $atts['image'],
-        'image_alt'   => $atts['name'],
+        'image_alt'   => $atts['alt'] ? $atts['alt'] : $atts['name'],
         'name'        => $atts['name'],
         'verdict'     => $atts['verdict'],
         'stars'       => $stars_emoji,
         'stars_label' => $stars_label,
         'shop_url'    => $shop_url,
-        'shop_label'  => __( 'Shop on Amazon →', 'rolling-reno' ),
+        'shop_label'  => rr_is_amazon_url( $shop_url ) ? __( 'Shop on Amazon →', 'rolling-reno' ) : __( 'View product →', 'rolling-reno' ),
+        'best_for'    => $atts['best_for'],
+        'pros'        => ! empty( $atts['pros'] ) ? array_map( 'trim', explode( '|', $atts['pros'] ) ) : array(),
+        'cons'        => ! empty( $atts['cons'] ) ? array_map( 'trim', explode( '|', $atts['cons'] ) ) : array(),
     ) );
     return ob_get_clean();
 }

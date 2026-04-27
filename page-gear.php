@@ -237,57 +237,20 @@ get_header();
 
             <div class="gear-grid">
                 <?php foreach ( $section['products'] as $product ) :
-                    $product['shop_url'] = function_exists( 'rr_affiliate_url' ) ? rr_affiliate_url( $product['shop_url'] ) : $product['shop_url'];
-                    $has_shop_url        = ! empty( $product['shop_url'] ) && '#' !== $product['shop_url'];
-                ?>
-                <div class="gear-product-card">
-                    <?php if ( $has_shop_url ) : ?>
-                    <a
-                        href="<?php echo esc_url( $product['shop_url'] ); ?>"
-                        class="gear-product-card__image-link"
-                        rel="nofollow sponsored"
-                        target="_blank"
-                        aria-label="<?php echo esc_attr( sprintf( __( 'Shop %s on Amazon (affiliate link)', 'rolling-reno' ), $product['name'] ) ); ?>"
-                    >
-                    <?php else : ?>
-                    <div class="gear-product-card__image-link" aria-hidden="true">
-                    <?php endif; ?>
-                        <div class="gear-product-card__image-wrap">
-                            <div class="gear-product-card__image-placeholder" aria-hidden="true">
-                                <?php echo $product['emoji']; ?>
-                            </div>
-                        </div>
-                    <?php if ( $has_shop_url ) : ?>
-                    </a>
-                    <?php else : ?>
-                    </div>
-                    <?php endif; ?>
-                    <div class="gear-product-card__body">
-                        <span class="badge badge--category"><?php echo esc_html( $product['badge'] ); ?></span>
-                        <h3 class="gear-product-card__name"><?php echo esc_html( $product['name'] ); ?></h3>
-                        <div class="gear-product-card__rating" aria-label="<?php echo esc_attr( $product['stars_label'] ); ?>">
-                            <span class="gear-product-card__stars"><?php echo esc_html( $product['stars'] ); ?></span>
-                            <span class="gear-product-card__price"><?php echo esc_html( $product['price'] ); ?></span>
-                        </div>
-                        <p class="gear-product-card__verdict"><?php echo esc_html( $product['verdict'] ); ?></p>
-                        <?php if ( $has_shop_url ) : ?>
-                        <a
-                            href="<?php echo esc_url( $product['shop_url'] ); ?>"
-                            class="gear-product-card__cta"
-                            rel="nofollow sponsored"
-                            target="_blank"
-                            aria-label="<?php echo esc_attr( sprintf( __( 'Shop %s on Amazon (opens in new tab, affiliate link)', 'rolling-reno' ), $product['name'] ) ); ?>"
-                        >
-                            <?php esc_html_e( 'Shop on Amazon →', 'rolling-reno' ); ?>
-                        </a>
-                        <?php else : ?>
-                        <span class="gear-product-card__cta" style="color: var(--color-text-muted); cursor: default;">
-                            <?php esc_html_e( 'Product link coming soon', 'rolling-reno' ); ?>
-                        </span>
-                        <?php endif; ?>
-                    </div>
-                </div>
-                <?php endforeach; ?>
+                    $shop_url = function_exists( 'rr_affiliate_url' ) ? rr_affiliate_url( $product['shop_url'] ) : $product['shop_url'];
+
+                    get_template_part( 'template-parts/affiliate-card', null, array(
+                        'name'        => $product['name'],
+                        'verdict'     => $product['verdict'],
+                        'stars'       => $product['stars'],
+                        'stars_label' => $product['stars_label'],
+                        'price'       => $product['price'],
+                        'shop_url'    => $shop_url,
+                        'shop_label'  => function_exists( 'rr_is_amazon_url' ) && rr_is_amazon_url( $shop_url ) ? __( 'Shop on Amazon →', 'rolling-reno' ) : __( 'View product →', 'rolling-reno' ),
+                        'badge'       => $product['badge'],
+                        'placeholder' => $product['emoji'],
+                    ) );
+                endforeach; ?>
             </div>
         </section>
 
