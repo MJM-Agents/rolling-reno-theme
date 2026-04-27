@@ -10,6 +10,8 @@ define( 'RR_VERSION', '2.0.11' );
 define( 'RR_THEME_DIR', get_template_directory() );
 define( 'RR_THEME_URI', get_template_directory_uri() );
 
+require_once RR_THEME_DIR . '/inc/editorial-qa.php';
+
 // ─── Theme Setup ────────────────────────────────────────────────────────────
 
 function rr_setup() {
