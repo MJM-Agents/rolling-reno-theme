@@ -3,7 +3,7 @@ name: Deploy to Flywheel Staging
 on:
   push:
     branches:
-      - staging
+      - main
   workflow_dispatch:
 
 concurrency:
