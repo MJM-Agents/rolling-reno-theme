@@ -118,51 +118,114 @@ jobs:
             "find ${{ env.THEME_PATH }} -type d -exec chmod 755 {} \; && \
              find ${{ env.THEME_PATH }} -type f -exec chmod 644 {} \;"
 
-      - name: Flush Flywheel cache
+      - name: Purge WordPress/Flywheel/W3 Total Cache
         run: |
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
-            "${{ secrets.FLYWHEEL_SSH_USER }}@${{ secrets.FLYWHEEL_SSH_HOST }}" \
-            "php /www/fw-flush-cache.php"
-          echo "⏳ Waiting 5s for cache purge to propagate..."
-          sleep 5
+            "${{ secrets.FLYWHEEL_SSH_USER }}@${{ secrets.FLYWHEEL_SSH_HOST }}" 'bash -s' <<'REMOTE_CACHE_PURGE'
+          set -e
+          cat > /tmp/rolling-reno-cache-purge.php <<'PHP'
+          <?php
+          require '/www/wp-load.php';
 
-      - name: Post-deploy smoke test
+          $errors = 0;
+
+          if (function_exists('w3tc_flush_all')) {
+              w3tc_flush_all();
+              echo "✅ W3 Total Cache: flushed all caches\n";
+          } else {
+              echo "ℹ️ W3 Total Cache flush function unavailable; plugin may be inactive.\n";
+          }
+
+          if (function_exists('wp_cache_flush')) {
+              $result = wp_cache_flush();
+              if ($result === false) {
+                  echo "⚠️ WordPress object cache flush returned false\n";
+                  $errors++;
+              } else {
+                  echo "✅ WordPress object cache: flushed\n";
+              }
+          }
+
+          exit($errors > 0 ? 1 : 0);
+          PHP
+
+          php /tmp/rolling-reno-cache-purge.php
+          php /www/fw-flush-cache.php
+          rm -f /tmp/rolling-reno-cache-purge.php
+          REMOTE_CACHE_PURGE
+
+          echo "⏳ Waiting 10s for cache purge to propagate..."
+          sleep 10
+
+      - name: Post-deploy cache-busting production verification
         run: |
           ERRORS=0
+          CACHE_BUST="deploy-${GITHUB_SHA::7}-$(date +%s)"
 
-          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.SITE_URL }}/")
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "❌ Homepage returned HTTP $HTTP_CODE (expected 200)"
-            ERRORS=$((ERRORS + 1))
-          else
-            echo "✅ Homepage: HTTP 200"
-          fi
+          check_page() {
+            local label="$1"
+            local path="$2"
+            local url="${{ env.SITE_URL }}${path}"
+            local busted_url="$url"
+
+            if [[ "$url" == *"?"* ]]; then
+              busted_url="${url}&deploy_check=${CACHE_BUST}"
+            else
+              busted_url="${url}?deploy_check=${CACHE_BUST}"
+            fi
+
+            HTTP_CODE=$(curl -sL -o /tmp/page-check.html -w "%{http_code}" "$busted_url" --max-time 20)
+            PAGE_SIZE=$(wc -c < /tmp/page-check.html 2>/dev/null || echo "0")
+
+            if [ "$HTTP_CODE" != "200" ]; then
+              echo "❌ $label returned HTTP $HTTP_CODE for $busted_url"
+              ERRORS=$((ERRORS + 1))
+              return
+            fi
+
+            if ! grep -q "/wp-content/themes/rolling-reno-v2" /tmp/page-check.html; then
+              echo "❌ $label did not reference rolling-reno-v2 assets"
+              ERRORS=$((ERRORS + 1))
+            fi
+
+            if grep -qi "Uncategorized" /tmp/page-check.html; then
+              echo "❌ $label exposes Uncategorized text after deploy"
+              ERRORS=$((ERRORS + 1))
+            fi
+
+            echo "✅ $label: HTTP 200, ${PAGE_SIZE} bytes, cache-busted URL verified"
+          }
+
+          check_page "Homepage" "/"
+          check_page "Blog" "/blog/"
+          check_page "Search" "/?s=renovation"
 
           for css_file in design-system.css main.css; do
-            CSS_URL="${{ env.SITE_URL }}/wp-content/themes/rolling-reno-v2/assets/css/${css_file}"
-            HTTP_CODE=$(curl -s -o /tmp/css-check -w "%{http_code}" "$CSS_URL")
+            CSS_URL="${{ env.SITE_URL }}/wp-content/themes/rolling-reno-v2/assets/css/${css_file}?deploy_check=${CACHE_BUST}"
+            HTTP_CODE=$(curl -sL -o /tmp/css-check -w "%{http_code}" "$CSS_URL" --max-time 20)
             CSS_SIZE=$(wc -c < /tmp/css-check 2>/dev/null || echo "0")
 
             if [ "$HTTP_CODE" != "200" ]; then
               echo "❌ $css_file: HTTP $HTTP_CODE"
               ERRORS=$((ERRORS + 1))
             elif [ "$CSS_SIZE" -lt 1000 ]; then
-              echo "⚠️ $css_file: suspiciously small (${CSS_SIZE} bytes)"
+              echo "❌ $css_file: suspiciously small (${CSS_SIZE} bytes)"
               ERRORS=$((ERRORS + 1))
             else
               echo "✅ $css_file: HTTP 200, ${CSS_SIZE} bytes"
             fi
           done
 
+          echo "SMOKE_TEST_ISSUES=$ERRORS" >> $GITHUB_ENV
+
           if [ $ERRORS -gt 0 ]; then
             echo ""
-            echo "⚠️ Smoke test found $ERRORS issue(s). Site may need manual verification."
-            echo "SMOKE_TEST_ISSUES=$ERRORS" >> $GITHUB_ENV
-          else
-            echo ""
-            echo "✅ All smoke tests passed."
-            echo "SMOKE_TEST_ISSUES=0" >> $GITHUB_ENV
+            echo "❌ Production verification failed with $ERRORS issue(s). Cache purge/deploy requires manual attention."
+            exit 1
           fi
+
+          echo ""
+          echo "✅ Cache purge and production verification passed."
 
       - name: Notify Slack - deploy complete
         if: success()
