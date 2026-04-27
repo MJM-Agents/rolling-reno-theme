@@ -497,6 +497,8 @@ body.mobile-menu-open { overflow: hidden; }
   gap: var(--space-1);
 }
 .mobile-menu__link {
+  display: block;
+  width: 100%;
   font-family: var(--font-body);
   font-size: 18px;
   font-weight: 700;
@@ -507,6 +509,12 @@ body.mobile-menu-open { overflow: hidden; }
   transition: color 150ms ease;
 }
 .mobile-menu__link:last-of-type { border-bottom: none; }
+.mobile-menu__link--child {
+  padding-left: var(--space-4);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-muted);
+}
 .mobile-menu__link:hover { color: var(--color-terracotta); }
 
 /* Desktop hides hamburger, mobile hides nav links */

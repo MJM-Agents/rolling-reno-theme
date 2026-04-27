@@ -69,25 +69,32 @@
     const mobileMenu = document.getElementById('mobile-menu');
     if (!hamburger || !mobileMenu) return;
 
+    function setMobileMenu(open) {
+      hamburger.setAttribute('aria-expanded', String(open));
+      mobileMenu.setAttribute('aria-hidden', String(!open));
+      document.body.classList.toggle('mobile-menu-open', open);
+    }
+
     hamburger.addEventListener('click', function () {
-      const isOpen = this.getAttribute('aria-expanded') === 'true';
-      this.setAttribute('aria-expanded', String(!isOpen));
-      mobileMenu.setAttribute('aria-hidden', String(isOpen));
+      const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
+      setMobileMenu(!isOpen);
+    });
+
+    mobileMenu.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setMobileMenu(false);
     });
 
     // Close on outside click
     document.addEventListener('click', function (e) {
       if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
-        hamburger.setAttribute('aria-expanded', 'false');
-        mobileMenu.setAttribute('aria-hidden', 'true');
+        setMobileMenu(false);
       }
     });
 
     // Close on Escape
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
-        hamburger.setAttribute('aria-expanded', 'false');
-        mobileMenu.setAttribute('aria-hidden', 'true');
+        setMobileMenu(false);
         hamburger.focus();
       }
     });
