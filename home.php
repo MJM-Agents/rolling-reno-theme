@@ -24,7 +24,7 @@ get_header();
         <section class="blog-discovery" aria-labelledby="blog-discovery-heading">
             <div class="blog-discovery__header">
                 <h2 id="blog-discovery-heading"><?php esc_html_e( 'Find the right guide', 'rolling-reno' ); ?></h2>
-                <p><?php esc_html_e( 'Use search plus one focused category. Filters stay in the URL so results are shareable and work without JavaScript.', 'rolling-reno' ); ?></p>
+                <p><?php esc_html_e( 'Search by topic or choose a path. Your filters are shareable, so you can save or send the exact guide list.', 'rolling-reno' ); ?></p>
             </div>
 
             <form class="blog-search" role="search" method="get" action="<?php echo esc_url( rr_blog_index_url() ); ?>">
