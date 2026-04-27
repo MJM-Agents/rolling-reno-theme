@@ -1,0 +1,32 @@
+name: Regression Tests
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  rolling-reno-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Run Playwright regression tests against staging
+        env:
+          ROLLING_RENO_BASE_URL: https://rollingreno.flywheelstaging.com
+          STAGING_PRIVACY_USER: ${{ secrets.STAGING_PRIVACY_USER }}
+          STAGING_PRIVACY_PASS: ${{ secrets.STAGING_PRIVACY_PASS }}
+        run: npm run test:regression
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore

@@ -674,3 +674,20 @@ h4[id] {
   .blog-latest__header .eyebrow { margin-bottom: 0.35rem; }
   .blog-index--professional .post-card__body { padding: 1.05rem !important; }
 }
+
+/* MJM-289: mobile regression-test hardening.
+   Keep iOS from zooming search inputs and preserve the viewport width after search/menu interactions. */
+@media (max-width: 768px) {
+  .site-search__input,
+  .blog-search__input {
+    font-size: 16px !important;
+  }
+  .site-search,
+  .mobile-menu,
+  .blog-discovery,
+  .blog-search,
+  .blog-search__row {
+    box-sizing: border-box;
+    max-width: 100vw;
+  }
+}
