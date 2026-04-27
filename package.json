@@ -1,0 +1,15 @@
+{
+  "name": "rolling-reno-theme",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Rolling Reno WordPress theme regression tests",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:regression": "playwright test tests/e2e/regression.spec.ts",
+    "test:install": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.1"
+  }
+}
