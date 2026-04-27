@@ -469,3 +469,14 @@ h4[id] {
   .gear-product-card,
   .post-card { border-radius: var(--radius-xl); }
 }
+
+
+/* MJM-285: keep mobile drawer visible outside the fixed/filtered header box. */
+@media (max-width: 1023px) {
+  .site-nav { overflow: visible; }
+  .mobile-menu[aria-hidden="false"] {
+    display: flex !important;
+    height: calc(100vh - var(--header-height) - var(--admin-bar-height));
+    min-height: calc(100vh - var(--header-height) - var(--admin-bar-height));
+  }
+}
