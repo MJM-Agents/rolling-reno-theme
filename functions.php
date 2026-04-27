@@ -350,39 +350,89 @@ function rr_category_hub_config_for_slug( $slug ) {
     return $config[ $slug ] ?? array();
 }
 
-function rr_category_hub_document_title( $title ) {
+function rr_category_hub_current_config() {
     if ( ! is_category() ) {
-        return $title;
+        return array();
     }
+
     $term = get_queried_object();
     if ( ! $term || empty( $term->slug ) ) {
-        return $title;
+        return array();
     }
-    $config = rr_category_hub_config_for_slug( $term->slug );
+
+    return rr_category_hub_config_for_slug( $term->slug );
+}
+
+function rr_category_hub_document_title( $title ) {
+    $config = rr_category_hub_current_config();
     if ( empty( $config['seo_title'] ) ) {
         return $title;
     }
+
     $title['title'] = $config['seo_title'];
     $title['site']  = get_bloginfo( 'name' );
     return $title;
 }
 add_filter( 'document_title_parts', 'rr_category_hub_document_title' );
 
+function rr_category_hub_wpseo_title( $title ) {
+    $config = rr_category_hub_current_config();
+    if ( empty( $config['seo_title'] ) ) {
+        return $title;
+    }
+
+    return $config['seo_title'] . ' - ' . get_bloginfo( 'name' );
+}
+add_filter( 'wpseo_title', 'rr_category_hub_wpseo_title', 20 );
+add_filter( 'wpseo_opengraph_title', 'rr_category_hub_wpseo_title', 20 );
+add_filter( 'wpseo_twitter_title', 'rr_category_hub_wpseo_title', 20 );
+
+function rr_category_hub_meta_description_value() {
+    $config = rr_category_hub_current_config();
+    return empty( $config['seo_desc'] ) ? '' : $config['seo_desc'];
+}
+
+function rr_category_hub_wpseo_description( $description ) {
+    $hub_description = rr_category_hub_meta_description_value();
+    return $hub_description ? $hub_description : $description;
+}
+add_filter( 'wpseo_metadesc', 'rr_category_hub_wpseo_description', 20 );
+add_filter( 'wpseo_opengraph_desc', 'rr_category_hub_wpseo_description', 20 );
+add_filter( 'wpseo_twitter_description', 'rr_category_hub_wpseo_description', 20 );
+
 function rr_category_hub_meta_description() {
-    if ( ! is_category() ) {
+    if ( defined( 'WPSEO_VERSION' ) ) {
         return;
     }
-    $term = get_queried_object();
-    if ( ! $term || empty( $term->slug ) ) {
+
+    $description = rr_category_hub_meta_description_value();
+    if ( ! $description ) {
         return;
     }
-    $config = rr_category_hub_config_for_slug( $term->slug );
-    if ( empty( $config['seo_desc'] ) ) {
-        return;
-    }
-    echo '<meta name="description" content="' . esc_attr( $config['seo_desc'] ) . '">' . "\n";
+
+    echo '<meta name="description" content="' . esc_attr( $description ) . '">' . "\n";
 }
 add_action( 'wp_head', 'rr_category_hub_meta_description', 2 );
+
+
+function rr_category_hub_wpseo_schema_webpage( $data ) {
+    $config = rr_category_hub_current_config();
+    if ( empty( $config['seo_title'] ) ) {
+        return $data;
+    }
+
+    $title       = $config['seo_title'] . ' - ' . get_bloginfo( 'name' );
+    $description = $config['seo_desc'] ?? '';
+
+    $data['name']     = $title;
+    $data['headline'] = $title;
+    if ( $description ) {
+        $data['description'] = $description;
+    }
+
+    return $data;
+}
+add_filter( 'wpseo_schema_webpage', 'rr_category_hub_wpseo_schema_webpage', 20 );
 
 // ─── Preconnect & Preload (Google Fonts, hero image) ────────────────────────
 
@@ -905,9 +955,17 @@ function rr_blog_hub_cards() {
     );
 }
 
+function rr_blog_archive_seo_title() {
+    return __( 'Rolling Reno Blog: RV Renovation, Van Life & Off-Grid Guides', 'rolling-reno' );
+}
+
+function rr_blog_archive_seo_description() {
+    return __( 'Browse Rolling Reno guides by starting point: RV renovation planning, vehicle choices, off-grid systems, interior layouts, van life, and full-time RV life.', 'rolling-reno' );
+}
+
 function rr_blog_archive_document_title( $title ) {
     if ( is_home() || rr_is_blog_index_request() ) {
-        $title['title'] = __( 'Rolling Reno Blog: RV Renovation, Van Life & Off-Grid Guides', 'rolling-reno' );
+        $title['title'] = rr_blog_archive_seo_title();
         $title['site']  = get_bloginfo( 'name' );
     }
 
@@ -915,14 +973,52 @@ function rr_blog_archive_document_title( $title ) {
 }
 add_filter( 'document_title_parts', 'rr_blog_archive_document_title' );
 
-function rr_blog_archive_meta_description() {
+function rr_blog_archive_wpseo_title( $title ) {
     if ( ! ( is_home() || rr_is_blog_index_request() ) ) {
+        return $title;
+    }
+
+    return rr_blog_archive_seo_title() . ' - ' . get_bloginfo( 'name' );
+}
+add_filter( 'wpseo_title', 'rr_blog_archive_wpseo_title', 20 );
+add_filter( 'wpseo_opengraph_title', 'rr_blog_archive_wpseo_title', 20 );
+add_filter( 'wpseo_twitter_title', 'rr_blog_archive_wpseo_title', 20 );
+
+function rr_blog_archive_wpseo_description( $description ) {
+    if ( ! ( is_home() || rr_is_blog_index_request() ) ) {
+        return $description;
+    }
+
+    return rr_blog_archive_seo_description();
+}
+add_filter( 'wpseo_metadesc', 'rr_blog_archive_wpseo_description', 20 );
+add_filter( 'wpseo_opengraph_desc', 'rr_blog_archive_wpseo_description', 20 );
+add_filter( 'wpseo_twitter_description', 'rr_blog_archive_wpseo_description', 20 );
+
+function rr_blog_archive_meta_description() {
+    if ( defined( 'WPSEO_VERSION' ) || ! ( is_home() || rr_is_blog_index_request() ) ) {
         return;
     }
 
-    echo '<meta name="description" content="' . esc_attr__( 'Browse Rolling Reno guides by starting point: RV renovation planning, vehicle choices, off-grid systems, interior layouts, van life, and full-time RV life.', 'rolling-reno' ) . '">' . "\n";
+    echo '<meta name="description" content="' . esc_attr( rr_blog_archive_seo_description() ) . '">' . "\n";
 }
 add_action( 'wp_head', 'rr_blog_archive_meta_description', 2 );
+
+
+function rr_blog_archive_wpseo_schema_webpage( $data ) {
+    if ( ! ( is_home() || rr_is_blog_index_request() ) ) {
+        return $data;
+    }
+
+    $title = rr_blog_archive_seo_title() . ' - ' . get_bloginfo( 'name' );
+
+    $data['name']        = $title;
+    $data['headline']    = $title;
+    $data['description'] = rr_blog_archive_seo_description();
+
+    return $data;
+}
+add_filter( 'wpseo_schema_webpage', 'rr_blog_archive_wpseo_schema_webpage', 20 );
 
 /**
  * Keep /blog/?category=<slug>&s=<term> crawlable and non-JS friendly.
