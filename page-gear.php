@@ -22,7 +22,7 @@ get_header();
                     <?php esc_html_e( 'After 3 van builds and 40,000km on the road, here\'s what earned a permanent place in Mara\'s kit.', 'rolling-reno' ); ?>
                 </p>
                 <p class="gear-header__disclosure">
-                    <?php esc_html_e( 'Some links on this page are affiliate links. If you buy through them, Mara earns a small commission — at zero cost to you. She only recommends gear she\'s actually used.', 'rolling-reno' ); ?>
+                    <?php esc_html_e( 'As an Amazon Associate, Mara earns from qualifying purchases. Some links may also be affiliate links, at no cost to you. She only recommends gear she\'s actually used.', 'rolling-reno' ); ?>
                 </p>
             </div>
         </div>

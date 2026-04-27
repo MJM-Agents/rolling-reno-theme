@@ -144,7 +144,7 @@ $cta_context   = $is_amazon_url ? __( 'Amazon affiliate link', 'rolling-reno' ) 
         </div>
 
         <p class="affiliate-card__disclosure">
-            <?php esc_html_e( '*Some product links are affiliate links. Mara may earn a small commission at no cost to you.', 'rolling-reno' ); ?>
+            <?php esc_html_e( 'As an Amazon Associate, Mara earns from qualifying purchases. Some links may also be affiliate links, at no cost to you.', 'rolling-reno' ); ?>
         </p>
     </div>
 </article>

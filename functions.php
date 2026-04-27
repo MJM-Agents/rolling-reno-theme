@@ -1183,7 +1183,7 @@ function rr_render_post_trust_panel( $post_id = null ) {
                 printf(
                     wp_kses(
                         /* translators: %s: affiliate disclosure URL */
-                        __( 'Some guides include affiliate links. If you buy through them, Rolling Reno may earn a small commission at no extra cost to you. Read the <a href="%s">affiliate disclosure</a>.', 'rolling-reno' ),
+                        __( 'As an Amazon Associate, Mara earns from qualifying purchases. Some guide links may also be affiliate links, at no extra cost to you. Read the <a href="%s">affiliate disclosure</a>.', 'rolling-reno' ),
                         array( 'a' => array( 'href' => array() ) )
                     ),
                     esc_url( home_url( '/affiliate-disclosure/' ) )
@@ -1664,7 +1664,7 @@ function rr_render_affiliate_products( $post_id = null ) {
             printf(
                 /* translators: %s: link to affiliate disclosure page */
                 wp_kses(
-                    __( '<strong>Heads up:</strong> Some links below are affiliate links. If you buy through them, Rolling Reno earns a small commission at no extra cost to you. See our <a href="%s">affiliate disclosure</a> for details.', 'rolling-reno' ),
+                    __( '<strong>Heads up:</strong> As an Amazon Associate, Mara earns from qualifying purchases. Some links below may also be affiliate links, at no extra cost to you. See our <a href="%s">affiliate disclosure</a> for details.', 'rolling-reno' ),
                     array(
                         'strong' => array(),
                         'a'      => array( 'href' => array() ),
