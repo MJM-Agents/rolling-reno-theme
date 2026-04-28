@@ -237,9 +237,14 @@ get_header();
 
             <div class="gear-grid">
                 <?php foreach ( $section['products'] as $product ) :
-                    $shop_url = function_exists( 'rr_affiliate_url' ) ? rr_affiliate_url( $product['shop_url'] ) : $product['shop_url'];
+                    $asset_shop_url = function_exists( 'rr_featured_gear_asset' ) ? rr_featured_gear_asset( $product['name'], 'url' ) : '';
+                    $raw_shop_url   = ! empty( $asset_shop_url ) ? $asset_shop_url : $product['shop_url'];
+                    $shop_url       = function_exists( 'rr_affiliate_url' ) ? rr_affiliate_url( $raw_shop_url ) : $raw_shop_url;
+                    $image_url      = function_exists( 'rr_featured_gear_asset' ) ? rr_featured_gear_asset( $product['name'], 'image' ) : '';
 
                     get_template_part( 'template-parts/affiliate-card', null, array(
+                        'image_url'   => $image_url,
+                        'image_alt'   => $product['name'],
                         'name'        => $product['name'],
                         'verdict'     => $product['verdict'],
                         'stars'       => $product['stars'],
