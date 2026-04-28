@@ -25,13 +25,15 @@ jobs:
       - name: Notify Slack - deploy starting
         if: always()
         run: |
+          SHORT_SHA="${GITHUB_SHA::7}"
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          MESSAGE=$(printf '🚀 *Deploy starting* - `rolling-reno-v2` → production\nCommit: `%s` by %s\nRun: <%s|View>' "$SHORT_SHA" "$GITHUB_ACTOR" "$RUN_URL")
+          PAYLOAD=$(jq -n --arg channel "C0AQLB1JXBL" --arg text "$MESSAGE" '{channel: $channel, text: $text}')
+
           curl -sf -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d "{
-              \"channel\": \"C0AQLB1JXBL\",
-              \"text\": \"🚀 *Deploy starting* - \\`rolling-reno-v2\\` → production\nCommit: \\`${GITHUB_SHA::7}\\` by ${GITHUB_ACTOR}\nRun: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View>\"
-            }" || true
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data "$PAYLOAD" || true
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -237,21 +239,25 @@ jobs:
             SMOKE_STATUS=" ✅ Smoke test passed"
           fi
 
+          SHORT_SHA="${GITHUB_SHA::7}"
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          MESSAGE=$(printf '✅ *Deploy complete* - `rolling-reno-v2` → production\nCommit: `%s` by %s%s\nRun: <%s|View>' "$SHORT_SHA" "$GITHUB_ACTOR" "$SMOKE_STATUS" "$RUN_URL")
+          PAYLOAD=$(jq -n --arg channel "C0AQLB1JXBL" --arg text "$MESSAGE" '{channel: $channel, text: $text}')
+
           curl -sf -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d "{
-              \"channel\": \"C0AQLB1JXBL\",
-              \"text\": \"✅ *Deploy complete* - \\`rolling-reno-v2\\` → production\nCommit: \\`${GITHUB_SHA::7}\\` by ${GITHUB_ACTOR}${SMOKE_STATUS}\nRun: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View>\"
-            }" || true
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data "$PAYLOAD" || true
 
       - name: Notify Slack - deploy failed
         if: failure()
         run: |
+          SHORT_SHA="${GITHUB_SHA::7}"
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          MESSAGE=$(printf '❌ *Deploy FAILED* - `rolling-reno-v2` → production\nCommit: `%s` by %s\nRun: <%s|View>' "$SHORT_SHA" "$GITHUB_ACTOR" "$RUN_URL")
+          PAYLOAD=$(jq -n --arg channel "C0AQLB1JXBL" --arg text "$MESSAGE" '{channel: $channel, text: $text}')
+
           curl -sf -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d "{
-              \"channel\": \"C0AQLB1JXBL\",
-              \"text\": \"❌ *Deploy FAILED* - \\`rolling-reno-v2\\` → production\nCommit: \\`${GITHUB_SHA::7}\\` by ${GITHUB_ACTOR}\nRun: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View>\"
-            }" || true
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data "$PAYLOAD" || true
