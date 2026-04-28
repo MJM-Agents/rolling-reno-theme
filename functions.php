@@ -6,7 +6,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'RR_VERSION', '2.0.11' );
+define( 'RR_VERSION', '2.0.12' );
 define( 'RR_THEME_DIR', get_template_directory() );
 define( 'RR_THEME_URI', get_template_directory_uri() );
 
@@ -350,6 +350,261 @@ function rr_category_hub_config() {
 function rr_category_hub_config_for_slug( $slug ) {
     $config = rr_category_hub_config();
     return $config[ $slug ] ?? array();
+}
+
+
+/**
+ * Internal journey helpers for single posts.
+ *
+ * These modules turn loose related links into a clear reader path:
+ * what to read before starting, what to do next, and which hub keeps the
+ * topic organised. Copy stays practical and non-salesy so it can appear on
+ * priority renovation posts without implying a one-size-fits-all build order.
+ */
+function rr_post_pathway_url( $path ) {
+    $path = '/' . trim( (string) $path, '/' ) . '/';
+    return home_url( $path );
+}
+
+function rr_post_pathway_item( $label, $path, $note = '' ) {
+    return array(
+        'label' => $label,
+        'url'   => rr_post_pathway_url( $path ),
+        'note'  => $note,
+    );
+}
+
+function rr_post_pathway_primary_category( $post_id ) {
+    $cats = get_the_category( $post_id );
+    if ( empty( $cats ) ) {
+        return null;
+    }
+
+    foreach ( $cats as $cat ) {
+        if ( rr_category_hub_config_for_slug( $cat->slug ) ) {
+            return $cat;
+        }
+    }
+
+    return $cats[0];
+}
+
+function rr_post_pathway_config( $post_id = null ) {
+    $post_id  = $post_id ? (int) $post_id : get_the_ID();
+    $slug     = get_post_field( 'post_name', $post_id );
+    $cat      = rr_post_pathway_primary_category( $post_id );
+    $cat_slug = $cat ? $cat->slug : '';
+    $hub      = $cat_slug ? rr_category_hub_config_for_slug( $cat_slug ) : array();
+
+    $fallbacks = array(
+        'start-here-planning' => array(
+            'before' => array(
+                rr_post_pathway_item( 'Used RV inspection checklist', 'used-rv-inspection-checklist', 'Rule out water damage, soft floors, and title problems before spending on finishes.' ),
+                rr_post_pathway_item( 'RV renovation cost breakdown', 'rv-renovation-cost-breakdown', 'Set a budget that includes repairs, tools, systems, and a contingency.' ),
+            ),
+            'next'   => array(
+                rr_post_pathway_item( 'Renovate in the right order', 'how-renovate-rv-right-order', 'Use this sequence before you start demo, wiring, insulation, or cabinetry.' ),
+                rr_post_pathway_item( 'Lightweight materials guide', 'best-lightweight-materials-rv-remodel', 'Choose materials that hold up without overloading the rig.' ),
+            ),
+        ),
+        'vehicle-guides' => array(
+            'before' => array(
+                rr_post_pathway_item( 'Used RV inspection checklist', 'used-rv-inspection-checklist', 'Check the shell and systems before you fall for a floor plan.' ),
+                rr_post_pathway_item( 'RV renovation cost breakdown', 'rv-renovation-cost-breakdown', 'Price the real renovation, not just the purchase.' ),
+            ),
+            'next'   => array(
+                rr_post_pathway_item( 'Best older RVs to renovate', 'best-older-rvs-to-renovate', 'Compare older rigs that are still realistic renovation candidates.' ),
+                rr_post_pathway_item( 'Renovate in the right order', 'how-renovate-rv-right-order', 'Turn the vehicle choice into a practical build sequence.' ),
+            ),
+        ),
+        'systems-off-grid' => array(
+            'before' => array(
+                rr_post_pathway_item( 'Renovate in the right order', 'how-renovate-rv-right-order', 'Plan hidden systems before walls, floors, and cabinets cover access points.' ),
+                rr_post_pathway_item( 'RV renovation cost breakdown', 'rv-renovation-cost-breakdown', 'Keep electrical, solar, plumbing, and safety gear in the real budget.' ),
+            ),
+            'next'   => array(
+                rr_post_pathway_item( 'Van electrical system DIY guide', 'van-electrical-system-diy-guide', 'Map loads, wire runs, fusing, and battery needs before buying parts.' ),
+                rr_post_pathway_item( 'RV solar system DIY guide', 'rv-solar-system-diy-guide', 'Size solar around actual use, not guesswork.' ),
+            ),
+        ),
+        'interior-build-layouts' => array(
+            'before' => array(
+                rr_post_pathway_item( 'Renovate in the right order', 'how-renovate-rv-right-order', 'Finish structure and systems decisions before pretty surfaces.' ),
+                rr_post_pathway_item( 'Best lightweight materials', 'best-lightweight-materials-rv-remodel', 'Avoid heavy household materials that punish mileage and handling.' ),
+            ),
+            'next'   => array(
+                rr_post_pathway_item( 'RV/van bed build guide', 'rv-van-bed-build-diy', 'Lock in sleep, storage, and walkway trade-offs early.' ),
+                rr_post_pathway_item( 'RV/van kitchen build guide', 'rv-van-kitchen-build-diy-guide', 'Plan cooking, water, ventilation, and storage as one system.' ),
+            ),
+        ),
+        'van-life' => array(
+            'before' => array(
+                rr_post_pathway_item( 'Domicile guide', 'van-life-domicile-which-state-should-you-call-home', 'Sort legal address, mail, insurance, and taxes before full-time travel.' ),
+                rr_post_pathway_item( '$3,000 van conversion', 'the-3000-van-conversion-everything-you-need-nothing-you-dont', 'Keep expectations realistic if the budget is tight.' ),
+            ),
+            'next'   => array(
+                rr_post_pathway_item( 'Van life mental health', 'van-life-mental-health-what-nobody-talks-about', 'Plan routines, privacy, rest, and backup options.' ),
+                rr_post_pathway_item( 'Van electrical system DIY guide', 'van-electrical-system-diy-guide', 'Make sure daily living needs match the power plan.' ),
+            ),
+        ),
+        'rv-life' => array(
+            'before' => array(
+                rr_post_pathway_item( 'Full-time RV insurance', 'full-time-rv-insurance', 'Know what changes once the RV is a home, not just a weekend vehicle.' ),
+                rr_post_pathway_item( 'RV renovation cost breakdown', 'rv-renovation-cost-breakdown', 'Separate ownership costs from renovation costs.' ),
+            ),
+            'next'   => array(
+                rr_post_pathway_item( 'Medicare on the road', 'medicare-on-the-road-a-full-timers-healthcare-survival-guide', 'Plan healthcare logistics before long-distance travel.' ),
+                rr_post_pathway_item( 'Retirement on wheels', 'retirement-on-wheels-the-rv-conversion-guide-nobody-made-for-boomers', 'Match comfort, access, and storage to the way the rig will actually be used.' ),
+            ),
+        ),
+    );
+
+    $priority = array(
+        'best-vans-rvs-to-renovate-buyers-guide' => array(
+            'before' => array(
+                rr_post_pathway_item( 'Used RV inspection checklist', 'used-rv-inspection-checklist', 'Do this before you hand over cash.' ),
+                rr_post_pathway_item( 'RV renovation cost breakdown', 'rv-renovation-cost-breakdown', 'Pressure-test the budget before choosing a rig.' ),
+            ),
+            'next'   => array(
+                rr_post_pathway_item( 'Best older RVs to renovate', 'best-older-rvs-to-renovate', 'Shortlist older rigs that still make practical sense.' ),
+                rr_post_pathway_item( 'Renovate in the right order', 'how-renovate-rv-right-order', 'Use the correct build sequence after purchase.' ),
+                rr_post_pathway_item( 'Lightweight materials guide', 'best-lightweight-materials-rv-remodel', 'Keep the remodel road-worthy, not house-heavy.' ),
+            ),
+        ),
+        'used-rv-inspection-checklist' => array(
+            'before' => array(
+                rr_post_pathway_item( 'Best vans and RVs to renovate', 'best-vans-rvs-to-renovate-buyers-guide', 'Know which rigs are worth inspecting first.' ),
+                rr_post_pathway_item( 'RV renovation cost breakdown', 'rv-renovation-cost-breakdown', 'Use the findings to negotiate or walk away.' ),
+            ),
+            'next'   => array(
+                rr_post_pathway_item( 'Renovate in the right order', 'how-renovate-rv-right-order', 'Turn inspection notes into a build plan.' ),
+                rr_post_pathway_item( 'Best lightweight materials', 'best-lightweight-materials-rv-remodel', 'Choose repair materials that make sense on the road.' ),
+            ),
+        ),
+        'rv-renovation-cost-breakdown' => array(
+            'before' => array(
+                rr_post_pathway_item( 'Used RV inspection checklist', 'used-rv-inspection-checklist', 'Budget repairs from facts, not guesses.' ),
+                rr_post_pathway_item( 'Best vans and RVs to renovate', 'best-vans-rvs-to-renovate-buyers-guide', 'Compare base vehicles before setting the final number.' ),
+            ),
+            'next'   => array(
+                rr_post_pathway_item( 'Renovate in the right order', 'how-renovate-rv-right-order', 'Spend in the order that prevents rework.' ),
+                rr_post_pathway_item( 'Van electrical system DIY guide', 'van-electrical-system-diy-guide', 'Price the power system before cabinetry closes it in.' ),
+            ),
+        ),
+        'how-renovate-rv-right-order' => array(
+            'before' => array(
+                rr_post_pathway_item( 'Used RV inspection checklist', 'used-rv-inspection-checklist', 'Find leaks and structural issues before demo.' ),
+                rr_post_pathway_item( 'RV renovation cost breakdown', 'rv-renovation-cost-breakdown', 'Set the budget before the build order starts moving.' ),
+            ),
+            'next'   => array(
+                rr_post_pathway_item( 'Van electrical system DIY guide', 'van-electrical-system-diy-guide', 'Plan power while access is still open.' ),
+                rr_post_pathway_item( 'RV/van kitchen build guide', 'rv-van-kitchen-build-diy-guide', 'Move into layout and daily-use zones once systems are mapped.' ),
+            ),
+        ),
+    );
+
+    $pathway = $priority[ $slug ] ?? ( $fallbacks[ $cat_slug ] ?? array() );
+    if ( empty( $pathway ) ) {
+        return array();
+    }
+
+    $hub_label = $cat ? $cat->name : __( 'the guide hub', 'rolling-reno' );
+    $hub_url   = $cat ? get_category_link( $cat->term_id ) : rr_blog_index_url();
+
+    $pathway['hub'] = array(
+        'label' => sprintf( __( 'Browse the %s hub', 'rolling-reno' ), $hub_label ),
+        'url'   => $hub_url,
+    );
+
+    return $pathway;
+}
+
+function rr_filter_pathway_items_for_current_post( $items, $post_id ) {
+    $current = untrailingslashit( get_permalink( $post_id ) );
+    $seen    = array();
+    $clean   = array();
+
+    foreach ( (array) $items as $item ) {
+        if ( empty( $item['url'] ) || empty( $item['label'] ) ) {
+            continue;
+        }
+
+        $url = untrailingslashit( $item['url'] );
+        if ( $url === $current || isset( $seen[ $url ] ) ) {
+            continue;
+        }
+
+        $seen[ $url ] = true;
+        $clean[]      = $item;
+    }
+
+    return $clean;
+}
+
+function rr_render_pathway_link_list( $items, $post_id ) {
+    $items = rr_filter_pathway_items_for_current_post( $items, $post_id );
+    if ( empty( $items ) ) {
+        return '';
+    }
+
+    $output = '<ul class="post-pathway__list">';
+    foreach ( $items as $item ) {
+        $output .= '<li class="post-pathway__item">';
+        $output .= '<a class="post-pathway__link" href="' . esc_url( $item['url'] ) . '">' . esc_html( $item['label'] ) . '</a>';
+        if ( ! empty( $item['note'] ) ) {
+            $output .= '<span class="post-pathway__note">' . esc_html( $item['note'] ) . '</span>';
+        }
+        $output .= '</li>';
+    }
+    $output .= '</ul>';
+
+    return $output;
+}
+
+function rr_render_post_pathway_intro( $post_id = null ) {
+    $post_id = $post_id ? (int) $post_id : get_the_ID();
+    $config  = rr_post_pathway_config( $post_id );
+    if ( empty( $config['before'] ) ) {
+        return '';
+    }
+
+    $list = rr_render_pathway_link_list( $config['before'], $post_id );
+    if ( ! $list ) {
+        return '';
+    }
+
+    return '<aside class="post-pathway post-pathway--intro" aria-labelledby="post-pathway-intro-' . esc_attr( $post_id ) . '">'
+        . '<p class="post-pathway__eyebrow">' . esc_html__( 'Before you start', 'rolling-reno' ) . '</p>'
+        . '<p class="post-pathway__title" id="post-pathway-intro-' . esc_attr( $post_id ) . '">' . esc_html__( 'Read these first if you are still planning.', 'rolling-reno' ) . '</p>'
+        . '<p class="post-pathway__dek">' . esc_html__( 'A few checks up front can save expensive rework later.', 'rolling-reno' ) . '</p>'
+        . $list
+        . '</aside>';
+}
+
+function rr_render_post_pathway_next_steps( $post_id = null ) {
+    $post_id = $post_id ? (int) $post_id : get_the_ID();
+    $config  = rr_post_pathway_config( $post_id );
+    if ( empty( $config['next'] ) ) {
+        return '';
+    }
+
+    $list = rr_render_pathway_link_list( $config['next'], $post_id );
+    if ( ! $list ) {
+        return '';
+    }
+
+    $hub_link = '';
+    if ( ! empty( $config['hub']['url'] ) && ! empty( $config['hub']['label'] ) ) {
+        $hub_link = '<a class="post-pathway__hub" href="' . esc_url( $config['hub']['url'] ) . '">' . esc_html( $config['hub']['label'] ) . ' →</a>';
+    }
+
+    return '<aside class="post-pathway post-pathway--next" aria-labelledby="post-pathway-next-' . esc_attr( $post_id ) . '">'
+        . '<p class="post-pathway__eyebrow">' . esc_html__( 'Next steps', 'rolling-reno' ) . '</p>'
+        . '<p class="post-pathway__title" id="post-pathway-next-' . esc_attr( $post_id ) . '">' . esc_html__( 'Keep the build moving in the right order.', 'rolling-reno' ) . '</p>'
+        . '<p class="post-pathway__dek">' . esc_html__( 'Use these guides as the next practical step, not a random rabbit hole.', 'rolling-reno' ) . '</p>'
+        . $list
+        . $hub_link
+        . '</aside>';
 }
 
 function rr_category_hub_current_config() {
