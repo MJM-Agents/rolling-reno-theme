@@ -84,6 +84,18 @@ jobs:
           fi
           echo "✅ Staging smoke test passed — main.css served OK."
 
+      - name: Post-deploy staging drift guard
+        env:
+          DRIFT_GUARD_TARGETS: staging
+          STAGING_URL: ${{ env.STAGING_URL }}
+          STAGING_AUTH_USER: ${{ secrets.STAGING_PRIVACY_USER }}
+          STAGING_AUTH_PASS: ${{ secrets.STAGING_PRIVACY_PASS }}
+          STAGING_SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
+          STAGING_SSH_USER: ${{ secrets.STAGING_SSH_USER }}
+          STAGING_SSH_KEY_PATH: ~/.ssh/deploy_key
+          STAGING_THEME_PATH: ${{ env.THEME_PATH }}
+        run: node scripts/rolling-reno-drift-guard.mjs
+
       - name: Notify Slack - staging deploy complete
         if: always()
         run: |

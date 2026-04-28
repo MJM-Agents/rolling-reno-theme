@@ -1,0 +1,24 @@
+{
+  "paths": ["/", "/blog/", "/gear/", "/start-here/", "/full-time-rv-insurance/"],
+  "expectedMarkers": {
+    "all": [
+      "Rolling Reno",
+      "/wp-content/themes/rolling-reno-v2",
+      "site-nav"
+    ],
+    "/": ["Start Here", "Gear"],
+    "/blog/": ["blog-discovery", "category-filter"],
+    "/gear/": ["amazon.com", "tag=rollingreno-20"],
+    "/start-here/": ["Start Here"],
+    "/full-time-rv-insurance/": ["insurance"]
+  },
+  "urlSizeDeltaWarnRatio": 0.25,
+  "remoteThemePath": "/www/wp-content/themes/rolling-reno-v2",
+  "deployExcludes": [
+    ".git/**",
+    ".github/**",
+    "node_modules/**",
+    "*.md",
+    ".gitignore"
+  ]
+}

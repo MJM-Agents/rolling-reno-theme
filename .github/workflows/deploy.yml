@@ -236,6 +236,19 @@ jobs:
           echo ""
           echo "✅ Cache purge and production verification passed."
 
+      - name: Post-deploy code/content drift guard
+        env:
+          DRIFT_GUARD_TARGETS: prod,staging
+          PROD_URL: ${{ env.SITE_URL }}
+          PROD_SSH_HOST: ${{ secrets.FLYWHEEL_SSH_HOST }}
+          PROD_SSH_USER: ${{ secrets.FLYWHEEL_SSH_USER }}
+          PROD_SSH_KEY_PATH: ~/.ssh/deploy_key
+          PROD_THEME_PATH: ${{ env.THEME_PATH }}
+          STAGING_URL: https://rollingreno.flywheelstaging.com
+          STAGING_AUTH_USER: ${{ secrets.STAGING_PRIVACY_USER }}
+          STAGING_AUTH_PASS: ${{ secrets.STAGING_PRIVACY_PASS }}
+        run: node scripts/rolling-reno-drift-guard.mjs
+
       - name: Notify Slack - deploy complete
         if: success()
         run: |
