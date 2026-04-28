@@ -94,8 +94,13 @@ jobs:
           STATUS="${{ job.status }}"
           EMOJI=$([ "$STATUS" = "success" ] && echo "✅" || echo "❌")
           MESSAGE="$EMOJI *Rolling Reno Staging Deploy* - \`$BRANCH\` (\`$SHORT_SHA\`) by $ACTOR\nStatus: $STATUS\nStaging URL: <${{ env.STAGING_URL }}|rollingreno.flywheelstaging.com>\n_Aoife + Sienna: please review and comment on the PR before merge to main._"
+          payload=$(jq -n \
+            --arg channel "C0AQLB1JXBL" \
+            --arg text "$MESSAGE" \
+            '{channel: $channel, text: $text}')
+
           curl -s -X POST \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            --data "{\"channel\":\"C0AQLB1JXBL\",\"text\":\"$MESSAGE\"}" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data "$payload" \
             https://slack.com/api/chat.postMessage | jq -r '.ok'
