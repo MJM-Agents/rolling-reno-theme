@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Webasto Diesel Heater</title>
+  <desc id="desc">Styled Rolling Reno product illustration for Webasto Diesel Heater.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#D65A31" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#F9F3E7"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#1f211d" flood-opacity="0.18"/></filter>
+  </defs>
+  <rect width="900" height="600" rx="48" fill="url(#bg)"/>
+  <circle cx="760" cy="95" r="120" fill="#fff" opacity="0.22"/>
+  <circle cx="120" cy="520" r="170" fill="#1f211d" opacity="0.08"/>
+  <g filter="url(#shadow)">
+    <rect x="185" y="105" width="530" height="330" rx="42" fill="#fffaf1"/>
+    <rect x="225" y="145" width="450" height="250" rx="32" fill="#3A2A24" opacity="0.1"/>
+    <text x="450" y="282" text-anchor="middle" dominant-baseline="middle" font-size="118">🔥</text>
+  </g>
+  <text x="450" y="492" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="800" fill="#3A2A24">Webasto Diesel</text>
+  <text x="450" y="542" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" fill="#3A2A24" opacity="0.84">Heater</text>
+</svg>

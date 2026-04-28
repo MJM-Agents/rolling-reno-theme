@@ -508,6 +508,11 @@
   background: var(--color-sand);
 }
 .gear-card__image { width: 100%; height: 100%; object-fit: cover; }
+.gear-card__image[src$=".svg"] {
+  object-fit: contain;
+  padding: var(--space-2);
+  background: var(--color-sand);
+}
 .gear-card__image-placeholder {
   width: 100%;
   height: 100%;
@@ -539,9 +544,13 @@
   line-height: 1.5;
 }
 .gear-card__cta {
+  align-items: center;
   font-size: 13px;
   font-weight: 700;
   color: var(--color-terracotta);
+  display: inline-flex;
+  min-height: 44px;
+  padding: 10px 0;
   text-decoration: none;
   margin-top: auto;
 }
@@ -1579,6 +1588,11 @@
   background: var(--color-sand);
 }
 .gear-product-card__image { width: 100%; height: 100%; object-fit: cover; transition: transform 300ms ease; }
+.gear-product-card__image[src$=".svg"] {
+  object-fit: contain;
+  padding: var(--space-3);
+  background: var(--color-sand);
+}
 .gear-product-card:hover .gear-product-card__image { transform: scale(1.03); }
 .gear-product-card__image-placeholder {
   width: 100%; height: 100%;

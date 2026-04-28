@@ -161,7 +161,7 @@ $mara_about_img = get_theme_mod( 'rr_mara_about_image', '' );
             $tiles = array(
                 array(
                     'label'  => __( 'Van Life', 'rolling-reno' ),
-                    'url'    => home_url( '/van-life' ),
+                    'url'    => rr_topic_url( 'van-life' ),
                     'class'  => 'category-tile__placeholder--van-life',
                     'emoji'  => '🚐',
                     'aria'   => __( 'Browse Van Life posts', 'rolling-reno' ),
@@ -169,7 +169,7 @@ $mara_about_img = get_theme_mod( 'rr_mara_about_image', '' );
                 ),
                 array(
                     'label'  => __( 'RV Life', 'rolling-reno' ),
-                    'url'    => home_url( '/rv-life' ),
+                    'url'    => rr_topic_url( 'rv-life' ),
                     'class'  => 'category-tile__placeholder--rv-life',
                     'emoji'  => '🏕️',
                     'aria'   => __( 'Browse RV Life posts', 'rolling-reno' ),
@@ -184,11 +184,11 @@ $mara_about_img = get_theme_mod( 'rr_mara_about_image', '' );
                     'img_key'=> 'rr_cat_img_gear',
                 ),
                 array(
-                    'label'  => __( "Mara's Rig", 'rolling-reno' ),
-                    'url'    => home_url( '/van-life/maras-rig' ),
+                    'label'  => __( 'Van Life Guides', 'rolling-reno' ),
+                    'url'    => rr_topic_url( 'van-life' ),
                     'class'  => 'category-tile__placeholder--maras-rig',
                     'emoji'  => '🌿',
-                    'aria'   => __( "Browse Mara's Rig posts", 'rolling-reno' ),
+                    'aria'   => __( 'Browse Van Life guides', 'rolling-reno' ),
                     'img_key'=> 'rr_cat_img_maras_rig',
                 ),
             );
@@ -374,23 +374,27 @@ $mara_about_img = get_theme_mod( 'rr_mara_about_image', '' );
         </header>
         <div class="gear-strip__scroll">
             <?php
-            // Gear spotlight — query posts tagged or categorised as gear
-            $gear_query = new WP_Query( array(
-                'posts_per_page' => 8,
-                'category_name'  => 'gear',
-            ) );
+            $featured_gear = array(
+                array( 'Renogy 200W Monocrystalline Solar Starter Kit', __( 'First recommendation for anyone starting out — clean install, solid warranty.', 'rolling-reno' ) ),
+                array( 'Webasto Air Top 2000 STC Diesel Heater', __( 'Survived three Irish winters with this. Non-negotiable.', 'rolling-reno' ) ),
+                array( 'BougeRV 40A MPPT Solar Charge Controller', __( 'Upgraded from a PWM and wished I\'d done it on Build #1.', 'rolling-reno' ) ),
+                array( '3M Thinsulate SM600L Automotive Insulation', __( 'The only van insulation I recommend now. Not even close.', 'rolling-reno' ) ),
+                array( 'Dometic CFX3 25L Compressor Fridge', __( 'Changed everything about how I eat on the road.', 'rolling-reno' ) ),
+            );
 
-            if ( $gear_query->have_posts() ) :
-                while ( $gear_query->have_posts() ) :
-                    $gear_query->the_post();
-                    $thumb = rr_get_post_image_url( get_the_ID(), 'rr-card-sm' );
+            foreach ( $featured_gear as $gear_item ) :
+                $gear_name  = $gear_item[0];
+                $gear_blurb = $gear_item[1];
+                $gear_image = function_exists( 'rr_featured_gear_asset' ) ? rr_featured_gear_asset( $gear_name, 'image' ) : '';
+                $gear_url   = function_exists( 'rr_featured_gear_asset' ) ? rr_featured_gear_asset( $gear_name, 'url' ) : home_url( '/gear' );
+                $gear_url   = function_exists( 'rr_affiliate_url' ) ? rr_affiliate_url( $gear_url ) : $gear_url;
             ?>
             <div class="gear-card">
                 <div class="gear-card__image-wrap">
-                    <?php if ( $thumb ) : ?>
+                    <?php if ( $gear_image ) : ?>
                         <img
-                            src="<?php echo esc_url( $thumb ); ?>"
-                            alt="<?php the_title_attribute(); ?>"
+                            src="<?php echo esc_url( $gear_image ); ?>"
+                            alt="<?php echo esc_attr( $gear_name ); ?>"
                             class="gear-card__image"
                             width="220"
                             height="147"
@@ -401,45 +405,20 @@ $mara_about_img = get_theme_mod( 'rr_mara_about_image', '' );
                     <?php endif; ?>
                 </div>
                 <div class="gear-card__body">
-                    <p class="gear-card__name"><?php the_title(); ?></p>
-                    <p class="gear-card__verdict"><?php echo esc_html( rr_excerpt( null, 12 ) ); ?></p>
+                    <p class="gear-card__name"><?php echo esc_html( $gear_name ); ?></p>
+                    <p class="gear-card__verdict"><?php echo esc_html( $gear_blurb ); ?></p>
                     <a
-                        href="<?php the_permalink(); ?>"
+                        href="<?php echo esc_url( $gear_url ); ?>"
                         class="gear-card__cta"
-                        aria-label="<?php echo esc_attr( sprintf( __( 'Read about %s', 'rolling-reno' ), get_the_title() ) ); ?>"
+                        rel="nofollow sponsored noopener"
+                        target="_blank"
+                        aria-label="<?php echo esc_attr( sprintf( __( 'Shop %s on Amazon (affiliate link, opens in new tab)', 'rolling-reno' ), $gear_name ) ); ?>"
                     >
                         <?php esc_html_e( 'Shop →', 'rolling-reno' ); ?>
                     </a>
                 </div>
             </div>
-            <?php
-                endwhile;
-                wp_reset_postdata();
-            else : ?>
-                <?php // Placeholder cards when no gear posts exist ?>
-                <?php
-                $placeholder_gear = array(
-                    array( 'Renogy 200W Solar Kit', '"First recommendation for anyone starting out — clean install, solid warranty."', '☀️' ),
-                    array( 'Webasto Diesel Heater', '"Survived three Irish winters with this. Non-negotiable."', '🔥' ),
-                    array( 'BougeRV 40A MPPT', '"Upgraded from a PWM and wished I\'d done it Build #1."', '⚡' ),
-                    array( 'Thinsulate SM600L', '"The only van insulation I recommend now. Not even close."', '🌡️' ),
-                    array( 'Dometic CFX3 25L Fridge', '"Changed everything about how I eat on the road."', '🧊' ),
-                );
-                foreach ( $placeholder_gear as $pg ) : ?>
-                <div class="gear-card">
-                    <div class="gear-card__image-wrap">
-                        <div class="gear-card__image-placeholder" aria-hidden="true"><?php echo $pg[2]; ?></div>
-                    </div>
-                    <div class="gear-card__body">
-                        <p class="gear-card__name"><?php echo esc_html( $pg[0] ); ?></p>
-                        <p class="gear-card__verdict"><?php echo esc_html( $pg[1] ); ?></p>
-                        <a href="<?php echo esc_url( home_url( '/gear' ) ); ?>" class="gear-card__cta">
-                            <?php esc_html_e( 'Shop →', 'rolling-reno' ); ?>
-                        </a>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
+            <?php endforeach; ?>
         </div>
         <div class="gear-strip__footer">
             <a href="<?php echo esc_url( home_url( '/gear' ) ); ?>" class="btn btn--ghost">

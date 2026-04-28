@@ -98,10 +98,10 @@
 function rr_footer_explore_fallback() {
     $links = array(
         array( home_url( '/start-here' ), __( 'Start Here',  'rolling-reno' ) ),
-        array( home_url( '/van-life' ),   __( 'Van Life',    'rolling-reno' ) ),
-        array( home_url( '/rv-life' ),    __( 'RV Life',     'rolling-reno' ) ),
+        array( rr_topic_url( 'van-life' ), __( 'Van Life',    'rolling-reno' ) ),
+        array( rr_topic_url( 'rv-life' ),  __( 'RV Life',     'rolling-reno' ) ),
         array( home_url( '/gear' ),       __( 'Gear & Kit',  'rolling-reno' ) ),
-        array( home_url( '/van-life/maras-rig' ), __( "Mara's Rig", 'rolling-reno' ) ),
+        array( rr_topic_url( 'van-life' ), __( 'Van Life Guides', 'rolling-reno' ) ),
     );
     echo '<nav aria-label="' . esc_attr__( 'Footer Explore', 'rolling-reno' ) . '">';
     foreach ( $links as $l ) {
