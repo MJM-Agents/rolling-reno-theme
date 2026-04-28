@@ -691,3 +691,67 @@ h4[id] {
     max-width: 100vw;
   }
 }
+
+/* MJM-316: keep multi-column article tables readable on mobile.
+   Draft 227 includes 3–4 column comparison tables that collapse into heavy wrapping
+   at ~335px wide; prefer a contained horizontal scroll over unreadable squeeze. */
+.post-body .wp-block-table,
+.entry-content .wp-block-table,
+.post-body .rr-table-scroll,
+.entry-content .rr-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-body table,
+.entry-content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.post-body th,
+.post-body td,
+.entry-content th,
+.entry-content td {
+  vertical-align: top;
+}
+
+@media (max-width: 760px) {
+  .post-body .wp-block-table,
+  .entry-content .wp-block-table,
+  .post-body .rr-table-scroll,
+  .entry-content .rr-table-scroll {
+    margin-left: -4px;
+    margin-right: -4px;
+    padding: 0 4px 0.45rem;
+    scrollbar-gutter: stable;
+  }
+
+  .post-body .wp-block-table table,
+  .entry-content .wp-block-table table,
+  .post-body .rr-table-scroll table,
+  .entry-content .rr-table-scroll table,
+  .post-body > table,
+  .entry-content > table {
+    min-width: 40rem;
+  }
+
+  .post-body > table,
+  .entry-content > table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .post-body th,
+  .post-body td,
+  .entry-content th,
+  .entry-content td {
+    min-width: 9rem;
+    white-space: normal;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+}
