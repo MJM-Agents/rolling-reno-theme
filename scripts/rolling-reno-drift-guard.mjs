@@ -60,7 +60,7 @@ function remoteManifest({ label, host, user, keyPath, themePath }) {
   }
   const remote = `${user}@${host}`;
   const script = `cd ${shellQuote(themePath)} && find . -type f ! -path './.git/*' ! -path './.github/*' ! -path './node_modules/*' ! -name '*.md' ! -name '.gitignore' -print0 | sort -z | xargs -0 sha256sum`;
-  const output = execFileSync('ssh', ['-i', keyPath, '-o', 'StrictHostKeyChecking=no', remote, 'bash', '-lc', script], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  const output = execFileSync('ssh', ['-i', keyPath, '-o', 'StrictHostKeyChecking=no', remote, 'bash', '-lc', shellQuote(script)], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
   const manifest = new Map();
   for (const line of output.trim().split('\n').filter(Boolean)) {
     const match = line.match(/^([a-f0-9]{64})\s+\.\/(.+)$/);
