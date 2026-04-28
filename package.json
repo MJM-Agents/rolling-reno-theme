@@ -7,7 +7,8 @@
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:regression": "playwright test tests/e2e/regression.spec.ts",
-    "test:install": "playwright install chromium"
+    "test:install": "playwright install chromium",
+    "drift:guard": "node scripts/rolling-reno-drift-guard.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1"
