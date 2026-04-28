@@ -131,6 +131,9 @@ while ( have_posts() ) :
         </nav>
         <?php endif; ?>
 
+        <!-- Before-you-start internal path -->
+        <?php echo rr_render_post_pathway_intro( $post_id ); ?>
+
         <!-- Post Content -->
         <?php the_content(); ?>
 
@@ -168,6 +171,11 @@ while ( have_posts() ) :
 
     </div><!-- /.post-body -->
 
+    <!-- Next-step internal path -->
+    <div class="container--narrow">
+        <?php echo rr_render_post_pathway_next_steps( $post_id ); ?>
+    </div>
+
     <!-- Affiliate Products -->
     <div class="container--narrow">
         <?php echo rr_render_affiliate_products( $post_id ); ?>
@@ -193,8 +201,9 @@ while ( have_posts() ) :
     ?>
 
     <?php if ( $related_query->have_posts() ) : ?>
-    <section class="related-posts" aria-label="<?php esc_attr_e( 'You might also like', 'rolling-reno' ); ?>">
-        <h2 class="related-posts__title"><?php esc_html_e( 'You might also like', 'rolling-reno' ); ?></h2>
+    <section class="related-posts" aria-label="<?php esc_attr_e( 'Related guides', 'rolling-reno' ); ?>">
+        <p class="related-posts__eyebrow"><?php esc_html_e( 'Related guides', 'rolling-reno' ); ?></p>
+        <h2 class="related-posts__title"><?php esc_html_e( 'Keep reading in this lane', 'rolling-reno' ); ?></h2>
         <div class="related-posts__grid">
             <?php
             while ( $related_query->have_posts() ) :
