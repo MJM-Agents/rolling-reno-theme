@@ -26,7 +26,7 @@ function sha256(value) {
 }
 
 function shouldExclude(relPath) {
-  if (relPath === '.gitignore') return true;
+  if (relPath === '.git' || relPath === '.gitignore') return true;
   if (relPath.startsWith('.git/') || relPath.startsWith('.github/') || relPath.startsWith('node_modules/')) return true;
   if (relPath.endsWith('.md')) return true;
   return false;
