@@ -91,7 +91,7 @@ $lessons = array(
             <?php rr_breadcrumb(); ?>
             <p class="rig-hero__eyebrow"><?php esc_html_e( 'Proof hub', 'rolling-reno' ); ?></p>
             <h1 class="rig-hero__title"><?php esc_html_e( "Mara's Rig", 'rolling-reno' ); ?></h1>
-            <p class="rig-hero__sub"><?php esc_html_e( 'The build details behind the advice: what is installed, what it cost, what failed, and which gear earned a permanent place in the van.', 'rolling-reno' ); ?></p>
+            <p class="rig-hero__sub"><?php esc_html_e( 'The build details behind the advice: what is installed, what it cost, what changed after real use, and which gear earned a permanent place in the van.', 'rolling-reno' ); ?></p>
             <div class="rig-hero__ctas">
                 <a class="btn btn--primary" href="#build-ledger"><?php esc_html_e( 'View the build ledger', 'rolling-reno' ); ?></a>
                 <a class="btn btn--outline-inverse" href="<?php echo esc_url( home_url( '/gear/' ) ); ?>"><?php esc_html_e( 'Browse tested gear', 'rolling-reno' ); ?></a>
@@ -184,9 +184,9 @@ $lessons = array(
                     </ul>
                 </article>
                 <article class="rig-proof-panel">
-                    <p class="rig-build-card__kicker"><?php esc_html_e( 'Proof still needed', 'rolling-reno' ); ?></p>
-                    <h2><?php esc_html_e( 'Photo checklist for the next content pass', 'rolling-reno' ); ?></h2>
-                    <p><?php esc_html_e( 'To make this hub even stronger, the next visual pass should add real build photos for these checkpoints:', 'rolling-reno' ); ?></p>
+                    <p class="rig-build-card__kicker"><?php esc_html_e( 'Photo evidence', 'rolling-reno' ); ?></p>
+                    <h2><?php esc_html_e( 'What the build photos should show', 'rolling-reno' ); ?></h2>
+                    <p><?php esc_html_e( 'Useful van-build photos should show the practical details people need before copying a layout:', 'rolling-reno' ); ?></p>
                     <ol>
                         <li><?php esc_html_e( 'Roof solar layout and cable entry gland.', 'rolling-reno' ); ?></li>
                         <li><?php esc_html_e( 'Electrical bay with labels visible.', 'rolling-reno' ); ?></li>
@@ -211,23 +211,6 @@ $lessons = array(
         </div>
     </section>
 
-    <?php
-    if ( have_posts() && is_page() ) :
-        while ( have_posts() ) :
-            the_post();
-            $content = get_the_content();
-            if ( $content ) :
-                ?>
-                <section class="rig-editor-content" aria-label="<?php esc_attr_e( 'Additional page content', 'rolling-reno' ); ?>">
-                    <div class="container--narrow post-body">
-                        <?php the_content(); ?>
-                    </div>
-                </section>
-                <?php
-            endif;
-        endwhile;
-    endif;
-    ?>
 
 </main>
 
