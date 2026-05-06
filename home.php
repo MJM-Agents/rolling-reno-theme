@@ -27,6 +27,21 @@ get_header();
                 <p><?php esc_html_e( 'Search by topic or choose a path. Your filters are shareable, so you can save or send the exact guide list.', 'rolling-reno' ); ?></p>
             </div>
 
+            <div class="blog-trust-strip" aria-label="<?php esc_attr_e( 'Rolling Reno editorial trust notes', 'rolling-reno' ); ?>">
+                <div class="blog-trust-strip__item">
+                    <span class="blog-trust-strip__label"><?php esc_html_e( 'Freshness', 'rolling-reno' ); ?></span>
+                    <span class="blog-trust-strip__text"><?php esc_html_e( 'Guides are reviewed as builds, gear, and road rules change.', 'rolling-reno' ); ?></span>
+                </div>
+                <div class="blog-trust-strip__item">
+                    <span class="blog-trust-strip__label"><?php esc_html_e( 'Hands-on', 'rolling-reno' ); ?></span>
+                    <span class="blog-trust-strip__text"><?php esc_html_e( 'Advice is grounded in Mara’s practical van and RV renovation experience.', 'rolling-reno' ); ?></span>
+                </div>
+                <div class="blog-trust-strip__item">
+                    <span class="blog-trust-strip__label"><?php esc_html_e( 'Transparent', 'rolling-reno' ); ?></span>
+                    <span class="blog-trust-strip__text"><?php esc_html_e( 'Affiliate links are disclosed and never change the price you pay.', 'rolling-reno' ); ?></span>
+                </div>
+            </div>
+
             <form class="blog-search" role="search" method="get" action="<?php echo esc_url( rr_blog_index_url() ); ?>">
                 <label class="blog-search__label" for="blog-search-input"><?php esc_html_e( 'Search Rolling Reno articles', 'rolling-reno' ); ?></label>
                 <div class="blog-search__row">
