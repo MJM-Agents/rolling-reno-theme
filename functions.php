@@ -1190,7 +1190,7 @@ function rr_rewrite_empty_topic_nav_items( $items ) {
 add_filter( 'wp_nav_menu_objects', 'rr_rewrite_empty_topic_nav_items', 20 );
 
 /**
- * Owned product illustrations and Amazon search URLs for Gear/Home cards.
+ * Owned product illustrations and Amazon affiliate URLs for Gear/Home cards.
  * Images are local SVGs so the site is not depending on scraped Amazon assets.
  */
 function rr_featured_gear_assets() {
@@ -1198,17 +1198,17 @@ function rr_featured_gear_assets() {
 
     return array(
         'Renogy 200W Monocrystalline Solar Starter Kit' => array( 'image' => $base . 'renogy-200w-solar-kit.svg', 'url' => 'https://www.amazon.com/s?k=Renogy+200W+Monocrystalline+Solar+Starter+Kit' ),
-        'BougeRV 40A MPPT Solar Charge Controller'      => array( 'image' => $base . 'bougerv-40a-mppt-controller.svg', 'url' => 'https://www.amazon.com/s?k=BougeRV+40A+MPPT+Solar+Charge+Controller' ),
+        'BougeRV 40A MPPT Solar Charge Controller'      => array( 'image' => $base . 'bougerv-40a-mppt-controller.svg', 'url' => 'https://www.amazon.com/dp/B09JZGBDPB' ),
         'Lithium Iron Phosphate 100Ah Battery'          => array( 'image' => $base . 'lifepo4-100ah-battery.svg', 'url' => 'https://www.amazon.com/s?k=LiFePO4+100Ah+Battery' ),
-        'Dometic CFX3 25L Compressor Fridge'            => array( 'image' => $base . 'dometic-cfx3-fridge.svg', 'url' => 'https://www.amazon.com/s?k=Dometic+CFX3+25L+Compressor+Fridge' ),
+        'Dometic CFX3 25L Compressor Fridge'            => array( 'image' => $base . 'dometic-cfx3-fridge.svg', 'url' => 'https://www.amazon.com/dp/B095KZSQWC' ),
         'Campingaz Double Burner Camp Stove'            => array( 'image' => $base . 'campingaz-double-burner.svg', 'url' => 'https://www.amazon.com/s?k=Campingaz+Double+Burner+Camp+Stove' ),
-        'Aeropress Coffee Maker'                        => array( 'image' => $base . 'aeropress-coffee-maker.svg', 'url' => 'https://www.amazon.com/s?k=AeroPress+Coffee+Maker' ),
+        'Aeropress Coffee Maker'                        => array( 'image' => $base . 'aeropress-coffee-maker.svg', 'url' => 'https://www.amazon.com/dp/B0047BIWSK' ),
         'Rock&Road 100% Natural Latex Van Mattress'     => array( 'image' => $base . 'latex-van-mattress.svg', 'url' => 'https://www.amazon.com/s?k=natural+latex+van+mattress' ),
         'Sea to Summit Reactor Extreme Sleeping Bag Liner' => array( 'image' => $base . 'sea-to-summit-liner.svg', 'url' => 'https://www.amazon.com/s?k=Sea+to+Summit+Reactor+Extreme+Sleeping+Bag+Liner' ),
         '3M Thinsulate SM600L Automotive Insulation'    => array( 'image' => $base . '3m-thinsulate-sm600l.svg', 'url' => 'https://www.amazon.com/s?k=3M+Thinsulate+SM600L+Automotive+Insulation' ),
         'Webasto Air Top 2000 STC Diesel Heater'        => array( 'image' => $base . 'webasto-diesel-heater.svg', 'url' => 'https://www.amazon.com/s?k=Webasto+Air+Top+2000+STC+Diesel+Heater' ),
-        'Kidde KN-COPP-3 Carbon Monoxide Detector'      => array( 'image' => $base . 'kidde-co-detector.svg', 'url' => 'https://www.amazon.com/s?k=Kidde+KN-COPP-3+Carbon+Monoxide+Detector' ),
-        'GL.iNet Slate AX Wi-Fi 6 Travel Router'        => array( 'image' => $base . 'glinet-slate-ax-router.svg', 'url' => 'https://www.amazon.com/s?k=GL.iNet+Slate+AX+Wi-Fi+6+Travel+Router' ),
+        'Kidde KN-COPP-3 Carbon Monoxide Detector'      => array( 'image' => $base . 'kidde-co-detector.svg', 'url' => 'https://www.amazon.com/dp/B00002N86A' ),
+        'GL.iNet Slate AX Wi-Fi 6 Travel Router'        => array( 'image' => $base . 'glinet-slate-ax-router.svg', 'url' => 'https://www.amazon.com/dp/B0B2J7WSDK' ),
     );
 }
 
