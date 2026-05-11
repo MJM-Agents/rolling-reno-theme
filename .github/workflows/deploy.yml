@@ -37,10 +37,14 @@ jobs:
             --arg text "$MESSAGE" \
             '{channel: $channel, text: $text}')
 
-          curl -sf -X POST https://slack.com/api/chat.postMessage \
+          SLACK_RESPONSE=$(curl -sS -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            --data "$PAYLOAD" || true
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data "$PAYLOAD" || true)
+          echo "$SLACK_RESPONSE"
+          if ! echo "$SLACK_RESPONSE" | jq -e '.ok == true' >/dev/null 2>&1; then
+            echo "::warning::Slack deploy notification did not report ok=true: ${SLACK_RESPONSE:-no response}"
+          fi
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -272,10 +276,14 @@ jobs:
             --arg text "$MESSAGE" \
             '{channel: $channel, text: $text}')
 
-          curl -sf -X POST https://slack.com/api/chat.postMessage \
+          SLACK_RESPONSE=$(curl -sS -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            --data "$PAYLOAD" || true
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data "$PAYLOAD" || true)
+          echo "$SLACK_RESPONSE"
+          if ! echo "$SLACK_RESPONSE" | jq -e '.ok == true' >/dev/null 2>&1; then
+            echo "::warning::Slack deploy notification did not report ok=true: ${SLACK_RESPONSE:-no response}"
+          fi
 
       - name: Notify Slack - deploy failed
         if: failure()
@@ -292,7 +300,11 @@ jobs:
             --arg text "$MESSAGE" \
             '{channel: $channel, text: $text}')
 
-          curl -sf -X POST https://slack.com/api/chat.postMessage \
+          SLACK_RESPONSE=$(curl -sS -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            --data "$PAYLOAD" || true
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data "$PAYLOAD" || true)
+          echo "$SLACK_RESPONSE"
+          if ! echo "$SLACK_RESPONSE" | jq -e '.ok == true' >/dev/null 2>&1; then
+            echo "::warning::Slack deploy notification did not report ok=true: ${SLACK_RESPONSE:-no response}"
+          fi
