@@ -117,8 +117,13 @@ jobs:
             --arg text "$MESSAGE" \
             '{channel: $channel, text: $text}')
 
-          curl -s -X POST \
+          # Slack notification failures should warn but not block deploys.
+          SLACK_RESPONSE=$(curl -sS -X POST \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
-            -H "Content-Type: application/json" \
+            -H "Content-Type: application/json; charset=utf-8" \
             --data "$PAYLOAD" \
-            https://slack.com/api/chat.postMessage | jq -r '.ok'
+            https://slack.com/api/chat.postMessage || true)
+          echo "$SLACK_RESPONSE"
+          if ! echo "$SLACK_RESPONSE" | jq -e '.ok == true' >/dev/null 2>&1; then
+            echo "::warning::Slack staging deploy notification did not report ok=true: ${SLACK_RESPONSE:-no response}"
+          fi
