@@ -37,6 +37,7 @@ jobs:
             --arg text "$MESSAGE" \
             '{channel: $channel, text: $text}')
 
+          # Slack notification failures should warn but not block deploys.
           SLACK_RESPONSE=$(curl -sS -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
             -H "Content-Type: application/json; charset=utf-8" \
