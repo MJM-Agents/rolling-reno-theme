@@ -1197,16 +1197,16 @@ function rr_featured_gear_assets() {
     $base = get_template_directory_uri() . '/assets/images/gear/';
 
     return array(
-        'Renogy 200W Monocrystalline Solar Starter Kit' => array( 'image' => $base . 'renogy-200w-solar-kit.svg', 'url' => 'https://www.amazon.com/s?k=Renogy+200W+Monocrystalline+Solar+Starter+Kit' ),
+        'Renogy 200W Monocrystalline Solar Starter Kit' => array( 'image' => $base . 'renogy-200w-solar-kit.svg', 'url' => 'https://www.amazon.com/Renogy-Monocrystalline-Solar-Starter-Wanderer/dp/B00BCRG22A' ),
         'BougeRV 40A MPPT Solar Charge Controller'      => array( 'image' => $base . 'bougerv-40a-mppt-controller.svg', 'url' => 'https://www.amazon.com/dp/B09JZGBDPB' ),
-        'Lithium Iron Phosphate 100Ah Battery'          => array( 'image' => $base . 'lifepo4-100ah-battery.svg', 'url' => 'https://www.amazon.com/s?k=LiFePO4+100Ah+Battery' ),
+        'Lithium Iron Phosphate 100Ah Battery'          => array( 'image' => $base . 'lifepo4-100ah-battery.svg', 'url' => 'https://www.amazon.com/Bluetooth-Low-Temp-Protection-Trolling-Off-Grid/dp/B0DCVXNY9T' ),
         'Dometic CFX3 25L Compressor Fridge'            => array( 'image' => $base . 'dometic-cfx3-fridge.svg', 'url' => 'https://www.amazon.com/dp/B095KZSQWC' ),
-        'Campingaz Double Burner Camp Stove'            => array( 'image' => $base . 'campingaz-double-burner.svg', 'url' => 'https://www.amazon.com/s?k=Campingaz+Double+Burner+Camp+Stove' ),
+        'Campingaz Double Burner Camp Stove'            => array( 'image' => $base . 'campingaz-double-burner.svg', 'url' => 'https://www.amazon.com/Coleman-Portable-Adjustable-Push-Button-Tailgating/dp/B09HN1YW6V' ),
         'Aeropress Coffee Maker'                        => array( 'image' => $base . 'aeropress-coffee-maker.svg', 'url' => 'https://www.amazon.com/dp/B0047BIWSK' ),
-        'Rock&Road 100% Natural Latex Van Mattress'     => array( 'image' => $base . 'latex-van-mattress.svg', 'url' => 'https://www.amazon.com/s?k=natural+latex+van+mattress' ),
-        'Sea to Summit Reactor Extreme Sleeping Bag Liner' => array( 'image' => $base . 'sea-to-summit-liner.svg', 'url' => 'https://www.amazon.com/s?k=Sea+to+Summit+Reactor+Extreme+Sleeping+Bag+Liner' ),
-        '3M Thinsulate SM600L Automotive Insulation'    => array( 'image' => $base . '3m-thinsulate-sm600l.svg', 'url' => 'https://www.amazon.com/s?k=3M+Thinsulate+SM600L+Automotive+Insulation' ),
-        'Webasto Air Top 2000 STC Diesel Heater'        => array( 'image' => $base . 'webasto-diesel-heater.svg', 'url' => 'https://www.amazon.com/s?k=Webasto+Air+Top+2000+STC+Diesel+Heater' ),
+        'Rock&Road 100% Natural Latex Van Mattress'     => array( 'image' => $base . 'latex-van-mattress.svg', 'url' => 'https://www.amazon.com/Pure-Green-Natural-Latex-Mattress/dp/B01KPWG08I' ),
+        'Sea to Summit Reactor Extreme Sleeping Bag Liner' => array( 'image' => $base . 'sea-to-summit-liner.svg', 'url' => 'https://www.amazon.com/Sea-Summit-Thermolite-Reactor-Extreme/dp/B00GO9B8FC' ),
+        '3M Thinsulate SM600L Automotive Insulation'    => array( 'image' => $base . '3m-thinsulate-sm600l.svg', 'url' => 'https://www.amazon.com/SM600L-Automotive-Camper-Insulation-Inch/dp/B0DP3NGNGQ' ),
+        'Webasto Air Top 2000 STC Diesel Heater'        => array( 'image' => $base . 'webasto-diesel-heater.svg', 'url' => 'https://www.amazon.com/Webasto-Air-2000-Heater-Installation/dp/B07PWRY8QN' ),
         'Kidde KN-COPP-3 Carbon Monoxide Detector'      => array( 'image' => $base . 'kidde-co-detector.svg', 'url' => 'https://www.amazon.com/dp/B00002N86A' ),
         'GL.iNet Slate AX Wi-Fi 6 Travel Router'        => array( 'image' => $base . 'glinet-slate-ax-router.svg', 'url' => 'https://www.amazon.com/dp/B0B2J7WSDK' ),
     );
