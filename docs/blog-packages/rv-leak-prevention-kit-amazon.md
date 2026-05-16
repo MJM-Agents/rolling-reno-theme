@@ -3,7 +3,7 @@ title: "RV Leak Prevention Kit: 9 Things to Keep Water Out Before You Remodel"
 seo_title: "RV Leak Prevention Kit: 9 Essentials Before Remodel"
 slug: "rv-leak-prevention-kit-amazon"
 focus_keyword: "RV leak prevention kit"
-meta_description: "Build a simple RV leak prevention kit before you remodel. See 9 supplies for seams, vents, windows, moisture checks, and dry repairs."
+meta_description: "Build a simple RV leak prevention kit before you remodel. See 9 supplies for seams, vents, windows, moisture checks, dry repairs, and safer leak prep."
 excerpt: "Before you install pretty finishes, build a simple RV leak prevention kit for seams, vents, windows, moisture checks, and dry repair work."
 status: "Prepared draft package — publication pending WordPress access/approval"
 category: "RV Renovation"
@@ -146,7 +146,7 @@ Build the leak prevention kit first. Inspect the shell. Fix what is active. Test
 
 - **Focus keyword:** RV leak prevention kit
 - **SEO title:** RV Leak Prevention Kit: 9 Essentials Before Remodel
-- **Meta description:** Build a simple RV leak prevention kit before you remodel. See 9 supplies for seams, vents, windows, moisture checks, and dry repairs.
+- **Meta description:** Build a simple RV leak prevention kit before you remodel. See 9 supplies for seams, vents, windows, moisture checks, dry repairs, and safer leak prep.
 - **Suggested slug:** `rv-leak-prevention-kit-amazon`
 - **Excerpt:** Before you install pretty finishes, build a simple RV leak prevention kit for seams, vents, windows, moisture checks, and dry repair work.
 
