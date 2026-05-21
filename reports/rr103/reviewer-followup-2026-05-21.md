@@ -3,7 +3,7 @@
 ## Reviewer request addressed
 Conor requested follow-through before approval because:
 
-1. The release QA packet was missing acceptance criteria, expected outcome, changed files, branch freshness, rollback, staging/preview evidence, UI/UX verdict or N/A, functional verdict/host validation, and Sarah/Cian copy QA verdict or N/A.
+1. The release QA packet was missing acceptance criteria, expected outcome, changed files, branch freshness, rollback, staging/preview evidence, UI/UX verdict or N/A, functional verdict/host validation, and Sarah copy QA verdict or N/A reason, plus Cian host copy QA verdict or N/A reason.
 2. The GitHub regression check had failed on desktop for `/blog/` missing `.blog-discovery` and `/gear/` missing visible Amazon affiliate links.
 
 ## Resolution
@@ -25,3 +25,8 @@ Conor requested follow-through before approval because:
 ## Notes
 - No runtime secrets are committed.
 - This file captures the reviewer follow-up in-repo so the PR branch itself carries the release/check evidence, not only the PR conversation.
+
+## 2026-05-21 second re-review blocker fix
+- Conor re-review found the release QA gate still required explicit accepted copy QA labels.
+- Updated PR evidence to use `Sarah copy QA verdict: N/A — no published copy changes are shipped by merging this automation/evidence PR; live content changes remain credential-gated for separate review/apply.`
+- Updated PR evidence to use `Cian host copy QA verdict: N/A — no public copy is modified by merge alone; host validation is covered by the passing staging regression check and credential-gated apply evidence.`
