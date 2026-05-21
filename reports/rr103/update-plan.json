@@ -1,0 +1,61 @@
+{
+  "siteUrl": "https://rollingreno.com",
+  "affectedPosts": [
+    {
+      "id": 299,
+      "slug": "rv-sealant-day-planning-checklist",
+      "image": "assets/rr103/299-rv-sealant-day-mara.jpg",
+      "alt": "Mara cleaning an RV roof seam with gloves and painter's tape before applying sealant on sealant day",
+      "targetReadMinutes": 4,
+      "contentAction": "trim repeated checklist phrasing slightly after media replacement"
+    },
+    {
+      "id": 291,
+      "slug": "rv-kitchen-storage-refresh-small-space",
+      "image": "assets/rr103/291-rv-kitchen-storage-mara.jpg",
+      "alt": "Mara organizing bins and hooks inside a tiny RV galley cabinet during a kitchen storage refresh",
+      "targetReadMinutes": 6,
+      "contentAction": "add a short section on measuring cabinet zones and everyday-use priority"
+    },
+    {
+      "id": 290,
+      "slug": "rv-wall-panel-refresh-without-overbuilding",
+      "image": "assets/rr103/290-rv-wall-panel-mara.jpg",
+      "alt": "Mara measuring and test-fitting a lightweight wall panel inside a camper before fastening it",
+      "targetReadMinutes": 5,
+      "contentAction": "leave near 5 minutes after media replacement; avoid all posts sharing this length"
+    },
+    {
+      "id": 289,
+      "slug": "small-camper-demo-day-setup",
+      "image": "assets/rr103/289-small-camper-demo-mara.jpg",
+      "alt": "Mara sorting trim and demo debris into plain bins inside a small camper during demo day setup",
+      "targetReadMinutes": 7,
+      "contentAction": "add deeper safety/zoning and end-of-day reset guidance"
+    },
+    {
+      "id": 288,
+      "slug": "rv-electrical-labeling-before-demo",
+      "image": "assets/rr103/288-rv-electrical-labeling-mara.jpg",
+      "alt": "Mara using a multimeter and wire tags at an RV electrical access panel before demo work",
+      "targetReadMinutes": 6,
+      "contentAction": "add caution and photo-log/check-before-cut section"
+    },
+    {
+      "id": 287,
+      "slug": "rv-subfloor-soft-spot-triage",
+      "image": "assets/rr103/287-rv-subfloor-triage-mara.jpg",
+      "alt": "Mara checking an exposed RV subfloor soft spot with a moisture meter and painter's tape repair marks",
+      "targetReadMinutes": 4,
+      "contentAction": "tighten duplicated triage wording after media replacement"
+    },
+    {
+      "id": 286,
+      "slug": "rv-roof-leak-check-before-remodel",
+      "image": "assets/rr103/286-rv-roof-leak-check-mara.jpg",
+      "alt": "Mara inspecting an RV roof vent seam with a flashlight for leaks before starting a remodel",
+      "targetReadMinutes": 8,
+      "contentAction": "add hose-test, photo-log, and when-to-stop guidance"
+    }
+  ]
+}

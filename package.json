@@ -8,7 +8,9 @@
     "test:e2e:headed": "playwright test --headed",
     "test:regression": "playwright test tests/e2e/regression.spec.ts",
     "test:install": "playwright install chromium",
-    "drift:guard": "node scripts/rolling-reno-drift-guard.mjs"
+    "drift:guard": "node scripts/rolling-reno-drift-guard.mjs",
+    "publisher:qa": "node scripts/rolling-reno-publisher-qa.mjs",
+    "rr103:apply-live": "node scripts/rr103-apply-live-fix.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1"
