@@ -1,0 +1,66 @@
+
+> rolling-reno-theme@2.0.0 rr103:apply-live
+> node scripts/rr103-apply-live-fix.mjs
+
+{
+  "siteUrl": "https://rollingreno.com",
+  "dryRun": true,
+  "results": [
+    {
+      "post": 299,
+      "dryRun": true,
+      "newMedia": "dry-299-rv-sealant-day-mara.jpg",
+      "alt": "Mara cleaning an RV roof seam with gloves and painter's tape before applying sealant on sealant day",
+      "oldWordsApprox": 939,
+      "targetReadMinutes": 4
+    },
+    {
+      "post": 291,
+      "dryRun": true,
+      "newMedia": "dry-291-rv-kitchen-storage-mara.jpg",
+      "alt": "Mara organizing bins and hooks inside a tiny RV galley cabinet during a kitchen storage refresh",
+      "oldWordsApprox": 940,
+      "targetReadMinutes": 6
+    },
+    {
+      "post": 290,
+      "dryRun": true,
+      "newMedia": "dry-290-rv-wall-panel-mara.jpg",
+      "alt": "Mara measuring and test-fitting a lightweight wall panel inside a camper before fastening it",
+      "oldWordsApprox": 947,
+      "targetReadMinutes": 5
+    },
+    {
+      "post": 289,
+      "dryRun": true,
+      "newMedia": "dry-289-small-camper-demo-mara.jpg",
+      "alt": "Mara sorting trim and demo debris into plain bins inside a small camper during demo day setup",
+      "oldWordsApprox": 959,
+      "targetReadMinutes": 7
+    },
+    {
+      "post": 288,
+      "dryRun": true,
+      "newMedia": "dry-288-rv-electrical-labeling-mara.jpg",
+      "alt": "Mara using a multimeter and wire tags at an RV electrical access panel before demo work",
+      "oldWordsApprox": 947,
+      "targetReadMinutes": 6
+    },
+    {
+      "post": 287,
+      "dryRun": true,
+      "newMedia": "dry-287-rv-subfloor-triage-mara.jpg",
+      "alt": "Mara checking an exposed RV subfloor soft spot with a moisture meter and painter's tape repair marks",
+      "oldWordsApprox": 941,
+      "targetReadMinutes": 4
+    },
+    {
+      "post": 286,
+      "dryRun": true,
+      "newMedia": "dry-286-rv-roof-leak-check-mara.jpg",
+      "alt": "Mara inspecting an RV roof vent seam with a flashlight for leaks before starting a remodel",
+      "oldWordsApprox": 943,
+      "targetReadMinutes": 8
+    }
+  ]
+}

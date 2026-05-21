@@ -1,0 +1,169 @@
+
+> rolling-reno-theme@2.0.0 publisher:qa
+> node scripts/rolling-reno-publisher-qa.mjs
+
+{
+  "siteUrl": "https://rollingreno.com",
+  "postsUrl": "https://rollingreno.com/wp-json/wp/v2/posts?per_page=10&_embed=1&orderby=date&order=desc",
+  "checked": 10,
+  "read_time_distribution": {
+    "5": 7,
+    "6": 2,
+    "7": 1
+  },
+  "rows": [
+    {
+      "id": 299,
+      "date": "2026-05-20T21:00:18",
+      "title": "RV Sealant Day Checklist: Prep the Roof Before You Open the Tube",
+      "link": "https://rollingreno.com/rv-sealant-day-planning-checklist/",
+      "featured_media": 300,
+      "media_url": "https://rollingreno.com/wp-content/uploads/2026/05/rr-feature-sealant-day-checklist.png",
+      "alt": "RV sealant day prep checklist with roof seam, lap sealant tube, gloves, tape edges, and cleaning steps",
+      "words": 922,
+      "read_minutes": 5,
+      "has_human_action_alt": false,
+      "generic_signal": true
+    },
+    {
+      "id": 291,
+      "date": "2026-05-20T15:00:22",
+      "title": "RV Kitchen Storage Refresh Ideas for a Tiny Galley",
+      "link": "https://rollingreno.com/rv-kitchen-storage-refresh-small-space/",
+      "featured_media": 292,
+      "media_url": "https://rollingreno.com/wp-content/uploads/2026/05/rr-feature-kitchen-storage-refresh.jpg",
+      "alt": "Distinct RV galley storage refresh with bins, hooks, and compact cabinet organization",
+      "words": 923,
+      "read_minutes": 5,
+      "has_human_action_alt": false,
+      "generic_signal": true
+    },
+    {
+      "id": 290,
+      "date": "2026-05-20T11:00:20",
+      "title": "RV Wall Panel Refresh Without Overbuilding the Camper",
+      "link": "https://rollingreno.com/rv-wall-panel-refresh-without-overbuilding/",
+      "featured_media": 293,
+      "media_url": "https://rollingreno.com/wp-content/uploads/2026/05/rr-feature-wall-panel-refresh.jpg",
+      "alt": "Distinct lightweight RV wall panel refresh with measured panels and installation tools",
+      "words": 930,
+      "read_minutes": 5,
+      "has_human_action_alt": false,
+      "generic_signal": true
+    },
+    {
+      "id": 289,
+      "date": "2026-05-20T01:00:18",
+      "title": "Small Camper Demo Day Setup: How to Keep the Mess Useful",
+      "link": "https://rollingreno.com/small-camper-demo-day-setup/",
+      "featured_media": 294,
+      "media_url": "https://rollingreno.com/wp-content/uploads/2026/05/rr-feature-demo-day-setup.jpg",
+      "alt": "Small camper demo day setup with labeled bins, tool cart, safety gear, and checklist",
+      "words": 942,
+      "read_minutes": 5,
+      "has_human_action_alt": false,
+      "generic_signal": true
+    },
+    {
+      "id": 288,
+      "date": "2026-05-19T21:14:01",
+      "title": "RV Electrical Labeling Before Demo: A Calm Way to Avoid Mystery Wires",
+      "link": "https://rollingreno.com/rv-electrical-labeling-before-demo/",
+      "featured_media": 295,
+      "media_url": "https://rollingreno.com/wp-content/uploads/2026/05/rr-feature-electrical-labeling.jpg",
+      "alt": "RV electrical labeling setup with colored wires, tags, multimeter, and planning board",
+      "words": 930,
+      "read_minutes": 5,
+      "has_human_action_alt": false,
+      "generic_signal": true
+    },
+    {
+      "id": 287,
+      "date": "2026-05-19T21:13:01",
+      "title": "RV Subfloor Soft Spot Triage Before You Buy New Flooring",
+      "link": "https://rollingreno.com/rv-subfloor-soft-spot-triage/",
+      "featured_media": 296,
+      "media_url": "https://rollingreno.com/wp-content/uploads/2026/05/rr-feature-subfloor-triage.jpg",
+      "alt": "RV subfloor soft spot triage with exposed floor grid, moisture meter, and marked repair zone",
+      "words": 924,
+      "read_minutes": 5,
+      "has_human_action_alt": false,
+      "generic_signal": true
+    },
+    {
+      "id": 286,
+      "date": "2026-05-19T21:12:00",
+      "title": "RV Roof Leak Check: What to Inspect Before You Remodel",
+      "link": "https://rollingreno.com/rv-roof-leak-check-before-remodel/",
+      "featured_media": 297,
+      "media_url": "https://rollingreno.com/wp-content/uploads/2026/05/rr-feature-roof-leak-check.jpg",
+      "alt": "RV roof leak check with roof seam, sealant tube, and inspection path before remodel",
+      "words": 926,
+      "read_minutes": 5,
+      "has_human_action_alt": false,
+      "generic_signal": true
+    },
+    {
+      "id": 285,
+      "date": "2026-05-19T01:00:17",
+      "title": "RV Storage Upgrades That Make a Small Camper Feel Bigger",
+      "link": "https://rollingreno.com/rv-storage-upgrades-small-camper-amazon/",
+      "featured_media": 154,
+      "media_url": "https://rollingreno.com/wp-content/uploads/2026/04/50-rv-van-storage-solutions-diy.png",
+      "alt": "RV and van storage solutions with compact camper organization ideas",
+      "words": 1268,
+      "read_minutes": 6,
+      "has_human_action_alt": false,
+      "generic_signal": false
+    },
+    {
+      "id": 284,
+      "date": "2026-05-18T21:00:21",
+      "title": "RV Renovation Tool Kit: The Starter List for Weekend Projects",
+      "link": "https://rollingreno.com/rv-renovation-tool-kit-weekend-projects/",
+      "featured_media": 298,
+      "media_url": "https://rollingreno.com/wp-content/uploads/2026/05/rr-feature-renovation-tool-kit.jpg",
+      "alt": "RV renovation starter tool kit with organized tools, supplies, and weekend project checklist",
+      "words": 1311,
+      "read_minutes": 7,
+      "has_human_action_alt": false,
+      "generic_signal": true
+    },
+    {
+      "id": 283,
+      "date": "2026-05-18T15:00:17",
+      "title": "Best Lightweight RV Remodel Materials to Order Before Demo Day",
+      "link": "https://rollingreno.com/lightweight-rv-remodel-materials-amazon/",
+      "featured_media": 159,
+      "media_url": "https://rollingreno.com/wp-content/uploads/2026/04/55-best-lightweight-materials-rv-remodel.png",
+      "alt": "Lightweight RV remodel materials planned before camper demo day",
+      "words": 1273,
+      "read_minutes": 6,
+      "has_human_action_alt": false,
+      "generic_signal": false
+    }
+  ],
+  "warnings": [],
+  "failures": [
+    "299: alt text does not confirm Mara/person + visible action",
+    "299: featured media/alt has generic, abstract, diagram, or template signal",
+    "291: alt text does not confirm Mara/person + visible action",
+    "291: featured media/alt has generic, abstract, diagram, or template signal",
+    "290: alt text does not confirm Mara/person + visible action",
+    "290: featured media/alt has generic, abstract, diagram, or template signal",
+    "289: alt text does not confirm Mara/person + visible action",
+    "289: featured media/alt has generic, abstract, diagram, or template signal",
+    "288: alt text does not confirm Mara/person + visible action",
+    "288: featured media/alt has generic, abstract, diagram, or template signal",
+    "287: alt text does not confirm Mara/person + visible action",
+    "287: featured media/alt has generic, abstract, diagram, or template signal",
+    "286: alt text does not confirm Mara/person + visible action",
+    "286: featured media/alt has generic, abstract, diagram, or template signal",
+    "285: alt text does not confirm Mara/person + visible action",
+    "284: alt text does not confirm Mara/person + visible action",
+    "284: featured media/alt has generic, abstract, diagram, or template signal",
+    "283: alt text does not confirm Mara/person + visible action",
+    "latest 10 posts have uniform read times: 70% share one read-time label"
+  ],
+  "pass": false
+}

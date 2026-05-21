@@ -1,0 +1,79 @@
+{
+  "blocker": "Credentials unavailable: WordPress REST username/application-password not present in Sarah runtime; 1Password CLI is signed out and authorization is unavailable.",
+  "applyCommandOnceUnlocked": "WP_USERNAME='<wp-user>' WP_APP_PASSWORD='<app-password>' npm run rr103:apply-live",
+  "siteUrl": "https://rollingreno.com",
+  "mediaUploadEndpoint": "POST /wp-json/wp/v2/media",
+  "postUpdateEndpoint": "POST /wp-json/wp/v2/posts/{id}",
+  "payloads": [
+    {
+      "postId": 299,
+      "url": "https://rollingreno.com/rv-sealant-day-planning-checklist/",
+      "currentMediaId": 300,
+      "localImagePath": "assets/rr103/299-rv-sealant-day-mara.jpg",
+      "mediaContentType": "image/jpeg",
+      "mediaAltText": "Mara cleaning an RV roof seam with gloves and painter's tape before applying sealant on sealant day",
+      "postPayloadAfterMediaUpload": { "featured_media": "<uploaded-media-id>", "content": "<existing content, lightly tightened for 4 min target if needed>" },
+      "targetReadMinutes": 4
+    },
+    {
+      "postId": 291,
+      "url": "https://rollingreno.com/rv-kitchen-storage-refresh-small-space/",
+      "currentMediaId": 292,
+      "localImagePath": "assets/rr103/291-rv-kitchen-storage-mara.jpg",
+      "mediaContentType": "image/jpeg",
+      "mediaAltText": "Mara organizing bins and hooks inside a tiny RV galley cabinet during a kitchen storage refresh",
+      "postPayloadAfterMediaUpload": { "featured_media": "<uploaded-media-id>", "content": "<existing content + cabinet zone check section>" },
+      "targetReadMinutes": 6
+    },
+    {
+      "postId": 290,
+      "url": "https://rollingreno.com/rv-wall-panel-refresh-without-overbuilding/",
+      "currentMediaId": 293,
+      "localImagePath": "assets/rr103/290-rv-wall-panel-mara.jpg",
+      "mediaContentType": "image/jpeg",
+      "mediaAltText": "Mara measuring and test-fitting a lightweight wall panel inside a camper before fastening it",
+      "postPayloadAfterMediaUpload": { "featured_media": "<uploaded-media-id>", "content": "<existing content>" },
+      "targetReadMinutes": 5
+    },
+    {
+      "postId": 289,
+      "url": "https://rollingreno.com/small-camper-demo-day-setup/",
+      "currentMediaId": 294,
+      "localImagePath": "assets/rr103/289-small-camper-demo-mara.jpg",
+      "mediaContentType": "image/jpeg",
+      "mediaAltText": "Mara sorting trim and demo debris into plain bins inside a small camper during demo day setup",
+      "postPayloadAfterMediaUpload": { "featured_media": "<uploaded-media-id>", "content": "<existing content + demo evidence/reset/safety sections>" },
+      "targetReadMinutes": 7
+    },
+    {
+      "postId": 288,
+      "url": "https://rollingreno.com/rv-electrical-labeling-before-demo/",
+      "currentMediaId": 295,
+      "localImagePath": "assets/rr103/288-rv-electrical-labeling-mara.jpg",
+      "mediaContentType": "image/jpeg",
+      "mediaAltText": "Mara using a multimeter and wire tags at an RV electrical access panel before demo work",
+      "postPayloadAfterMediaUpload": { "featured_media": "<uploaded-media-id>", "content": "<existing content + photo-log/check-before-cut section>" },
+      "targetReadMinutes": 6
+    },
+    {
+      "postId": 287,
+      "url": "https://rollingreno.com/rv-subfloor-soft-spot-triage/",
+      "currentMediaId": 296,
+      "localImagePath": "assets/rr103/287-rv-subfloor-triage-mara.jpg",
+      "mediaContentType": "image/jpeg",
+      "mediaAltText": "Mara checking an exposed RV subfloor soft spot with a moisture meter and painter's tape repair marks",
+      "postPayloadAfterMediaUpload": { "featured_media": "<uploaded-media-id>", "content": "<existing content, tightened for 4 min target if needed>" },
+      "targetReadMinutes": 4
+    },
+    {
+      "postId": 286,
+      "url": "https://rollingreno.com/rv-roof-leak-check-before-remodel/",
+      "currentMediaId": 297,
+      "localImagePath": "assets/rr103/286-rv-roof-leak-check-mara.jpg",
+      "mediaContentType": "image/jpeg",
+      "mediaAltText": "Mara inspecting an RV roof vent seam with a flashlight for leaks before starting a remodel",
+      "postPayloadAfterMediaUpload": { "featured_media": "<uploaded-media-id>", "content": "<existing content + hose-test/stop-remodel/photo-log sections>" },
+      "targetReadMinutes": 8
+    }
+  ]
+}
