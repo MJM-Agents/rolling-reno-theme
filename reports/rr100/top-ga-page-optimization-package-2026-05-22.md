@@ -1,7 +1,7 @@
 # RR100 Top GA Page Optimization Package — 2026-05-22
 
-Issue: MJM-Agents/rolling-reno-theme#100  
-Owner/review lane: Sarah copy + affiliate review  
+Issue: MJM-Agents/rolling-reno-theme#100
+Owner/review lane: Sarah copy + affiliate review
 Live status: **Not live from this package**. This is a repo-backed implementation package only; WordPress writes and final Sienna QA remain blocked until valid WP REST/app-password access and media/default featured-image prerequisites are available.
 
 ## Scope
@@ -70,9 +70,9 @@ Existing Amazon affiliate links sampled on live pages use `tag=rollingreno-20`, 
 - **SEO title:** RV Wall Panel Replacement: Repair Interior Walls Without Trapping Moisture
 - **Meta description:** Learn how to replace RV wall panels, inspect for leaks, choose lightweight materials, and avoid trapping moisture behind fresh interior walls.
 - **Affiliate CTAs:**
-  1. After the moisture inspection section: “For checking suspicious wall areas before you close them back up, compare the Klein Tools ET140 pinless moisture meter on Amazon.”  
+  1. After the moisture inspection section: “For checking suspicious wall areas before you close them back up, compare the Klein Tools ET140 pinless moisture meter on Amazon.”
      URL: `https://www.amazon.com/Klein-Tools-ET140-Non-Destructive-Detection/dp/B07SZX8QXH?tag=rollingreno-20`
-  2. Optional, only if there is a prep/tools section: “For cleaner panel cuts and outlet openings, compare the DEWALT DCS356C1 oscillating multi-tool kit on Amazon.”  
+  2. Optional, only if there is a prep/tools section: “For cleaner panel cuts and outlet openings, compare the DEWALT DCS356C1 oscillating multi-tool kit on Amazon.”
      URL: `https://www.amazon.com/dp/B085B253MD?tag=rollingreno-20`
 - **Disclosure placement:** Before the first moisture-meter CTA.
 - **Internal links to add/strengthen:**
@@ -89,9 +89,9 @@ Existing Amazon affiliate links sampled on live pages use `tag=rollingreno-20`, 
 - **SEO title:** RV Electrical Renovation Planning: Map 12V, 120V, Outlets, and Access
 - **Meta description:** Plan RV electrical updates before closing walls: map 12V and 120V runs, outlet placement, lighting, battery access, labels, and pro-only safety decisions.
 - **Affiliate CTAs:**
-  1. After the labeling/access planning section: “For mapping circuits before demo, compare the Brother P-touch PTD220 label maker on Amazon.”  
+  1. After the labeling/access planning section: “For mapping circuits before demo, compare the Brother P-touch PTD220 label maker on Amazon.”
      URL: `https://www.amazon.com/Brother-P-Touch-PTD220-Label-Maker/dp/B0B3ZQ2NML?tag=rollingreno-20`
-  2. Optional after access/inspection section: “For non-contact checks while identifying unknown wiring, compare the Klein Tools NCVT-1P voltage tester on Amazon — and use it only as a screening tool, not a substitute for a qualified electrician.”  
+  2. Optional after access/inspection section: “For non-contact checks while identifying unknown wiring, compare the Klein Tools NCVT-1P voltage tester on Amazon — and use it only as a screening tool, not a substitute for a qualified electrician.”
      URL: `https://www.amazon.com/Klein-Tools-NCVT-1P-Non-Contact-Indicator/dp/B099SJ6469?tag=rollingreno-20`
 - **Disclosure placement:** Before the label-maker CTA.
 - **Internal links to add/strengthen:**
@@ -108,9 +108,9 @@ Existing Amazon affiliate links sampled on live pages use `tag=rollingreno-20`, 
 - **SEO title:** RV Renovation Weight Checklist: Upgrade Without Overloading Your Rig
 - **Meta description:** Use this RV renovation weight checklist to plan materials, batteries, water, storage, and upgrades without quietly eating up payload.
 - **Affiliate CTAs:**
-  1. Near the weighing/materials section: “For weighing removed parts, packed bins, and small build materials, compare the Etekcity luggage scale on Amazon.”  
+  1. Near the weighing/materials section: “For weighing removed parts, packed bins, and small build materials, compare the Etekcity luggage scale on Amazon.”
      URL: `https://www.amazon.com/Etekcity-Luggage-Scale-Digital-Suitcase/dp/B00NW62PCA?tag=rollingreno-20`
-  2. Optional near lightweight materials: “For insulation planning, compare 3M Thinsulate SM600L on Amazon before choosing materials.”  
+  2. Optional near lightweight materials: “For insulation planning, compare 3M Thinsulate SM600L on Amazon before choosing materials.”
      URL: `https://www.amazon.com/SM600L-Automotive-Camper-Insulation-Inch/dp/B0DP3NGNGQ?tag=rollingreno-20`
 - **Disclosure placement:** Before the scale CTA.
 - **Internal links to add/strengthen:**
@@ -141,9 +141,9 @@ Existing Amazon affiliate links sampled on live pages use `tag=rollingreno-20`, 
 - **SEO title:** RV Water System Upgrade: PEX, Fittings, Pumps, and Leak Checks
 - **Meta description:** Plan an RV water system upgrade with PEX, fittings, pumps, access panels, pressure checks, and leak prevention before cabinets hide the plumbing.
 - **Affiliate CTAs:**
-  1. Existing CTA can remain: SHURFLO Revolution 3.0 GPM water pump.  
+  1. Existing CTA can remain: SHURFLO Revolution 3.0 GPM water pump.
      URL: `https://www.amazon.com/SHURFLO-4008-101-E65-Revolution-Water-Pump/dp/B002XM5G70?tag=rollingreno-20`
-  2. Add near pressure/leak testing: “For quick pre-close leak checks, compare the Camco blow-out plug on Amazon if it fits your winterizing/test setup.”  
+  2. Add near pressure/leak testing: “For quick pre-close leak checks, compare the Camco blow-out plug on Amazon if it fits your winterizing/test setup.”
      URL: `https://www.amazon.com/Camco-Brass-Blow-Plug-36153/dp/B0006IX68O?tag=rollingreno-20`
 - **Disclosure placement:** Existing disclosure appears in meta/content context; verify it appears in body before the first product CTA after WP update.
 - **Internal links to add/strengthen:**
@@ -159,9 +159,9 @@ Existing Amazon affiliate links sampled on live pages use `tag=rollingreno-20`, 
 - **SEO title:** RV Insulation Upgrades: Add Comfort Without Trapping Moisture
 - **Meta description:** Compare RV insulation upgrade options, where to add comfort, and how to avoid trapping moisture behind walls, floors, and cabinets.
 - **Affiliate CTAs:**
-  1. Existing CTA can remain: 3M Thinsulate SM600L.  
+  1. Existing CTA can remain: 3M Thinsulate SM600L.
      URL: `https://www.amazon.com/SM600L-Automotive-Camper-Insulation-Inch/dp/B0DP3NGNGQ?tag=rollingreno-20`
-  2. Add near seam/air sealing prep only if copy supports it: “For clean prep before insulation, compare 3M foil tape on Amazon.”  
+  2. Add near seam/air sealing prep only if copy supports it: “For clean prep before insulation, compare 3M foil tape on Amazon.”
      URL: `https://www.amazon.com/3M-3381-Foil-Tape-1-88/dp/B00A7I5R6A?tag=rollingreno-20`
 - **Disclosure placement:** Before Thinsulate CTA if not already present in body.
 - **Internal links to add/strengthen:**
@@ -177,9 +177,9 @@ Existing Amazon affiliate links sampled on live pages use `tag=rollingreno-20`, 
 - **SEO title:** RV Roof Reseal Before Renovation: Stop Leaks Before Interior Work
 - **Meta description:** Reseal RV roof seams, vents, and penetrations before renovation so leaks do not ruin new walls, floors, cabinets, or insulation.
 - **Affiliate CTAs:**
-  1. Existing CTA can remain: Dicor self-leveling lap sealant.  
+  1. Existing CTA can remain: Dicor self-leveling lap sealant.
      URL: `https://www.amazon.com/Dicor-501LSW-1-Self-Leveling-Sealant-Pack/dp/B00G6KGPFM?tag=rollingreno-20`
-  2. Add near inspection/testing: “For checking questionable ceiling or wall areas after a leak, compare the Klein Tools ET140 pinless moisture meter on Amazon.”  
+  2. Add near inspection/testing: “For checking questionable ceiling or wall areas after a leak, compare the Klein Tools ET140 pinless moisture meter on Amazon.”
      URL: `https://www.amazon.com/Klein-Tools-ET140-Non-Destructive-Detection/dp/B07SZX8QXH?tag=rollingreno-20`
 - **Disclosure placement:** Before sealant CTA if not already present in body.
 - **Internal links to add/strengthen:**
@@ -195,9 +195,9 @@ Existing Amazon affiliate links sampled on live pages use `tag=rollingreno-20`, 
 - **SEO title:** RV Renovation Water Damage Mistakes: Avoid Soft Floors and Hidden Leaks
 - **Meta description:** Avoid RV renovation mistakes that cause water damage, from sealing over leaks to hiding soft floors, wall rot, and plumbing drips behind new finishes.
 - **Affiliate CTAs:**
-  1. After the “verify it is dry” section: “For checking suspect floors and wall panels before you cover them, compare the Klein Tools ET140 pinless moisture meter on Amazon.”  
+  1. After the “verify it is dry” section: “For checking suspect floors and wall panels before you cover them, compare the Klein Tools ET140 pinless moisture meter on Amazon.”
      URL: `https://www.amazon.com/Klein-Tools-ET140-Non-Destructive-Detection/dp/B07SZX8QXH?tag=rollingreno-20`
-  2. Optional if the post has a roof/sealant mistake section: “For roof seam repairs where compatible, compare Dicor self-leveling lap sealant on Amazon.”  
+  2. Optional if the post has a roof/sealant mistake section: “For roof seam repairs where compatible, compare Dicor self-leveling lap sealant on Amazon.”
      URL: `https://www.amazon.com/Dicor-501LSW-1-Self-Leveling-Sealant-Pack/dp/B00G6KGPFM?tag=rollingreno-20`
 - **Disclosure placement:** Before the first moisture-meter CTA.
 - **Internal links to add/strengthen:**
@@ -214,9 +214,9 @@ Existing Amazon affiliate links sampled on live pages use `tag=rollingreno-20`, 
 - **SEO title:** RV Kitchen Storage Ideas: Small-Space Upgrades That Stay Put
 - **Meta description:** Practical RV kitchen storage ideas for small spaces, with road-safe organizers, non-slip cabinet liner, weight-aware storage, and fewer rattles.
 - **Affiliate CTAs:**
-  1. Existing CTA can remain: Gorilla Grip drawer/shelf liner.  
+  1. Existing CTA can remain: Gorilla Grip drawer/shelf liner.
      URL: `https://www.amazon.com/Gorilla-Grip-Drawer-Shelf-Liners/dp/B07773PQG7?tag=rollingreno-20`
-  2. Add near vertical/spice storage only if the copy supports road-safety caveats: “For lightweight cabinet-door storage, compare the SimpleHouseware over-door organizer on Amazon and install only where it will not swing loose in transit.”  
+  2. Add near vertical/spice storage only if the copy supports road-safety caveats: “For lightweight cabinet-door storage, compare the SimpleHouseware over-door organizer on Amazon and install only where it will not swing loose in transit.”
      URL: `https://www.amazon.com/SimpleHouseware-Crystal-Hanging-Organizer-Holders/dp/B01D58DRVC?tag=rollingreno-20`
 - **Disclosure placement:** Before existing shelf-liner CTA if not already present in body.
 - **Internal links to add/strengthen:**
