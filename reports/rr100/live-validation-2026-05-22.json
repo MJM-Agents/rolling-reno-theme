@@ -1,0 +1,113 @@
+{
+  "checkedAt": "2026-05-22 ET",
+  "method": "Node HTTPS public fetch; no WordPress credentials used",
+  "baseUrl": "https://rollingreno.com",
+  "liveStatus": "No RR100 changes are live from this package",
+  "credentialBlocker": "Applying WordPress page/post edits and final Sienna QA require valid WP REST/application-password credentials plus media/default featured-image prerequisites.",
+  "pages": [
+    {
+      "priority": 1,
+      "path": "/",
+      "status": 200,
+      "title": "Rolling Reno — RV Renovation for Real Budgets - Rolling Reno",
+      "canonical": "https://rollingreno.com/",
+      "h1": "The open road is calling. I'm Mara — and I'll show you how to answer it.",
+      "amazonAffiliateLinksFound": 5,
+      "metadataIssue": "Meta description appears too long/noisy and should be tightened."
+    },
+    {
+      "priority": 2,
+      "path": "/rv-wall-panel-replacement/",
+      "status": 200,
+      "title": "RV Wall Panel Replacement: How to Repair Interior Walls Without Adding Weight or Hiding Moisture - Rolling Reno",
+      "canonical": "https://rollingreno.com/rv-wall-panel-replacement/",
+      "h1": "RV Wall Panel Replacement: How to Repair Interior Walls Without Adding Weight or Hiding Moisture",
+      "amazonAffiliateLinksFound": 0,
+      "metadataIssue": "Affiliate opportunity exists; title/meta otherwise usable."
+    },
+    {
+      "priority": 3,
+      "path": "/rv-electrical-renovation-planning/",
+      "status": 200,
+      "title": "RV Electrical Renovation Planning: 12V, 120V, Outlets, and Access Before You Close the Walls - Rolling Reno",
+      "canonical": "https://rollingreno.com/rv-electrical-renovation-planning/",
+      "h1": "RV Electrical Renovation Planning: 12V, 120V, Outlets, and Access Before You Close the Walls",
+      "amazonAffiliateLinksFound": 0,
+      "metadataIssue": "Affiliate opportunity exists; preserve electrical safety language."
+    },
+    {
+      "priority": 4,
+      "path": "/rv-renovation-weight-checklist/",
+      "status": 200,
+      "title": "RV Renovation Weight Checklist: How to Upgrade Without Overloading Your Rig - Rolling Reno",
+      "canonical": "https://rollingreno.com/rv-renovation-weight-checklist/",
+      "h1": "RV Renovation Weight Checklist: How to Upgrade Without Overloading Your Rig",
+      "amazonAffiliateLinksFound": 0,
+      "metadataIssue": "Affiliate opportunity exists for weighing/material planning."
+    },
+    {
+      "priority": 5,
+      "path": "/blog/",
+      "status": 200,
+      "title": "Blog - Rolling Reno",
+      "canonical": "https://rollingreno.com/blog/",
+      "h1": "From the Road",
+      "amazonAffiliateLinksFound": 0,
+      "metadataIssue": "Title/meta are too generic for an RV renovation hub."
+    },
+    {
+      "priority": 6,
+      "path": "/rv-water-system-upgrade-pex-pump/",
+      "status": 200,
+      "title": "RV Water System Upgrade: PEX, Fittings, Pumps, and Leak Checks That Matter - Rolling Reno",
+      "canonical": "https://rollingreno.com/rv-water-system-upgrade-pex-pump/",
+      "h1": "RV Water System Upgrade: PEX, Fittings, Pumps, and Leak Checks That Matter",
+      "amazonAffiliateLinksFound": 1,
+      "sampleAffiliateLink": "https://www.amazon.com/SHURFLO-4008-101-E65-Revolution-Water-Pump/dp/B002XM5G70?tag=rollingreno-20",
+      "sampleLinkAttributes": "rel=nofollow sponsored noopener; target=_blank"
+    },
+    {
+      "priority": 7,
+      "path": "/rv-insulation-upgrades-four-season/",
+      "status": 200,
+      "title": "RV Insulation Upgrades: Where to Add Comfort Without Trapping Moisture - Rolling Reno",
+      "canonical": "https://rollingreno.com/rv-insulation-upgrades-four-season/",
+      "h1": "RV Insulation Upgrades: Where to Add Comfort Without Trapping Moisture",
+      "amazonAffiliateLinksFound": 1,
+      "sampleAffiliateLink": "https://www.amazon.com/SM600L-Automotive-Camper-Insulation-Inch/dp/B0DP3NGNGQ?tag=rollingreno-20",
+      "sampleLinkAttributes": "rel=nofollow sponsored noopener; target=_blank"
+    },
+    {
+      "priority": 8,
+      "path": "/rv-roof-reseal-before-renovation/",
+      "status": 200,
+      "title": "RV Roof Reseal Before Renovation: Stop Leaks Before They Ruin the Build - Rolling Reno",
+      "canonical": "https://rollingreno.com/rv-roof-reseal-before-renovation/",
+      "h1": "RV Roof Reseal Before Renovation: Stop Leaks Before They Ruin the Build",
+      "amazonAffiliateLinksFound": 1,
+      "sampleAffiliateLink": "https://www.amazon.com/Dicor-501LSW-1-Self-Leveling-Sealant-Pack/dp/B00G6KGPFM?tag=rollingreno-20",
+      "sampleLinkAttributes": "rel=nofollow sponsored noopener; target=_blank"
+    },
+    {
+      "priority": 9,
+      "path": "/rv-renovation-water-damage-mistakes/",
+      "status": 200,
+      "title": "RV Renovation Mistakes That Cause Water Damage: Soft Floors, Wall Rot, and Hidden Leaks - Rolling Reno",
+      "canonical": "https://rollingreno.com/rv-renovation-water-damage-mistakes/",
+      "h1": "RV Renovation Mistakes That Cause Water Damage: Soft Floors, Wall Rot, and Hidden Leaks",
+      "amazonAffiliateLinksFound": 0,
+      "metadataIssue": "Affiliate opportunity exists for inspection tools; keep this primarily safety/helpfulness oriented."
+    },
+    {
+      "priority": 10,
+      "path": "/rv-kitchen-storage-ideas-small-spaces/",
+      "status": 200,
+      "title": "RV Kitchen Storage Ideas: Small-Space Upgrades That Actually Stay Put - Rolling Reno",
+      "canonical": "https://rollingreno.com/rv-kitchen-storage-ideas-small-spaces/",
+      "h1": "RV Kitchen Storage Ideas: Small-Space Upgrades That Actually Stay Put",
+      "amazonAffiliateLinksFound": 1,
+      "sampleAffiliateLink": "https://www.amazon.com/Gorilla-Grip-Drawer-Shelf-Liners/dp/B07773PQG7?tag=rollingreno-20",
+      "sampleLinkAttributes": "rel=nofollow sponsored noopener; target=_blank"
+    }
+  ]
+}
