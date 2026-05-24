@@ -162,6 +162,10 @@ function compareUrlProbes(left, right) {
   for (const probe of right) {
     const base = byKey.get(probe.path);
     if (!base) continue;
+    if (base.status !== 200 || probe.status !== 200) {
+      warnings.push(`${base.target} vs ${probe.target} ${probe.path}: content drift comparison skipped because probe status was ${base.target}=${base.status}, ${probe.target}=${probe.status}. Resolve access/HTTP failures before treating response hashes or sizes as content drift.`);
+      continue;
+    }
     const maxSize = Math.max(base.size, probe.size, 1);
     const deltaRatio = Math.abs(base.size - probe.size) / maxSize;
     if (base.hash !== probe.hash) {

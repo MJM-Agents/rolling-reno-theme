@@ -1,5 +1,5 @@
 {
-  "paths": ["/", "/blog/", "/gear/", "/start-here/", "/full-time-rv-insurance/"],
+  "paths": ["/", "/blog/", "/gear/", "/start-here/", "/full-time-rv-insurance/", "/best-vans-rvs-to-renovate-buyers-guide/"],
   "expectedMarkers": {
     "all": [
       "Rolling Reno",
@@ -10,7 +10,8 @@
     "/blog/": ["blog-discovery", "category-filter"],
     "/gear/": ["amazon.com", "tag=rollingreno-20"],
     "/start-here/": ["Start Here"],
-    "/full-time-rv-insurance/": ["insurance"]
+    "/full-time-rv-insurance/": ["insurance"],
+    "/best-vans-rvs-to-renovate-buyers-guide/": ["Buyer", "renovate"]
   },
   "urlSizeDeltaWarnRatio": 0.25,
   "remoteThemePath": "/www/wp-content/themes/rolling-reno-v2",
