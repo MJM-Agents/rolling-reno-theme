@@ -147,6 +147,7 @@ Small camper interior with Mara organizing a cabinet using fabric bins while hoo
 - [x] Affiliate anchors are product/task-specific and avoid price claims, fake urgency, rankings, or deceptive language.
 - [x] Internal links checked from source package on 2026-05-24; all 5 selected URLs returned HTTP 200.
 - [x] Featured image direction and descriptive alt text included.
+- [x] Sarah copy QA verdict recorded in PR evidence for WordPress draft/publish handoff.
 - [ ] WordPress publish/live URL pending WordPress publish access or publisher handoff.
 - [ ] Desktop/mobile preview pending WordPress draft creation.
 - [ ] Public URL HTTP 200 pending publish.
