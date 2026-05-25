@@ -1,0 +1,67 @@
+{
+  "validatedAt": "2026-05-24T22:20:21-04:00",
+  "files": [
+    "docs/blog-packages/rv-electrical-renovation-shopping-list.md",
+    "docs/blog-packages/rv-electrical-renovation-shopping-list.html",
+    "docs/blog-packages/rv-electrical-renovation-shopping-list.wp-payload.json"
+  ],
+  "seoTitleLength": 38,
+  "metaDescriptionLength": 146,
+  "bodyAffiliateTagCountMd": 2,
+  "htmlAffiliateTagCount": 2,
+  "payloadAffiliateTagCount": 2,
+  "amazonProductUrls": [
+    "https://www.amazon.com/Brady-PermaSleeve-Heat-Shrink-Polyolefin-M21-187-C-342/dp/B00IELDPKO?tag=rollingreno-20",
+    "https://www.amazon.com/dp/B0B57L9FNL?tag=rollingreno-20"
+  ],
+  "blockedAmazonSearchUrls": [],
+  "amazonSearchGrepClean": true,
+  "disclosureBeforeFirstAffiliate": true,
+  "safetyFramingChecks": {
+    "mentionsQualifiedHelp": true,
+    "mentions120v": true,
+    "notAWiringTutorial": true
+  },
+  "internalLinkResults": [
+    {
+      "url": "https://rollingreno.com/rv-electrical-renovation-planning/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://rollingreno.com/rv-leak-prevention-kit-amazon/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://rollingreno.com/rv-renovation-weight-checklist/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://rollingreno.com/rv-solar-prep-checklist/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://rollingreno.com/rv-wall-panel-replacement/",
+      "status": 200,
+      "ok": true
+    }
+  ],
+  "targetSlugRestCheck": {
+    "url": "https://rollingreno.com/wp-json/wp/v2/posts?slug=rv-electrical-renovation-shopping-list&_fields=id,slug,status,link",
+    "status": 200,
+    "body": []
+  },
+  "wordpressCredentialEnvPresent": {
+    "WP_USERNAME": false,
+    "WORDPRESS_USERNAME": false,
+    "ROLLING_RENO_WP_USERNAME": false,
+    "WP_APP_PASSWORD": false,
+    "WORDPRESS_APP_PASSWORD": false,
+    "ROLLING_RENO_WP_APP_PASSWORD": false,
+    "WP_PASSWORD": false
+  },
+  "publishBlocked": true
+}
