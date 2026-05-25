@@ -1,5 +1,5 @@
 {
-  "validatedAt": "2026-05-24T21:54:01-04:00",
+  "validatedAt": "2026-05-24T22:20:21-04:00",
   "files": [
     "docs/blog-packages/rv-electrical-renovation-shopping-list.md",
     "docs/blog-packages/rv-electrical-renovation-shopping-list.html",
@@ -10,6 +10,12 @@
   "bodyAffiliateTagCountMd": 2,
   "htmlAffiliateTagCount": 2,
   "payloadAffiliateTagCount": 2,
+  "amazonProductUrls": [
+    "https://www.amazon.com/Brady-PermaSleeve-Heat-Shrink-Polyolefin-M21-187-C-342/dp/B00IELDPKO?tag=rollingreno-20",
+    "https://www.amazon.com/dp/B0B57L9FNL?tag=rollingreno-20"
+  ],
+  "blockedAmazonSearchUrls": [],
+  "amazonSearchGrepClean": true,
   "disclosureBeforeFirstAffiliate": true,
   "safetyFramingChecks": {
     "mentionsQualifiedHelp": true,

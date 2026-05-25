@@ -39,7 +39,7 @@ Labels are cheap compared with reopening a finished wall. Buy enough wire labels
 
 Do not rely on memory, wire color, or “I’ll remember because this one is obvious.” Renovation confidence has a short shelf life.
 
-**Affiliate CTA 1:** Before the panels close, compare [heat-shrink wire labels and cable label supplies on Amazon](https://www.amazon.com/s?k=heat+shrink+wire+labels&tag=rollingreno-20) so both ends of each run can be marked clearly.
+**Affiliate CTA 1:** Before the panels close, compare [Brady PermaSleeve heat-shrink wire label cartridge on Amazon](https://www.amazon.com/Brady-PermaSleeve-Heat-Shrink-Polyolefin-M21-187-C-342/dp/B00IELDPKO?tag=rollingreno-20) so both ends of each run can be marked clearly.
 
 ## 2. Cable management that still allows access
 
@@ -65,7 +65,7 @@ A basic verification kit can help with planning and documentation, but it does n
 
 Use testers to verify status, label circuits, and confirm what a qualified pro has asked you to check. Do not use a tool reading as permission to guess your way through 120V, inverter, shore-power, generator, or panel work.
 
-**Affiliate CTA 2:** For planning checks and circuit identification, compare [digital multimeters and circuit testers on Amazon](https://www.amazon.com/s?k=digital+multimeter+circuit+tester&tag=rollingreno-20), then get qualified help for 120V or unclear work.
+**Affiliate CTA 2:** For planning checks and circuit identification, compare [Klein Tools MM325 digital multimeter on Amazon](https://www.amazon.com/dp/B0B57L9FNL?tag=rollingreno-20), then get qualified help for 120V or unclear work.
 
 ## 6. Photos, diagrams, and a printed close-wall packet
 
@@ -141,8 +141,8 @@ Clean walls are nice. Clean walls you can safely understand later are better.
 
 ## Amazon affiliate CTA count
 
-- CTA 1: Heat-shrink wire labels and cable label supplies Amazon search link
-- CTA 2: Digital multimeters and circuit testers Amazon search link
+- CTA 1: Brady PermaSleeve M21-187-C-342 heat-shrink wire label cartridge Amazon product link
+- CTA 2: Klein Tools MM325 digital multimeter Amazon product link
 - Total affiliate links in body: 2
 
 ## Featured image direction
