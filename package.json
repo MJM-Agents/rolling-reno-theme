@@ -4,6 +4,8 @@
   "version": "2.0.0",
   "description": "Rolling Reno WordPress theme regression tests",
   "scripts": {
+    "test": "npm run test:static",
+    "test:static": "node tests/static/comments-disabled.test.mjs",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:regression": "playwright test tests/e2e/regression.spec.ts",
