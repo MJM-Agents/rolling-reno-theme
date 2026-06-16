@@ -148,6 +148,17 @@ function rr_scripts() {
         RR_VERSION,
         true
     );
+
+    if ( is_home() || rr_is_blog_index_request() ) {
+        wp_localize_script(
+            'rolling-reno-main',
+            'rrBlogInfinite',
+            array(
+                'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+                'nonce'   => wp_create_nonce( 'rr_blog_infinite_scroll' ),
+            )
+        );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'rr_scripts' );
 
@@ -1393,6 +1404,88 @@ function rr_filter_blog_index_query( $query ) {
     }
 }
 add_action( 'pre_get_posts', 'rr_filter_blog_index_query' );
+
+function rr_blog_archive_query_args( $page, $search = '', $category = '' ) {
+    $page     = max( 1, absint( $page ) );
+    $search   = sanitize_text_field( wp_unslash( $search ) );
+    $category = sanitize_title( wp_unslash( $category ) );
+
+    $args = array(
+        'post_type'     => 'post',
+        'post_status'   => 'publish',
+        'paged'         => $page,
+        'no_found_rows' => false,
+    );
+
+    $per_page = (int) get_option( 'posts_per_page' );
+    if ( $per_page > 0 ) {
+        $args['posts_per_page'] = $per_page;
+    }
+
+    if ( $search ) {
+        $args['s'] = $search;
+    }
+
+    if ( $category && rr_blog_topic_term( $category ) ) {
+        $args['category_name'] = $category;
+    }
+
+    return $args;
+}
+
+function rr_blog_infinite_scroll() {
+    check_ajax_referer( 'rr_blog_infinite_scroll', 'nonce' );
+
+    $page     = isset( $_POST['page'] ) ? absint( $_POST['page'] ) : 1;
+    $search   = isset( $_POST['search'] ) ? sanitize_text_field( wp_unslash( $_POST['search'] ) ) : '';
+    $category = isset( $_POST['category'] ) ? sanitize_title( wp_unslash( $_POST['category'] ) ) : '';
+
+    if ( $page < 2 ) {
+        wp_send_json_error(
+            array( 'message' => __( 'Invalid page request.', 'rolling-reno' ) ),
+            400
+        );
+    }
+
+    $query = new WP_Query( rr_blog_archive_query_args( $page, $search, $category ) );
+
+    if ( $page > max( 1, (int) $query->max_num_pages ) ) {
+        wp_send_json_success(
+            array(
+                'html'       => '',
+                'page'       => $page,
+                'maxPage'    => max( 1, (int) $query->max_num_pages ),
+                'hasMore'    => false,
+                'postIds'    => array(),
+                'foundPosts' => (int) $query->found_posts,
+            )
+        );
+    }
+
+    ob_start();
+    $post_ids = array();
+    if ( $query->have_posts() ) {
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            $post_ids[] = get_the_ID();
+            get_template_part( 'template-parts/content-card' );
+        }
+    }
+    wp_reset_postdata();
+
+    wp_send_json_success(
+        array(
+            'html'       => ob_get_clean(),
+            'page'       => $page,
+            'maxPage'    => max( 1, (int) $query->max_num_pages ),
+            'hasMore'    => $page < (int) $query->max_num_pages,
+            'postIds'    => $post_ids,
+            'foundPosts' => (int) $query->found_posts,
+        )
+    );
+}
+add_action( 'wp_ajax_rr_blog_infinite_scroll', 'rr_blog_infinite_scroll' );
+add_action( 'wp_ajax_nopriv_rr_blog_infinite_scroll', 'rr_blog_infinite_scroll' );
 
 function rr_use_blog_template_for_blog_search( $template ) {
     if ( is_search() && rr_is_blog_index_request() ) {

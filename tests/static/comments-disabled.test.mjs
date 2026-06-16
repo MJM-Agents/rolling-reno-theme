@@ -10,7 +10,12 @@ const postCardTemplates = [
   'home.php',
   'page-start-here.php',
   'single.php',
+  'template-parts/content-card.php',
 ].map((file) => [file, readFileSync(resolve(root, file), 'utf8')]);
+const homeTemplate = readFileSync(resolve(root, 'home.php'), 'utf8');
+const mainScript = readFileSync(resolve(root, 'assets/js/main.js'), 'utf8');
+const themeStyles = readFileSync(resolve(root, 'style.css'), 'utf8');
+const contentCardTemplate = readFileSync(resolve(root, 'template-parts/content-card.php'), 'utf8');
 
 assert(
   !/\bcomments_template\s*\(/.test(singleTemplate),
@@ -50,3 +55,44 @@ for (const [file, template] of postCardTemplates) {
     `${file} must not render post-card images with an empty alt attribute.`,
   );
 }
+
+assert(
+  homeTemplate.includes('data-rr-infinite-grid') && homeTemplate.includes('data-rr-infinite-sentinel'),
+  'home.php must expose the blog archive grid and sentinel for infinite scrolling.',
+);
+
+assert(
+  /the_posts_pagination\s*\(/.test(homeTemplate),
+  'home.php must keep server-side pagination as the no-JS/crawlable fallback.',
+);
+
+assert(
+  functionsTemplate.includes('check_ajax_referer( \'rr_blog_infinite_scroll\', \'nonce\' )'),
+  'blog infinite-scroll AJAX must verify its nonce.',
+);
+
+assert(
+  functionsTemplate.includes('\'post_status\'   => \'publish\''),
+  'blog infinite-scroll AJAX must only query published posts.',
+);
+
+assert(
+  mainScript.includes('const loadedPostIds = new Set()') && mainScript.includes('loadedPostIds.has(postId)'),
+  'blog infinite-scroll JS must guard against duplicate appended posts.',
+);
+
+assert(
+  mainScript.includes('complete = !json.data.hasMore || currentPage >= maxPage'),
+  'blog infinite-scroll JS must stop requesting after the final page.',
+);
+
+assert(
+  themeStyles.includes('.rr-infinite-scroll-ready .blog-index .navigation.pagination') &&
+    themeStyles.includes('display: none'),
+  'enhanced blog archive must hide fallback pagination only after JS initializes.',
+);
+
+assert(
+  contentCardTemplate.includes('data-post-id="<?php the_ID(); ?>"'),
+  'shared blog card template must expose post IDs for duplicate prevention.',
+);

@@ -388,6 +388,129 @@
     }
   }
 
+  // ─── Blog Infinite Scroll ──────────────────────────────────────────────────
+
+  function initBlogInfiniteScroll() {
+    const config = window.rrBlogInfinite;
+    const grid = document.querySelector('[data-rr-infinite-grid]');
+    const sentinel = document.querySelector('[data-rr-infinite-sentinel]');
+    const status = document.querySelector('[data-rr-infinite-status]');
+    if (!config || !config.ajaxUrl || !config.nonce || !grid || !sentinel || !status) return;
+
+    const fallbackPagination = document.querySelector('.blog-index .navigation.pagination');
+    const initialPage = parseInt(grid.dataset.currentPage || '1', 10) || 1;
+    let currentPage = initialPage;
+    let maxPage = parseInt(grid.dataset.maxPage || '1', 10) || 1;
+    let loading = false;
+    let complete = currentPage >= maxPage;
+    let observer = null;
+    const loadedPostIds = new Set();
+
+    grid.querySelectorAll('[data-post-id]').forEach(function (card) {
+      if (card.dataset.postId) loadedPostIds.add(card.dataset.postId);
+    });
+
+    document.documentElement.classList.add('rr-infinite-scroll-ready');
+
+    if (fallbackPagination) {
+      fallbackPagination.setAttribute('aria-hidden', 'true');
+    }
+
+    function setStatus(state) {
+      status.dataset.state = state || '';
+      status.hidden = !state;
+    }
+
+    function finishIfComplete() {
+      if (complete) {
+        setStatus('end');
+        if (observer) observer.disconnect();
+      }
+    }
+
+    if (complete) {
+      finishIfComplete();
+      return;
+    }
+
+    function appendPosts(html) {
+      const template = document.createElement('template');
+      template.innerHTML = html.trim();
+      const cards = Array.from(template.content.querySelectorAll('[data-post-id]'));
+      const fragment = document.createDocumentFragment();
+
+      cards.forEach(function (card) {
+        const postId = card.dataset.postId;
+        if (!postId || loadedPostIds.has(postId)) return;
+        loadedPostIds.add(postId);
+        fragment.appendChild(card);
+      });
+
+      if (fragment.childNodes.length) {
+        grid.appendChild(fragment);
+      }
+    }
+
+    function loadNextPage() {
+      if (loading || complete) return;
+
+      const nextPage = currentPage + 1;
+      loading = true;
+      setStatus('loading');
+
+      const body = new URLSearchParams();
+      body.set('action', 'rr_blog_infinite_scroll');
+      body.set('nonce', config.nonce);
+      body.set('page', String(nextPage));
+      body.set('search', grid.dataset.search || '');
+      body.set('category', grid.dataset.category || '');
+
+      fetch(config.ajaxUrl, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+        body: body.toString(),
+      })
+        .then(function (response) {
+          if (!response.ok) throw new Error('Request failed');
+          return response.json();
+        })
+        .then(function (json) {
+          if (!json || !json.success || !json.data) throw new Error('Invalid response');
+
+          currentPage = parseInt(json.data.page || nextPage, 10) || nextPage;
+          maxPage = parseInt(json.data.maxPage || maxPage, 10) || maxPage;
+          appendPosts(json.data.html || '');
+          complete = !json.data.hasMore || currentPage >= maxPage;
+          setStatus('');
+          finishIfComplete();
+        })
+        .catch(function () {
+          setStatus('error');
+        })
+        .finally(function () {
+          loading = false;
+        });
+    }
+
+    observer = ('IntersectionObserver' in window)
+      ? new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) loadNextPage();
+        });
+      }, { rootMargin: '600px 0px 800px' })
+      : null;
+
+    if (observer) {
+      observer.observe(sentinel);
+    } else {
+      window.addEventListener('scroll', throttle(function () {
+        const remaining = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+        if (remaining < 900) loadNextPage();
+      }, 150), { passive: true });
+    }
+  }
+
   // ─── Init ────────────────────────────────────────────────────────────────────
 
   function init() {
@@ -403,6 +526,7 @@
     initReadingProgress();
     initSearchBtn();
     initLazyLoadFallback();
+    initBlogInfiniteScroll();
   }
 
   if (document.readyState === 'loading') {
