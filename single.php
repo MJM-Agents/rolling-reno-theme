@@ -239,13 +239,6 @@ while ( have_posts() ) :
     </section>
     <?php endif; ?>
 
-    <!-- Comments -->
-    <?php
-    if ( comments_open() || get_comments_number() ) :
-        comments_template();
-    endif;
-    ?>
-
     <!-- Hidden Pinterest image -->
     <?php if ( $hero_img ) : ?>
     <img

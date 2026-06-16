@@ -148,13 +148,21 @@ function rr_scripts() {
         RR_VERSION,
         true
     );
-
-    // Comments reply script
-    if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-        wp_enqueue_script( 'comment-reply' );
-    }
 }
 add_action( 'wp_enqueue_scripts', 'rr_scripts' );
+
+/**
+ * Public articles do not support WordPress comment reply UI.
+ *
+ * Keep historical comment data intact, but prevent threaded reply JavaScript
+ * from loading if WordPress or a plugin adds it for a single post.
+ */
+function rr_disable_public_post_comment_reply_script() {
+    if ( ! is_admin() && is_singular( 'post' ) ) {
+        wp_dequeue_script( 'comment-reply' );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'rr_disable_public_post_comment_reply_script', 100 );
 
 
 
