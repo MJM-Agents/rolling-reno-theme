@@ -96,3 +96,10 @@ assert(
   contentCardTemplate.includes('data-post-id="<?php the_ID(); ?>"'),
   'shared blog card template must expose post IDs for duplicate prevention.',
 );
+
+assert(
+  !/alt=["']{2}/.test(contentCardTemplate) &&
+    contentCardTemplate.includes('rr_get_post_image_alt( get_the_ID() )') &&
+    contentCardTemplate.includes('esc_attr( $thumb_alt )'),
+  'shared blog card images must use rr_get_post_image_alt() with escaped alt text.',
+);
