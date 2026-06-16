@@ -123,6 +123,7 @@ get_header();
                 while ( have_posts() ) :
                     the_post();
                     $thumb = rr_get_post_image_url( get_the_ID(), 'rr-card-sm' );
+                    $thumb_alt = rr_get_post_image_alt( get_the_ID() );
             ?>
             <article class="post-card" aria-labelledby="post-<?php the_ID(); ?>-title" <?php post_class(); ?>>
                 <a href="<?php the_permalink(); ?>" class="post-card__image-link" tabindex="-1" aria-hidden="true">
@@ -131,7 +132,7 @@ get_header();
                             <img
                                 class="post-card__image"
                                 src="<?php echo esc_url( $thumb ); ?>"
-                                alt=""
+                                alt="<?php echo esc_attr( $thumb_alt ); ?>"
                                 width="480"
                                 height="360"
                                 loading="lazy"

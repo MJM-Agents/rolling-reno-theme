@@ -209,12 +209,13 @@ while ( have_posts() ) :
             while ( $related_query->have_posts() ) :
                 $related_query->the_post();
                 $r_thumb = rr_get_post_image_url( get_the_ID(), 'rr-card-sm' );
+                $r_thumb_alt = rr_get_post_image_alt( get_the_ID() );
             ?>
             <article class="post-card" aria-labelledby="related-<?php the_ID(); ?>">
                 <a href="<?php the_permalink(); ?>" class="post-card__image-link" tabindex="-1" aria-hidden="true">
                     <div class="post-card__image-wrap">
                         <?php if ( $r_thumb ) : ?>
-                            <img class="post-card__image" src="<?php echo esc_url( $r_thumb ); ?>" alt="" width="480" height="360" loading="lazy">
+                            <img class="post-card__image" src="<?php echo esc_url( $r_thumb ); ?>" alt="<?php echo esc_attr( $r_thumb_alt ); ?>" width="480" height="360" loading="lazy">
                         <?php else : ?>
                             <div class="post-card__image-placeholder" aria-hidden="true">🚐</div>
                         <?php endif; ?>
