@@ -6,7 +6,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'RR_VERSION', '2.0.12' );
+define( 'RR_VERSION', '2.0.13' );
 define( 'RR_THEME_DIR', get_template_directory() );
 define( 'RR_THEME_URI', get_template_directory_uri() );
 
@@ -140,6 +140,13 @@ function rr_scripts() {
         array( 'rr-main' ),
         RR_VERSION
     );
+
+    if ( is_home() || rr_is_blog_index_request() ) {
+        wp_add_inline_style(
+            'rr-theme',
+            'html.rr-infinite-scroll-ready body .blog-index nav.navigation.pagination[aria-hidden="true"]{display:none!important;visibility:hidden!important;pointer-events:none!important;}'
+        );
+    }
 
     wp_enqueue_script(
         'rolling-reno-main',

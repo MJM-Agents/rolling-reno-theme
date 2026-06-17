@@ -93,8 +93,21 @@ assert(
 );
 
 assert(
-  mainScript.includes("fallbackPagination.style.display = 'none'"),
-  'blog infinite-scroll JS must inline-hide fallback pagination after enhancement initializes.',
+  functionsTemplate.includes("define( 'RR_VERSION', '2.0.13' )"),
+  'theme asset version must be bumped when changing cached public CSS/JS.',
+);
+
+assert(
+  functionsTemplate.includes('wp_add_inline_style') &&
+    functionsTemplate.includes('html.rr-infinite-scroll-ready body .blog-index nav.navigation.pagination[aria-hidden="true"]') &&
+    functionsTemplate.includes('display:none!important'),
+  'blog archive must enqueue a critical enhanced-state pagination hide rule with the theme stylesheet.',
+);
+
+assert(
+  mainScript.includes("fallbackPagination.style.setProperty('display', 'none', 'important')") &&
+    mainScript.includes("fallbackPagination.style.setProperty('visibility', 'hidden', 'important')"),
+  'blog infinite-scroll JS must important-inline-hide fallback pagination after enhancement initializes.',
 );
 
 assert(
