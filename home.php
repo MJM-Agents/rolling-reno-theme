@@ -117,49 +117,30 @@ get_header();
                 <p class="eyebrow"><?php esc_html_e( 'Latest field notes', 'rolling-reno' ); ?></p>
                 <h2 id="blog-latest-heading"><?php esc_html_e( 'Fresh guides from the road', 'rolling-reno' ); ?></h2>
             </div>
-            <div class="posts-grid blog-posts-grid">
+            <div
+                class="posts-grid blog-posts-grid"
+                data-rr-infinite-grid
+                data-current-page="<?php echo esc_attr( max( 1, (int) get_query_var( 'paged' ) ) ); ?>"
+                data-max-page="<?php echo esc_attr( max( 1, (int) $wp_query->max_num_pages ) ); ?>"
+                data-search="<?php echo esc_attr( $rr_blog_search ); ?>"
+                data-category="<?php echo esc_attr( $rr_active_category ); ?>"
+            >
             <?php
             if ( have_posts() ) :
                 while ( have_posts() ) :
                     the_post();
-                    $thumb = rr_get_post_image_url( get_the_ID(), 'rr-card-sm' );
-                    $thumb_alt = rr_get_post_image_alt( get_the_ID() );
-            ?>
-            <article class="post-card" aria-labelledby="post-<?php the_ID(); ?>-title" <?php post_class(); ?>>
-                <a href="<?php the_permalink(); ?>" class="post-card__image-link" tabindex="-1" aria-hidden="true">
-                    <div class="post-card__image-wrap">
-                        <?php if ( $thumb ) : ?>
-                            <img
-                                class="post-card__image"
-                                src="<?php echo esc_url( $thumb ); ?>"
-                                alt="<?php echo esc_attr( $thumb_alt ); ?>"
-                                width="480"
-                                height="360"
-                                loading="lazy"
-                            >
-                        <?php else : ?>
-                            <div class="post-card__image-placeholder" aria-hidden="true">🚐</div>
-                        <?php endif; ?>
-                    </div>
-                </a>
-                <div class="post-card__body">
-                    <div class="post-card__meta">
-                        <?php echo rr_category_badge(); ?>
-                        <span class="label-text"><?php echo esc_html( rr_read_time() ); ?></span>
-                    </div>
-                    <h2 class="post-card__title" id="post-<?php the_ID(); ?>-title">
-                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                    </h2>
-                    <p class="post-card__date caption"><?php echo get_the_date(); ?></p>
-                    <p class="post-card__excerpt"><?php echo esc_html( rr_excerpt( null, 20 ) ); ?></p>
-                </div>
-            </article>
-            <?php
+                    get_template_part( 'template-parts/content-card' );
                 endwhile;
             else : ?>
                 <p><?php esc_html_e( 'No posts yet — check back soon.', 'rolling-reno' ); ?></p>
             <?php endif; ?>
             </div>
+            <div class="blog-infinite-status" data-rr-infinite-status hidden aria-live="polite">
+                <span class="blog-infinite-status__loading"><?php esc_html_e( 'Loading more guides...', 'rolling-reno' ); ?></span>
+                <span class="blog-infinite-status__end"><?php esc_html_e( 'You have reached the end of the guide list.', 'rolling-reno' ); ?></span>
+                <span class="blog-infinite-status__error"><?php esc_html_e( 'More guides could not load. Use the page links below to keep browsing.', 'rolling-reno' ); ?></span>
+            </div>
+            <div data-rr-infinite-sentinel aria-hidden="true"></div>
         </section>
 
         <section class="cta-banner cta-banner--leadmagnet" id="newsletter" aria-labelledby="blog-newsletter-heading">

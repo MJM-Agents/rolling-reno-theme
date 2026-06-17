@@ -657,6 +657,29 @@ h4[id] {
   letter-spacing: -0.02em;
 }
 .blog-index--professional .post-card__excerpt { color: #555046; line-height: 1.62; margin: 0; }
+.blog-infinite-status {
+  margin: 1.5rem 0 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid #dfd5c6;
+  border-radius: 999px;
+  color: #555046;
+  font-weight: 700;
+  text-align: center;
+  background: #fffefa;
+}
+.blog-infinite-status__loading,
+.blog-infinite-status__end,
+.blog-infinite-status__error {
+  display: none;
+}
+.blog-infinite-status[data-state="loading"] .blog-infinite-status__loading,
+.blog-infinite-status[data-state="end"] .blog-infinite-status__end,
+.blog-infinite-status[data-state="error"] .blog-infinite-status__error {
+  display: inline;
+}
+.rr-infinite-scroll-ready .blog-index .navigation.pagination {
+  display: none;
+}
 .blog-index--professional .cta-banner--leadmagnet { margin-top: clamp(2.5rem, 5vw, 4rem) !important; }
 @media (max-width: 760px) {
   .blog-index--professional { padding-top: 2.1rem !important; }
