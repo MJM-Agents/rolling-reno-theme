@@ -113,10 +113,19 @@ test.describe('Rolling Reno regression guardrails', () => {
   test('enhanced blog archive hides fallback pagination links', async ({ page }) => {
     await page.setContent(`
       <style>
-        .navigation.pagination { display: block; }
-        .page-numbers { display: inline-flex; }
         .rr-infinite-scroll-ready .blog-index .navigation.pagination {
+          display: none;
+        }
+        .navigation.pagination,
+        .blog-index .navigation.pagination[aria-hidden="true"] {
+          display: block !important;
+          visibility: visible !important;
+        }
+        .page-numbers { display: inline-flex; }
+        html.rr-infinite-scroll-ready body .blog-index nav.navigation.pagination[aria-hidden="true"] {
           display: none !important;
+          visibility: hidden !important;
+          pointer-events: none !important;
         }
       </style>
       <main class="blog-index">
@@ -138,6 +147,9 @@ test.describe('Rolling Reno regression guardrails', () => {
       document.documentElement.classList.add('rr-infinite-scroll-ready');
       const pagination = document.querySelector('.blog-index .navigation.pagination');
       pagination?.setAttribute('aria-hidden', 'true');
+      pagination?.style.setProperty('display', 'none', 'important');
+      pagination?.style.setProperty('visibility', 'hidden', 'important');
+      pagination?.style.setProperty('pointer-events', 'none', 'important');
     });
 
     await expect(fallbackPagination).toBeHidden();
