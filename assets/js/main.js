@@ -414,6 +414,7 @@
 
     if (fallbackPagination) {
       fallbackPagination.setAttribute('aria-hidden', 'true');
+      fallbackPagination.style.display = 'none';
     }
 
     function setStatus(state) {
