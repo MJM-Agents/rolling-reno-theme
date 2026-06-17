@@ -88,8 +88,13 @@ assert(
 
 assert(
   themeStyles.includes('.rr-infinite-scroll-ready .blog-index .navigation.pagination') &&
-    themeStyles.includes('display: none'),
-  'enhanced blog archive must hide fallback pagination only after JS initializes.',
+    /display:\s*none\s*!important/.test(themeStyles),
+  'enhanced blog archive CSS must force-hide fallback pagination only after JS initializes.',
+);
+
+assert(
+  mainScript.includes("fallbackPagination.style.display = 'none'"),
+  'blog infinite-scroll JS must inline-hide fallback pagination after enhancement initializes.',
 );
 
 assert(

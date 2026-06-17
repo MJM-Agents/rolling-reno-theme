@@ -110,6 +110,43 @@ test.describe('Rolling Reno regression guardrails', () => {
     await expectNoHorizontalOverflow(page);
   });
 
+  test('enhanced blog archive hides fallback pagination links', async ({ page }) => {
+    await page.setContent(`
+      <style>
+        .navigation.pagination { display: block; }
+        .page-numbers { display: inline-flex; }
+        .rr-infinite-scroll-ready .blog-index .navigation.pagination {
+          display: none !important;
+        }
+      </style>
+      <main class="blog-index">
+        <nav class="navigation pagination" aria-label="Posts pagination">
+          <h2>Posts pagination</h2>
+          <span class="page-numbers current">1</span>
+          <a class="page-numbers" href="/blog/page/2/">2</a>
+          <a class="page-numbers" href="/blog/page/3/">3</a>
+          <a class="page-numbers" href="/blog/page/9/">9</a>
+          <a class="next page-numbers" href="/blog/page/2/">Older posts →</a>
+        </nav>
+      </main>
+    `);
+
+    const fallbackPagination = page.locator('.blog-index .navigation.pagination');
+    await expect(fallbackPagination).toBeVisible();
+
+    await page.evaluate(() => {
+      document.documentElement.classList.add('rr-infinite-scroll-ready');
+      const pagination = document.querySelector('.blog-index .navigation.pagination');
+      pagination?.setAttribute('aria-hidden', 'true');
+    });
+
+    await expect(fallbackPagination).toBeHidden();
+    await expect(page.getByRole('link', { name: 'Older posts →' })).toBeHidden();
+    await expect(page.getByRole('link', { name: '2' })).toBeHidden();
+    await expect(page.getByRole('link', { name: '3' })).toBeHidden();
+    await expect(page.getByRole('link', { name: '9' })).toBeHidden();
+  });
+
   test('gear page keeps affiliate CTAs and never shows placeholders', async ({ page }) => {
     await page.goto('/gear/');
     await expect(page.locator('body')).not.toContainText('Product link coming soon');
