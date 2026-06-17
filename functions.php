@@ -269,6 +269,28 @@ function rr_get_post_image_url( $post_id = null, $size = 'full' ) {
     return '';
 }
 
+/**
+ * Return accessible alt text for post card images.
+ *
+ * Prefer the featured media alt text managed in WordPress. Fall back to the
+ * post title so visible cards never emit an empty alt attribute when a card
+ * image is present.
+ */
+function rr_get_post_image_alt( $post_id = null ) {
+    $post_id      = $post_id ? $post_id : get_the_ID();
+    $thumbnail_id = get_post_thumbnail_id( $post_id );
+
+    if ( $thumbnail_id ) {
+        $alt = trim( (string) get_post_meta( $thumbnail_id, '_wp_attachment_image_alt', true ) );
+
+        if ( '' !== $alt ) {
+            return $alt;
+        }
+    }
+
+    return get_the_title( $post_id );
+}
+
 
 // ─── Category Hub Content & SEO ─────────────────────────────────────────────
 

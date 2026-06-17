@@ -165,12 +165,13 @@ $steps = array(
                     while ( $featured->have_posts() ) :
                         $featured->the_post();
                         $thumb = function_exists( 'rr_get_post_image_url' ) ? rr_get_post_image_url( get_the_ID(), 'rr-card-sm' ) : get_the_post_thumbnail_url( get_the_ID(), 'medium' );
+                        $thumb_alt = function_exists( 'rr_get_post_image_alt' ) ? rr_get_post_image_alt( get_the_ID() ) : get_the_title();
                 ?>
                     <article class="post-card" aria-labelledby="start-post-<?php the_ID(); ?>">
                         <a href="<?php the_permalink(); ?>" class="post-card__image-link" tabindex="-1" aria-hidden="true">
                             <div class="post-card__image-wrap">
                                 <?php if ( $thumb ) : ?>
-                                    <img class="post-card__image" src="<?php echo esc_url( $thumb ); ?>" alt="" width="480" height="360" loading="lazy">
+                                    <img class="post-card__image" src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="480" height="360" loading="lazy">
                                 <?php else : ?>
                                     <div class="post-card__image-placeholder" aria-hidden="true">🚐</div>
                                 <?php endif; ?>
